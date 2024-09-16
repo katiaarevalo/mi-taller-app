@@ -4,7 +4,9 @@ const { sequelize } = require('./models');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 const workOrderRoutes = require('./routes/workOrderRoute'); 
+const cors = require('cors');
 
+app.use(cors());
 app.use(express.json()); 
 
 // Aquí tengo las rutas. 

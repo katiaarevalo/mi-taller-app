@@ -23,13 +23,11 @@ module.exports = (sequelize, DataTypes) => {
     timestamps: false,
     hooks: {
       beforeCreate: async (user) => {
-        const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-        user.password = hashedPassword;
+        user.password = await bcrypt.hash(user.password, saltRounds);
       },
       beforeUpdate: async (user) => {
         if (user.changed('password')) {
-          const hashedPassword = await bcrypt.hash(user.password, saltRounds);
-          user.password = hashedPassword;
+          user.password = await bcrypt.hash(user.password, saltRounds);
         }
       }
     }
