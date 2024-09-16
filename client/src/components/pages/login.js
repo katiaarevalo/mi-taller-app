@@ -145,7 +145,7 @@ const Login = () => {
                   endIcon={<LoginIcon />}
                   type="submit"
                   sx={{
-                    backgroundColor: '#00ADE2', // Color fondob botón
+                    backgroundColor: '#00ADE2', // Color fondo botón
                     color: '#ffffff', // Color texto botón
                     '&:hover': {
                       backgroundColor: '#008AB4', // Color de fondo del botón al pasar el mouse

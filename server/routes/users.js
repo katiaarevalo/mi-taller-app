@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const User = require('../models').User; // Asegúrate de que la ruta sea correcta
+const User = require('../models').User; 
 
 // Ruta para obtener todos los usuarios
 router.get('/', async (req, res) => {
