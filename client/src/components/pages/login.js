@@ -9,6 +9,7 @@ import {
   Checkbox,
   Stack,
   CardMedia,
+  Grid2,
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import LoginIcon from '@mui/icons-material/Login';
@@ -31,12 +32,11 @@ const Login = () => {
         password,
       });
 
-      // Si la autenticación es exitosa
+      // Si la autenticación es exitosa...
       if (response.status === 200) {
-        const token = response.data.token; // Guardar el token
-        localStorage.setItem('token', token); // Guardar token en el almacenamiento local
+        const token = response.data.token; // Guardar el token...
+        localStorage.setItem('token', token); // Guardar token en el almacenamiento local...
         alert('Login exitoso');
-        // Redirigir al dashboard o alguna otra página.
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -145,8 +145,8 @@ const Login = () => {
                   endIcon={<LoginIcon />}
                   type="submit"
                   sx={{
-                    backgroundColor: '#00ADE2', // Color de fondo del botón
-                    color: '#ffffff', // Color del texto del botón
+                    backgroundColor: '#00ADE2', // Color fondob botón
+                    color: '#ffffff', // Color texto botón
                     '&:hover': {
                       backgroundColor: '#008AB4', // Color de fondo del botón al pasar el mouse
                     },
