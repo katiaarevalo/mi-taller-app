@@ -3,7 +3,6 @@ const app = express();
 const { sequelize } = require('./models');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
-const workOrderRoutes = require('./routes/workOrderRoute'); 
 const cors = require('cors');
 
 app.use(cors());
@@ -12,7 +11,6 @@ app.use(express.json());
 // Aquí tengo las rutas. 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
-app.use('/workOrdersRoute', workOrderRoutes); 
 
 sequelize.sync({ force: false }) 
   .then(() => {
