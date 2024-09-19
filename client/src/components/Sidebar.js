@@ -5,7 +5,6 @@ import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
-const username = "Usuario"; // Nombre de usuario para pruebas.
 
 // listItemStyles: Me da los estilos comunes para los botones. 
 const listItemStyles = {
@@ -75,9 +74,6 @@ const Sidebar = () => {
               {/* BIENVENIDO, USUARIO */}
               <Typography variant="h6" sx={{ textAlign: 'center' }}>
                 ¡Bienvenido!
-              </Typography>
-              <Typography variant="h5" sx={{ textAlign: 'center', fontWeight: 'bold' }}>
-                {username}
               </Typography>
             </Box>
           </Toolbar>
