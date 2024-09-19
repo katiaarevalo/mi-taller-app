@@ -12,24 +12,24 @@ module.exports = (sequelize, DataTypes) => {
       },
       direccion: {
         type: DataTypes.STRING,
-        allowNull: true // Asegúrate de que este campo pueda ser nulo si es necesario
+        allowNull: true // ¿Puede ser nulo? *Revisar
       },
       numero: {
         type: DataTypes.STRING,
-        allowNull: true // Asegúrate de que este campo pueda ser nulo si es necesario
+        allowNull: true // ¿Puede ser nulo? *Revisar
       },
       correo: {
         type: DataTypes.STRING,
-        allowNull: true // Asegúrate de que este campo pueda ser nulo si es necesario
+        allowNull: true // ¿Puede ser nulo? *Revisar
       }
     }, {
       tableName: 'Clientes',
       timestamps: false
     });
   
-    // Definir asociaciones si es necesario
+    // Relaciones de cliente...
     Cliente.associate = (models) => {
-      // Ejemplo de asociación: Un cliente puede tener muchos autos
+      //Un cliente puede tener muchos autos. 
       Cliente.hasMany(models.Auto, { foreignKey: 'cliente_rut', sourceKey: 'rut' });
     };
   

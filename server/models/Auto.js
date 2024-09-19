@@ -7,11 +7,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       color: {
         type: DataTypes.STRING,
-        allowNull: true // Asegúrate de que este campo pueda ser nulo si es necesario
+        allowNull: true // ¿Puede ser nulo? *Revisar
       },
       descripcion: {
         type: DataTypes.STRING,
-        allowNull: true // Asegúrate de que este campo pueda ser nulo si es necesario
+        allowNull: true // ¿Puede ser nulo? *Revisar
       }
     }, {
       tableName: 'Autos',

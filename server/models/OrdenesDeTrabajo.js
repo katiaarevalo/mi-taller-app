@@ -2,7 +2,7 @@ module.exports = (sequelize, DataTypes) => {
     const OrdenDeTrabajo = sequelize.define('OrdenDeTrabajo', {
       descripcion: {
         type: DataTypes.TEXT,
-        allowNull: true // Asegúrate de que este campo pueda ser nulo si es necesario
+        allowNull: true // ¿Puede ser nulo? *Revisar
       },
       monto_total: {
         type: DataTypes.DECIMAL,
@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
       },
       fecha_inicio: {
         type: DataTypes.DATE,
-        allowNull: true // Asegúrate de que este campo pueda ser nulo si es necesario
+        allowNull: true // ¿Puede ser nulo? *Revisar
       },
       fecha_termino: {
         type: DataTypes.DATE,
-        allowNull: true // Asegúrate de que este campo pueda ser nulo si es necesario
+        allowNull: true // ¿Puede ser nulo? *Revisar
       },
       matricula_vehiculo: {
         type: DataTypes.STRING,
@@ -33,13 +33,13 @@ module.exports = (sequelize, DataTypes) => {
       timestamps: false
     });
   
-    // Definir relaciones
+    //  Definiciónd de relaciones
     OrdenDeTrabajo.associate = (models) => {
-      // Relación con Auto
+      // Relación con Auto...
       OrdenDeTrabajo.belongsTo(models.Auto, { foreignKey: 'matricula_vehiculo', targetKey: 'matricula' });
       models.Auto.hasMany(OrdenDeTrabajo, { foreignKey: 'matricula_vehiculo', sourceKey: 'matricula' });
   
-      // Relación con Cliente
+      // Relación con Cliente...
       OrdenDeTrabajo.belongsTo(models.Cliente, { foreignKey: 'cliente_rut', targetKey: 'rut' });
       models.Cliente.hasMany(OrdenDeTrabajo, { foreignKey: 'cliente_rut', sourceKey: 'rut' });
     };
