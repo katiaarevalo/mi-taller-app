@@ -8,19 +8,20 @@ import {
   FormControlLabel,
   Checkbox,
   Stack,
-  CardMedia,
-  Grid2,
+  CardMedia
 } from '@mui/material';
 import LoadingButton from '@mui/lab/LoadingButton';
 import LoginIcon from '@mui/icons-material/Login';
-import logo from '../../images/mitaller_logo.png'
+import logo from '../images/mitaller_logo.png';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
-  const [loading, setLoading] = useState(false); // Añadir estado de carga
+  const [loading, setLoading] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate(); 
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -32,11 +33,12 @@ const Login = () => {
         password,
       });
 
-      // Si la autenticación es exitosa...
       if (response.status === 200) {
-        const token = response.data.token; // Guardar el token...
-        localStorage.setItem('token', token); // Guardar token en el almacenamiento local...
-        alert('Login exitoso');
+        const token = response.data.token;
+        localStorage.setItem('token', token);
+
+        //iniciar sesión exitosamente... navega a...
+        navigate('/analytics'); // RUTA DE REDIRECCIÓN.
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
@@ -56,7 +58,7 @@ const Login = () => {
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: '#d5f5ff',
-        height: '98vh',
+        height: '100vh',
       }}
     >
       <Card
@@ -64,7 +66,7 @@ const Login = () => {
           width: '100%',
           maxWidth: '400px',
           borderRadius: '1em',
-          bgcolor: '#ffffff', // Color de fondo del card
+          bgcolor: '#ffffff',
           boxShadow: (theme) => theme.shadows[2],
           overflow: 'hidden',
         }}
@@ -86,11 +88,11 @@ const Login = () => {
             <CardMedia
               component="img"
               alt="mitaller"
-              image={logo} 
+              image={logo}
               sx={{
-                width: 200, 
+                width: 200,
                 height: 'auto',
-                mb: 0, 
+                mb: 0,
               }}
             />
             <Typography variant="h4" sx={{ fontWeight: 'bold', textAlign: 'center' }}>
@@ -145,10 +147,10 @@ const Login = () => {
                   endIcon={<LoginIcon />}
                   type="submit"
                   sx={{
-                    backgroundColor: '#00ADE2', // Color fondo botón
-                    color: '#ffffff', // Color texto botón
+                    backgroundColor: '#00ADE2',
+                    color: '#ffffff',
                     '&:hover': {
-                      backgroundColor: '#008AB4', // Color de fondo del botón al pasar el mouse
+                      backgroundColor: '#008AB4',
                     },
                   }}
                 >
