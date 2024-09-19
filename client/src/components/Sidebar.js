@@ -2,6 +2,7 @@ import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia } from '@mui/material';
 import { Dashboard, TimeToLeave, Person, ExitToApp, Construction } from '@mui/icons-material';
 import logo from '../images/mitaller_logo.png';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 const drawerWidth = 240;
 const username = "Usuario"; // Nombre de usuario para pruebas.
@@ -15,7 +16,22 @@ const listItemStyles = {
   }
 };
 
+// Estilo para el botón activo
+const activeListItemStyles = {
+  ...listItemStyles,
+  backgroundColor: '#0d0d0d',
+  color: '#008AB4',
+};
+
 const Sidebar = () => {
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Función para manejar la navegación
+  const handleNavigation = (path) => {
+    navigate(path);
+  };
+
   return (
     <Box sx={{ display: 'flex' }}>
       {/* Drawer: MENU LATERAL */}
@@ -72,12 +88,17 @@ const Sidebar = () => {
           <List>
             {/* BOTONES CON EL MISMO ESTILO */}
             {[
-              { text: 'Analítica', icon: <Dashboard /> },
-              { text: 'Órdenes de trabajo', icon: <Construction /> },
-              { text: 'Vehículos', icon: <TimeToLeave /> },
-              { text: 'Clientes', icon: <Person /> }
+              { text: 'Analítica', icon: <Dashboard />, path: '/analytics' },
+              { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
+              { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
+              { text: 'Clientes', icon: <Person />, path: '/clients' }
             ].map((item, index) => ( 
-              <ListItem button key={index} sx={listItemStyles}>
+              <ListItem 
+                button 
+                key={index}
+                sx={location.pathname === item.path ? activeListItemStyles : listItemStyles}
+                onClick={() => handleNavigation(item.path)}
+              >
                 <ListItemIcon sx={{ color: 'inherit' }}>{item.icon}</ListItemIcon>
                 <ListItemText primary={item.text} />
               </ListItem>
@@ -85,7 +106,7 @@ const Sidebar = () => {
           </List>
           <Divider />
           <List>
-            <ListItem button sx={listItemStyles}>
+            <ListItem button sx={listItemStyles} onClick={() => handleNavigation('/login')}>
               <ListItemIcon sx={{ color: 'inherit' }}>
                 <ExitToApp />
               </ListItemIcon>

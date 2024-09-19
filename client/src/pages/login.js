@@ -5,8 +5,6 @@ import {
   Card,
   Typography,
   TextField,
-  FormControlLabel,
-  Checkbox,
   Stack,
   CardMedia
 } from '@mui/material';
@@ -20,7 +18,6 @@ const Login = () => {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const navigate = useNavigate(); 
 
   const handleLogin = async (e) => {
@@ -124,21 +121,6 @@ const Login = () => {
                   fullWidth
                   error={!!error}
                   helperText={error || ""}
-                />
-                <FormControlLabel
-                  control={
-                    <Checkbox
-                      sx={{
-                        color: '#008AB4',
-                        '&.Mui-checked': {
-                          color: '#008AB4',
-                        },
-                      }}
-                      checked={rememberMe}
-                      onChange={(e) => setRememberMe(e.target.checked)}
-                    />
-                  }
-                  label="Recordar usuario"
                 />
                 <LoadingButton
                   variant="contained"
