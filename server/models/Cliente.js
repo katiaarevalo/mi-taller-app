@@ -31,7 +31,7 @@ module.exports = (sequelize, DataTypes) => {
     // Relaciones de cliente...
     Cliente.associate = (models) => {
       //Un cliente puede tener muchos autos. 
-      Cliente.hasMany(models.Auto, { foreignKey: 'cliente_rut', sourceKey: 'rut' });
+      Cliente.hasMany(models.Auto, { foreignKey: 'cliente_actual', sourceKey: 'rut' });
     };
   
     return Cliente;

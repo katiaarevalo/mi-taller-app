@@ -4,8 +4,9 @@ const { sequelize } = require('./models');
 const userRoutes = require('./routes/usersRoutes');
 const authRoutes = require('./routes/auth');
 const ordenesDeTrabajoRoutes = require('./routes/ordenesDeTrabajoRoutes');
-const autosRoutes = require ('./routes/autosRoutes');
-const clientesRoutes = require ('./routes/clientesRoutes');
+const autosRoutes = require('./routes/autosRoutes');
+const clientesRoutes = require('./routes/clientesRoutes');
+const historialRoutes = require('./routes/historialPropietarioRoutes'); 
 const cors = require('cors');
 
 app.use(cors());
@@ -17,7 +18,7 @@ app.use('/users', userRoutes);
 app.use('/ordenes-de-trabajo', ordenesDeTrabajoRoutes);
 app.use('/autos', autosRoutes);
 app.use('/clientes', clientesRoutes);
-
+app.use('/historial-propietario', historialRoutes);
 
 sequelize.sync({ force: false }) 
   .then(() => {
