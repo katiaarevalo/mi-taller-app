@@ -1,8 +1,11 @@
 const express = require('express');
 const app = express();
 const { sequelize } = require('./models');
-const userRoutes = require('./routes/users');
+const userRoutes = require('./routes/usersRoutes');
 const authRoutes = require('./routes/auth');
+const ordenesDeTrabajoRoutes = require('./routes/ordenesDeTrabajoRoutes');
+const autosRoutes = require ('./routes/autosRoutes');
+const clientesRoutes = require ('./routes/clientesRoutes');
 const cors = require('cors');
 
 app.use(cors());
@@ -11,6 +14,10 @@ app.use(express.json());
 // Aquí tengo las rutas. 
 app.use('/auth', authRoutes);
 app.use('/users', userRoutes);
+app.use('/ordenes-de-trabajo', ordenesDeTrabajoRoutes);
+app.use('/autos', autosRoutes);
+app.use('/clientes', clientesRoutes);
+
 
 sequelize.sync({ force: false }) 
   .then(() => {
