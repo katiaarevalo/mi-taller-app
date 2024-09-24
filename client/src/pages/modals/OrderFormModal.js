@@ -26,7 +26,7 @@ const sectionStyle = {
   marginBottom: '10px',
 };
 
-// Estilo parte superior de mi formulario. 
+//Estilo parte superior  de mi formulario. 
 const sectionHeaderStyle = {
   backgroundColor: '#00a6ce',
   color: 'white',
@@ -35,21 +35,24 @@ const sectionHeaderStyle = {
   marginBottom: '10px',
 };
 
-// OrderFormModal --> componente funcional. 
+// OorderFormModal --> componente funcional. 
+// Recibe:           - open : boolenado para saber si el modal está abierto. 
+//                   - onClose: dedicado a cerrar el modal. 
+//                   - orderID: Identidicador. 
 const OrderFormModal = ({ open, onClose, orderId }) => {
-  const [clientes, setClientes] = useState([]); // Lista de clientes. 
+  const [clientes, setClientes] = useState([]); //Lista de clientes. 
   const [sugerenciasClientes, setSugerenciasClientes] = useState([]);  // Sugerencia de clientes.
   const [autos, setAutos] = useState([]); // Lista de autos. 
-  const [sugerenciasAutos, setSugerenciasAutos] = useState([]);  // Sugerencia de autos. 
+  const [sugerenciasAutos, setSugerenciasAutos] = useState([]);  //Sugerencia de autos. 
   const [isClienteEditable, setIsClienteEditable] = useState(true); // Booleano de cliente editable. 
   const [isAutoEditable, setIsAutoEditable] = useState(true);  // Booleano de auto editable.
-  const [nuevoCliente, setNuevoCliente] = useState({    // Nuevo cliente con campos vacíos. 
+  const [nuevoCliente, setNuevoCliente] = useState({    // Nuevo cliente con campos vacios. 
     rut: '', nombre: '', direccion: '', numero: '', correo: ''
   });
-  const [auto, setAuto] = useState({      // Datos autos con campos vacíos. 
+  const [auto, setAuto] = useState({      // datos autos con campos vacios. 
     matricula: '', descripcion: '', color: '', cliente_actual: ''
   });
-  const [orden, setOrden] = useState({    // Datos orden con campos vacíos. 
+  const [orden, setOrden] = useState({    // datos orden con campos vacios. 
     descripcion: '', monto_total: '', monto_pagado: '',
     fecha_inicio: '', fecha_termino: '', matricula_vehiculo: '', cliente_rut: '', cliente_nombre: ''
   });
@@ -88,6 +91,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
   }, [open]);
 
   // --------   FUNCIÓN MANEJO DE CAMBIO DE INGRESO. ---------  //
+  // Maneja los cambios en los inputs del formulario del modal. //
   const handleInputChange = (e, setState) => {
     const { name, value } = e.target;
     setState(prev => ({ ...prev, [name]: value }));
@@ -95,17 +99,20 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     if (name === 'rut') {
       const filteredClientes = clientes.filter(cliente => cliente.rut.includes(value));
       setSugerenciasClientes(filteredClientes);
-      setIsClienteEditable(true);
+      setIsClienteEditable(true); // Cliente habilitado para ser editable.
     }
 
     if (name === 'matricula') {
       const filteredAutos = autos.filter(auto => auto.matricula.includes(value));
       setSugerenciasAutos(filteredAutos);
-      setIsAutoEditable(true);
+      setIsAutoEditable(true); // Auto habilitado para ser editable.
     }
   };
 
   // ----- FUNCIÓN MANEJO DE SUGERENCIAS (CLIENTE). ----    //
+  // Maneja la selección de sugerencia de usuario. Es decir //
+  // actualiza estado y la orden, limpia las sugerencias    //
+  // y bloquea la edición de los campos del cliente.        //
   const handleSuggestionClickCliente = (cliente) => {
     setNuevoCliente({
       rut: cliente.rut,
@@ -119,11 +126,14 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
       cliente_rut: cliente.rut,
       cliente_nombre: cliente.nombre,
     }));
-    setSugerenciasClientes([]);
-    setIsClienteEditable(false);
+    setSugerenciasClientes([]); // Limpia sugerencias después de seleccionar.
+    setIsClienteEditable(false); // Bloquea los campos.
   };
 
-  // ----- FUNCIÓN MANEJO DE SUGERENCIAS (AUTO). ----    //
+   // ----- FUNCIÓN MANEJO DE SUGERENCIAS (AUTO). ----    //
+   // Maneja la selección de sugerencia de matricula.     //
+   // actualiza estado y la orden, limpia las sugerencias //
+   // y bloquea la edición de los campos del auto.       //
   const handleSuggestionClickAuto = (auto) => {
     setAuto({
       matricula: auto.matricula,
@@ -135,11 +145,14 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
       ...prev,
       matricula_vehiculo: auto.matricula,
     }));
-    setSugerenciasAutos([]);
-    setIsAutoEditable(false);
+    setSugerenciasAutos([]); // Limpia sugerencias.
+    setIsAutoEditable(false); // Bloquea los campos.
   };
    
-  // ----- FUNCIÓNES PARA REESTABLECER (CLIENTE-AUTO). ----   //
+     // ----- FUNCIÓNES PARA REESTABLECER (CLIENTE-AUTO). ----   //
+    // Me permite reestablecer los campos para facilitar el    //
+   // correcto funcionamiento y habilitar nuevamente los     //
+  // campos de cliente y auto para poder editarlos (true)  //
   const handleRevertCliente = () => {
     setNuevoCliente({ rut: '', nombre: '', direccion: '', numero: '', correo: '' });
     setOrden(prev => ({ ...prev, cliente_rut: '', cliente_nombre: '' }));
@@ -152,21 +165,20 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     setIsAutoEditable(true);
   };
 
-  // -- FUNCIÓN AUXILIAR DE ESTILO CAMPO EN "LECTURA" -- //
+  // -- FUNCIÓNA AUXILIAR DE ESTILO CAMPO EN "LECTURA" -- //
   const getInputStyle = (isReadOnly) => ({
     color: isReadOnly ? '#5e5e5e' : 'black',
   });
 
-  // ---- MANEJO DE ENVÍO DE FORMULARIO --- //
-  const handleSubmit = async () => {
-    if (orden.monto_total <= 0 || orden.monto_pagado <= 0) {
-      alert("El monto total y el monto pagado deben ser mayores a 0.");
-      return;
-    }
 
+  // ---- MANEJO DE ENVÍO DE FORMULARIO --- //
+  // Sigue la logica establecedida de que se debe enviar primero el cliente, //
+  // una vez existente se debe crear el auto y, posterior, crear la orden de trabajo. //
+  const handleSubmit = async () => {
     try {
       // Cliente editable = cliente nuevo. 
       if (isClienteEditable) {
+        // Si es editable... crear un nuevo cliente.
         await axios.post('http://localhost:3001/clientes', nuevoCliente, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -176,6 +188,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
       
       // Auto editable es auto nuevo. 
       if (isAutoEditable) {
+        // Si es editable... crear un nuevo auto.
         await axios.post('http://localhost:3001/autos', auto, {
           headers: {
             'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -183,7 +196,8 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
         });
       }
 
-      // Crear la orden de trabajo. 
+      // Realizado la verificación anterior...
+      // Creo la orden de trabajo. 
       await axios.post('http://localhost:3001/ordenesDeTrabajo', orden, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -210,6 +224,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
               <Typography variant="subtitle1" sx={sectionHeaderStyle}>
                 Cliente
               </Typography>
+              {/* --- CLIENTE: CAMPO RUT --- */}
               <TextField
                 label="RUT"
                 name="rut"
@@ -228,6 +243,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                   ))}
                 </List>
               )}
+              {/* --- CLIENTE: CAMPO NOMBRE --- */}
               <TextField
                 label="Nombre"
                 name="nombre"
@@ -241,6 +257,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                   style: getInputStyle(!isClienteEditable),
                 }}
               />
+              {/* --- CLIENTE: CAMPO DIRECCIÓN --- */}
               <TextField
                 label="Dirección"
                 name="direccion"
@@ -254,6 +271,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                   style: getInputStyle(!isClienteEditable),
                 }}
               />
+              {/* --- CLIENTE: CAMPO NÚMERO --- */}
               <TextField
                 label="Número"
                 name="numero"
@@ -267,6 +285,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                   style: getInputStyle(!isClienteEditable),
                 }}
               />
+              {/* --- CLIENTE: CAMPO CORREO --- */}
               <TextField
                 label="Correo"
                 name="correo"
@@ -280,18 +299,19 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                   style: getInputStyle(!isClienteEditable),
                 }}
               />
-              <Button variant="contained" color="secondary" onClick={handleRevertCliente} disabled={isClienteEditable}>
-                Restablecer
+              <Button onClick={handleRevertCliente} disabled={isClienteEditable} variant="outlined" color="secondary">
+                Restablecer Cliente
               </Button>
             </Box>
           </Grid>
 
-          {/* --- SECCIÓN DE AUTO --- */}
+          {/* --- SECCIÓN AUTO --- */}
           <Grid item xs={6}>
             <Box sx={sectionStyle}>
               <Typography variant="subtitle1" sx={sectionHeaderStyle}>
                 Auto
               </Typography>
+              {/* --- AUTO: CAMPO NÚMERO --- */}
               <TextField
                 label="Matrícula"
                 name="matricula"
@@ -310,10 +330,11 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                   ))}
                 </List>
               )}
+              {/* --- AUTO: CAMPO CLIENTE REGISTRADO --- */}
               <TextField
-                label="Descripción"
-                name="descripcion"
-                value={auto.descripcion}
+                label="Cliente Actual"
+                name="cliente_actual"
+                value={auto.cliente_actual}
                 onChange={(e) => handleInputChange(e, setAuto)}
                 size="small"
                 fullWidth
@@ -323,6 +344,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                   style: getInputStyle(!isAutoEditable),
                 }}
               />
+              {/* --- AUTO: CAMPO COLOR --- */}
               <TextField
                 label="Color"
                 name="color"
@@ -336,77 +358,138 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                   style: getInputStyle(!isAutoEditable),
                 }}
               />
-              <Button variant="contained" color="secondary" onClick={handleRevertAuto} disabled={isAutoEditable}>
-                Restablecer
+              {/* --- AUTO: DESCRIPCIÓN --- */}
+              <TextField
+                label="Descripción"
+                name="descripcion"
+                value={auto.descripcion}
+                onChange={(e) => handleInputChange(e, setAuto)}
+                size="small"
+                fullWidth
+                multiline
+                rows={3}
+                sx={{ marginBottom: '8px' }}
+                InputProps={{
+                  readOnly: !isAutoEditable,
+                  style: getInputStyle(!isAutoEditable),
+                }}
+              />
+              <Button onClick={handleRevertAuto} disabled={isAutoEditable} variant="outlined" color="secondary">
+                Restablecer Auto
               </Button>
             </Box>
           </Grid>
+
+          {/* --- SECCIÓN ORDEN DE TRABAJO --- */}
+          <Grid item xs={12}>
+            <Box sx={sectionStyle}>
+              <Typography variant="subtitle1" sx={sectionHeaderStyle}>
+                Datos de la Orden de Trabajo
+              </Typography>
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                {/* --- ORDEN_TRABAJO: CAMPO CLIENTE RUT --- */}
+                <TextField
+                label="RUT Cliente"
+                name="cliente_rut"
+                value={orden.cliente_rut}
+                onChange={(e) => handleInputChange(e, setOrden)}
+                size="small"
+                fullWidth
+                sx={{ marginBottom: '8px' }}
+                InputProps={{
+                  readOnly: true,
+                  style: getInputStyle(true),
+                }}
+              />
+                </Grid>
+                <Grid item xs={6}>
+                  {/* --- ORDEN_TRABAJO: FECHA INICIO --- */}
+                <TextField
+                    label="Fecha de Inicio"
+                    name="fecha_inicio"
+                    type="date"
+                    value={orden.fecha_inicio}
+                    onChange={(e) => handleInputChange(e, setOrden)}
+                    size="small"
+                    fullWidth
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    sx={{ marginBottom: '8px', marginLeft: '160px' }}
+                  />
+                </Grid>
+              </Grid>
+              <Grid container spacing={2}>
+                <Grid item xs={4}>
+                {/* --- ORDEN_TRABAJO: CAMPO MATRICULA VEHICULO --- */}
+                <TextField
+                  label="Matrícula Vehículo"
+                  name="matricula_vehiculo"
+                  value={orden.matricula_vehiculo}
+                  onChange={(e) => handleInputChange(e, setOrden)}
+                  size="small"
+                  fullWidth
+                  sx={{ marginBottom: '8px' }}
+                  InputProps={{
+                    readOnly: true,
+                    style: getInputStyle(true),
+                  }}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                {/* --- ORDEN_TRABAJO: CAMPO FECHA TÉRMINO --- */}
+                <TextField
+                    label="Fecha de Término"
+                    name="fecha_termino"
+                    type="date"
+                    value={orden.fecha_termino}
+                    onChange={(e) => handleInputChange(e, setOrden)}
+                    size="small"
+                    fullWidth
+                    InputLabelProps={{
+                      shrink: true,
+                    }}
+                    sx={{ marginBottom: '8px', marginLeft: '160px' }}
+                  />
+                </Grid>
+              </Grid>
+              {/* --- ORDEN_TRABAJO: CAMPO DESCRIPCIÓN --- */}
+              <TextField
+                label="Descripción"
+                name="descripcion"
+                value={orden.descripcion}
+                onChange={(e) => handleInputChange(e, setOrden)}
+                size="small"
+                fullWidth
+                multiline
+                rows={4}
+              />
+              {/* --- ORDEN_TRABAJO: MONTO TOTAL --- */}
+              <TextField
+                label="Monto Total"
+                name="monto_total"
+                value={orden.monto_total}
+                onChange={(e) => handleInputChange(e, setOrden)}
+                size="small"
+                fullWidth
+                sx={{ marginBottom: '8px', marginTop: '10px' }}
+              />
+              {/* --- ORDEN_TRABAJO: MONTO PAGADO --- */}
+              <TextField
+                label="Monto Pagado"
+                name="monto_pagado"
+                value={orden.monto_pagado}
+                onChange={(e) => handleInputChange(e, setOrden)}
+                size="small"
+                fullWidth
+                sx={{ marginBottom: '8px' }}
+              />
+            </Box>
+          </Grid>
         </Grid>
-
-        {/* --- SECCIÓN DE ORDEN --- */}
-        <Box sx={sectionStyle}>
-          <Typography variant="subtitle1" sx={sectionHeaderStyle}>
-            Datos de la Orden de Trabajo
-          </Typography>
-          <TextField
-            label="Descripción"
-            name="descripcion"
-            value={orden.descripcion}
-            onChange={(e) => handleInputChange(e, setOrden)}
-            size="small"
-            fullWidth
-            sx={{ marginBottom: '8px' }}
-          />
-          <TextField
-            label="Monto Total"
-            name="monto_total"
-            type="number"
-            value={orden.monto_total}
-            onChange={(e) => handleInputChange(e, setOrden)}
-            size="small"
-            fullWidth
-            sx={{ marginBottom: '8px' }}
-          />
-          <TextField
-            label="Monto Pagado"
-            name="monto_pagado"
-            type="number"
-            value={orden.monto_pagado}
-            onChange={(e) => handleInputChange(e, setOrden)}
-            size="small"
-            fullWidth
-            sx={{ marginBottom: '8px' }}
-          />
-          <TextField
-            label="Fecha de Inicio"
-            name="fecha_inicio"
-            type="date"
-            value={orden.fecha_inicio}
-            onChange={(e) => handleInputChange(e, setOrden)}
-            size="small"
-            fullWidth
-            sx={{ marginBottom: '8px' }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-          <TextField
-            label="Fecha de Término"
-            name="fecha_termino"
-            type="date"
-            value={orden.fecha_termino}
-            onChange={(e) => handleInputChange(e, setOrden)}
-            size="small"
-            fullWidth
-            sx={{ marginBottom: '8px' }}
-            InputLabelProps={{
-              shrink: true,
-            }}
-          />
-        </Box>
-
-        <Button variant="contained" color="primary" onClick={handleSubmit}>
-          Guardar Orden
+        <Button variant="contained" onClick={handleSubmit} sx={{ marginTop: '20px' }}>
+          Guardar Orden de Trabajo
         </Button>
       </Box>
     </Modal>
