@@ -58,6 +58,7 @@ const Sidebar = () => {
                 flexDirection: 'column',
                 alignItems: 'center',
                 mt: 3,
+                minHeight: 0,
               }}
             >
               {/* LOGO */}
