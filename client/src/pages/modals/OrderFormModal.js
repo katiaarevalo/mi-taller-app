@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, TextField, Button, Grid, List, ListItem, ListItemText } from '@mui/material';
 import axios from 'axios';
 
+// ESTILO DE MODAL. 
 const modalStyle = {
   position: 'absolute',
   top: '50%',
@@ -16,6 +17,7 @@ const modalStyle = {
   overflowY: 'auto',
 };
 
+// Estilo de sección. 
 const sectionStyle = {
   border: '1px solid #ccc',
   borderRadius: '4px',
@@ -24,6 +26,7 @@ const sectionStyle = {
   marginBottom: '10px',
 };
 
+// Estilo parte superior de mi formulario. 
 const sectionHeaderStyle = {
   backgroundColor: '#00a6ce',
   color: 'white',
@@ -32,20 +35,23 @@ const sectionHeaderStyle = {
   marginBottom: '10px',
 };
 
+// OrderFormModal --> componente funcional. 
 const OrderFormModal = ({ open, onClose, orderId }) => {
-  const [clientes, setClientes] = useState([]);
-  const [sugerenciasClientes, setSugerenciasClientes] = useState([]);
-  const [autos, setAutos] = useState([]);
-  const [sugerenciasAutos, setSugerenciasAutos] = useState([]);
-  const [nuevoCliente, setNuevoCliente] = useState({
+  const [clientes, setClientes] = useState([]); // Lista de clientes. 
+  const [sugerenciasClientes, setSugerenciasClientes] = useState([]);  // Sugerencia de clientes.
+  const [autos, setAutos] = useState([]); // Lista de autos. 
+  const [sugerenciasAutos, setSugerenciasAutos] = useState([]);  // Sugerencia de autos. 
+  const [isClienteEditable, setIsClienteEditable] = useState(true); // Booleano de cliente editable. 
+  const [isAutoEditable, setIsAutoEditable] = useState(true);  // Booleano de auto editable.
+  const [nuevoCliente, setNuevoCliente] = useState({    // Nuevo cliente con campos vacíos. 
     rut: '', nombre: '', direccion: '', numero: '', correo: ''
   });
-  const [auto, setAuto] = useState({
+  const [auto, setAuto] = useState({      // Datos autos con campos vacíos. 
     matricula: '', descripcion: '', color: '', cliente_actual: ''
   });
-  const [orden, setOrden] = useState({
+  const [orden, setOrden] = useState({    // Datos orden con campos vacíos. 
     descripcion: '', monto_total: '', monto_pagado: '',
-    fecha_inicio: '', fecha_termino: '', matricula_vehiculo: '', cliente_rut: ''
+    fecha_inicio: '', fecha_termino: '', matricula_vehiculo: '', cliente_rut: '', cliente_nombre: ''
   });
 
   useEffect(() => {
@@ -81,23 +87,25 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     }
   }, [open]);
 
+  // --------   FUNCIÓN MANEJO DE CAMBIO DE INGRESO. ---------  //
   const handleInputChange = (e, setState) => {
     const { name, value } = e.target;
     setState(prev => ({ ...prev, [name]: value }));
 
-    // Si el campo es RUT, actualizar sugerencias de clientes
     if (name === 'rut') {
       const filteredClientes = clientes.filter(cliente => cliente.rut.includes(value));
       setSugerenciasClientes(filteredClientes);
+      setIsClienteEditable(true);
     }
 
-    // Si el campo es matrícula, actualizar sugerencias de autos
     if (name === 'matricula') {
       const filteredAutos = autos.filter(auto => auto.matricula.includes(value));
       setSugerenciasAutos(filteredAutos);
+      setIsAutoEditable(true);
     }
   };
 
+  // ----- FUNCIÓN MANEJO DE SUGERENCIAS (CLIENTE). ----    //
   const handleSuggestionClickCliente = (cliente) => {
     setNuevoCliente({
       rut: cliente.rut,
@@ -106,9 +114,16 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
       numero: cliente.numero,
       correo: cliente.correo,
     });
-    setSugerenciasClientes([]); // Limpiar sugerencias después de seleccionar
+    setOrden(prev => ({
+      ...prev,
+      cliente_rut: cliente.rut,
+      cliente_nombre: cliente.nombre,
+    }));
+    setSugerenciasClientes([]);
+    setIsClienteEditable(false);
   };
 
+  // ----- FUNCIÓN MANEJO DE SUGERENCIAS (AUTO). ----    //
   const handleSuggestionClickAuto = (auto) => {
     setAuto({
       matricula: auto.matricula,
@@ -116,108 +131,80 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
       color: auto.color,
       cliente_actual: auto.cliente_actual,
     });
-    setSugerenciasAutos([]); // Limpiar sugerencias después de seleccionar
-  };
-
-  const handleSubmit = async () => {
-    const token = localStorage.getItem('token');
-
-    try {
-      // Verificar si el cliente existe
-      let clienteResponse = await fetch(`http://localhost:3001/clientes/${nuevoCliente.rut}`, {
-        method: 'GET',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      let cliente;
-
-      if (!clienteResponse.ok) {
-        // Si no existe, crear el cliente
-        cliente = await fetch('http://localhost:3001/clientes', {
-          method: 'POST',
-          headers: {
-            'Authorization': `Bearer ${token}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(nuevoCliente),
-        }).then(res => res.json());
-      } else {
-        cliente = await clienteResponse.json();
-      }
-
-      // Crear el auto
-      await fetch('http://localhost:3001/autos', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          matricula: auto.matricula,
-          descripcion: auto.descripcion,
-          color: auto.color,
-          cliente_actual: cliente.rut,
-        }),
-      });
-
-      // Crear la orden de trabajo
-      await fetch('http://localhost:3001/ordenes-de-trabajo', {
-        method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          descripcion: orden.descripcion,
-          monto_total: orden.monto_total,
-          monto_pagado: orden.monto_pagado,
-          fecha_inicio: orden.fecha_inicio,
-          fecha_termino: orden.fecha_termino,
-          matricula_vehiculo: auto.matricula,
-          cliente_rut: cliente.rut,
-        }),
-      });
-
-      // Cerrar el modal después de guardar
-      handleReset();
-      onClose();
-    } catch (error) {
-      console.error('Error al enviar datos:', error);
-    }
-  };
-
-  const handleReset = () => {
-    setNuevoCliente({
-      rut: '', nombre: '', direccion: '', numero: '', correo: ''
-    });
-    setAuto({
-      matricula: '', descripcion: '', color: '', cliente_actual: ''
-    });
-    setOrden({
-      descripcion: '', monto_total: '', monto_pagado: '',
-      fecha_inicio: '', fecha_termino: '', matricula_vehiculo: '', cliente_rut: ''
-    });
-    setSugerenciasClientes([]);
+    setOrden(prev => ({
+      ...prev,
+      matricula_vehiculo: auto.matricula,
+    }));
     setSugerenciasAutos([]);
+    setIsAutoEditable(false);
+  };
+   
+  // ----- FUNCIÓNES PARA REESTABLECER (CLIENTE-AUTO). ----   //
+  const handleRevertCliente = () => {
+    setNuevoCliente({ rut: '', nombre: '', direccion: '', numero: '', correo: '' });
+    setOrden(prev => ({ ...prev, cliente_rut: '', cliente_nombre: '' }));
+    setIsClienteEditable(true);
   };
 
+  const handleRevertAuto = () => {
+    setAuto({ matricula: '', descripcion: '', color: '', cliente_actual: '' });
+    setOrden(prev => ({ ...prev, matricula_vehiculo: '' }));
+    setIsAutoEditable(true);
+  };
+
+  // -- FUNCIÓN AUXILIAR DE ESTILO CAMPO EN "LECTURA" -- //
   const getInputStyle = (isReadOnly) => ({
     color: isReadOnly ? '#5e5e5e' : 'black',
   });
 
-  const isClienteExistente = !!sugerenciasClientes.length && !!nuevoCliente.rut;
+  // ---- MANEJO DE ENVÍO DE FORMULARIO --- //
+  const handleSubmit = async () => {
+    if (orden.monto_total <= 0 || orden.monto_pagado <= 0) {
+      alert("El monto total y el monto pagado deben ser mayores a 0.");
+      return;
+    }
+
+    try {
+      // Cliente editable = cliente nuevo. 
+      if (isClienteEditable) {
+        await axios.post('http://localhost:3001/clientes', nuevoCliente, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+      }
+      
+      // Auto editable es auto nuevo. 
+      if (isAutoEditable) {
+        await axios.post('http://localhost:3001/autos', auto, {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`
+          }
+        });
+      }
+
+      // Crear la orden de trabajo. 
+      await axios.post('http://localhost:3001/ordenesDeTrabajo', orden, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+
+      onClose();
+    } catch (error) {
+      console.error('Error al guardar la orden de trabajo:', error);
+    }
+  };
 
   return (
-    <Modal open={open} onClose={() => { handleReset(); onClose(); }}>
+    <Modal open={open} onClose={onClose}>
       <Box sx={modalStyle}>
         <Typography variant="h5" sx={{ backgroundColor: '#1976d2', color: 'white', padding: '10px' }}>
-          Orden de trabajo: #{orderId}
+          Orden de trabajo
         </Typography>
 
         <Grid container spacing={2}>
-          {/* Cliente Section */}
+          {/* --- SECCIÓN DE CLIENTE --- */}
           <Grid item xs={6}>
             <Box sx={sectionStyle}>
               <Typography variant="subtitle1" sx={sectionHeaderStyle}>
@@ -250,21 +237,8 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 fullWidth
                 sx={{ marginBottom: '8px' }}
                 InputProps={{
-                  readOnly: isClienteExistente,
-                  style: getInputStyle(isClienteExistente),
-                }}
-              />
-              <TextField
-                label="Correo"
-                name="correo"
-                value={nuevoCliente.correo}
-                onChange={(e) => handleInputChange(e, setNuevoCliente)}
-                size="small"
-                fullWidth
-                sx={{ marginBottom: '8px' }}
-                InputProps={{
-                  readOnly: isClienteExistente,
-                  style: getInputStyle(isClienteExistente),
+                  readOnly: !isClienteEditable,
+                  style: getInputStyle(!isClienteEditable),
                 }}
               />
               <TextField
@@ -276,8 +250,8 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 fullWidth
                 sx={{ marginBottom: '8px' }}
                 InputProps={{
-                  readOnly: isClienteExistente,
-                  style: getInputStyle(isClienteExistente),
+                  readOnly: !isClienteEditable,
+                  style: getInputStyle(!isClienteEditable),
                 }}
               />
               <TextField
@@ -289,18 +263,34 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 fullWidth
                 sx={{ marginBottom: '8px' }}
                 InputProps={{
-                  readOnly: isClienteExistente,
-                  style: getInputStyle(isClienteExistente),
+                  readOnly: !isClienteEditable,
+                  style: getInputStyle(!isClienteEditable),
                 }}
               />
+              <TextField
+                label="Correo"
+                name="correo"
+                value={nuevoCliente.correo}
+                onChange={(e) => handleInputChange(e, setNuevoCliente)}
+                size="small"
+                fullWidth
+                sx={{ marginBottom: '8px' }}
+                InputProps={{
+                  readOnly: !isClienteEditable,
+                  style: getInputStyle(!isClienteEditable),
+                }}
+              />
+              <Button variant="contained" color="secondary" onClick={handleRevertCliente} disabled={isClienteEditable}>
+                Restablecer
+              </Button>
             </Box>
           </Grid>
 
-          {/* Auto Section */}
+          {/* --- SECCIÓN DE AUTO --- */}
           <Grid item xs={6}>
             <Box sx={sectionStyle}>
               <Typography variant="subtitle1" sx={sectionHeaderStyle}>
-                Datos del auto
+                Auto
               </Typography>
               <TextField
                 label="Matrícula"
@@ -315,7 +305,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 <List>
                   {sugerenciasAutos.map((auto) => (
                     <ListItem button key={auto.matricula} onClick={() => handleSuggestionClickAuto(auto)}>
-                      <ListItemText primary={auto.matricula} secondary={`${auto.descripcion} (${auto.color})`} />
+                      <ListItemText primary={auto.matricula} secondary={auto.descripcion} />
                     </ListItem>
                   ))}
                 </List>
@@ -328,6 +318,10 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 size="small"
                 fullWidth
                 sx={{ marginBottom: '8px' }}
+                InputProps={{
+                  readOnly: !isAutoEditable,
+                  style: getInputStyle(!isAutoEditable),
+                }}
               />
               <TextField
                 label="Color"
@@ -337,75 +331,82 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 size="small"
                 fullWidth
                 sx={{ marginBottom: '8px' }}
-              />
-            </Box>
-          </Grid>
-
-          {/* Orden de Trabajo Section */}
-          <Grid item xs={12}>
-            <Box sx={sectionStyle}>
-              <Typography variant="subtitle1" sx={sectionHeaderStyle}>
-                Datos de la orden de trabajo
-              </Typography>
-              <TextField
-                label="Descripción"
-                name="descripcion"
-                value={orden.descripcion}
-                onChange={(e) => handleInputChange(e, setOrden)}
-                size="small"
-                fullWidth
-                sx={{ marginBottom: '8px' }}
-              />
-              <TextField
-                label="Monto Total"
-                name="monto_total"
-                value={orden.monto_total}
-                onChange={(e) => handleInputChange(e, setOrden)}
-                size="small"
-                fullWidth
-                sx={{ marginBottom: '8px' }}
-              />
-              <TextField
-                label="Monto Pagado"
-                name="monto_pagado"
-                value={orden.monto_pagado}
-                onChange={(e) => handleInputChange(e, setOrden)}
-                size="small"
-                fullWidth
-                sx={{ marginBottom: '8px' }}
-              />
-              <TextField
-                label="Fecha Inicio"
-                name="fecha_inicio"
-                type="date"
-                value={orden.fecha_inicio}
-                onChange={(e) => handleInputChange(e, setOrden)}
-                size="small"
-                fullWidth
-                sx={{ marginBottom: '8px' }}
-                InputLabelProps={{
-                  shrink: true,
+                InputProps={{
+                  readOnly: !isAutoEditable,
+                  style: getInputStyle(!isAutoEditable),
                 }}
               />
-              <TextField
-                label="Fecha Término"
-                name="fecha_termino"
-                type="date"
-                value={orden.fecha_termino}
-                onChange={(e) => handleInputChange(e, setOrden)}
-                size="small"
-                fullWidth
-                sx={{ marginBottom: '8px' }}
-                InputLabelProps={{
-                  shrink: true,
-                }}
-              />
+              <Button variant="contained" color="secondary" onClick={handleRevertAuto} disabled={isAutoEditable}>
+                Restablecer
+              </Button>
             </Box>
           </Grid>
         </Grid>
 
-        <Button variant="contained" color="primary" onClick={handleSubmit} sx={{ marginTop: '20px' }}>
-          Guardar
+        {/* --- SECCIÓN DE ORDEN --- */}
+        <Box sx={sectionStyle}>
+          <Typography variant="subtitle1" sx={sectionHeaderStyle}>
+            Datos de la Orden de Trabajo
+          </Typography>
+          <TextField
+            label="Descripción"
+            name="descripcion"
+            value={orden.descripcion}
+            onChange={(e) => handleInputChange(e, setOrden)}
+            size="small"
+            fullWidth
+            sx={{ marginBottom: '8px' }}
+          />
+          <TextField
+            label="Monto Total"
+            name="monto_total"
+            type="number"
+            value={orden.monto_total}
+            onChange={(e) => handleInputChange(e, setOrden)}
+            size="small"
+            fullWidth
+            sx={{ marginBottom: '8px' }}
+          />
+          <TextField
+            label="Monto Pagado"
+            name="monto_pagado"
+            type="number"
+            value={orden.monto_pagado}
+            onChange={(e) => handleInputChange(e, setOrden)}
+            size="small"
+            fullWidth
+            sx={{ marginBottom: '8px' }}
+          />
+          <TextField
+            label="Fecha de Inicio"
+            name="fecha_inicio"
+            type="date"
+            value={orden.fecha_inicio}
+            onChange={(e) => handleInputChange(e, setOrden)}
+            size="small"
+            fullWidth
+            sx={{ marginBottom: '8px' }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+          <TextField
+            label="Fecha de Término"
+            name="fecha_termino"
+            type="date"
+            value={orden.fecha_termino}
+            onChange={(e) => handleInputChange(e, setOrden)}
+            size="small"
+            fullWidth
+            sx={{ marginBottom: '8px' }}
+            InputLabelProps={{
+              shrink: true,
+            }}
+          />
+        </Box>
+
+        <Button variant="contained" color="primary" onClick={handleSubmit}>
+          Guardar Orden
         </Button>
       </Box>
     </Modal>

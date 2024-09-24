@@ -11,7 +11,7 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: true // ¿Puede ser nulo? *Revisar
         },
         descripcion: {
-            type: DataTypes.STRING,
+            type: DataTypes.TEXT,
             allowNull: true // ¿Puede ser nulo? *Revisar
         },
         cliente_actual: {
