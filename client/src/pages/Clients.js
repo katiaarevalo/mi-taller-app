@@ -5,14 +5,21 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
 import PersonIcon from '@mui/icons-material/Person';
 import ClientFormModal from './modals/ClientsFormModal';
+import EditClientModal from './modals/EditClientModal'; 
+import ViewClientModal from './modals/viewClientModal';
 import Snackbar from '@mui/material/Snackbar'; 
+import { truncateString } from '../helpers/truncate';
 
 const Clients = () => {
   const [clientes, setClientes] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false); // Estado para el modal de edición
+  const [selectedCliente, setSelectedCliente] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
+  const [viewModalOpen, setViewModalOpen] = useState(false); // Estado para el modal de visualización
+  const [selectedViewClient, setSelectedViewClient] = useState(null); // Cliente seleccionado para visualización
 
   // Función para obtener los clientes del servidor
   const fetchClientes = async () => {
@@ -39,9 +46,19 @@ const Clients = () => {
     setModalOpen(true);
   };
 
+  const handleEditClick = (cliente) => {
+    setSelectedCliente(cliente); // Establece el cliente seleccionado para editar
+    setEditModalOpen(true); // Abre el modal de edición
+  };
+
   const handleModalClose = () => {
     setModalOpen(false);
     fetchClientes();
+  };
+
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+    fetchClientes(); // Refresca la lista después de editar
   };
 
   const handleDelete = async (rut) => {
@@ -56,12 +73,21 @@ const Clients = () => {
           });
           fetchClientes(); // Refresca la lista después de eliminar
         } catch (error) {
-          // Aquí se obtiene el mensaje de error del backend
-          setSnackbarMessage(error.response.data.message || 'Error al eliminar el cliente.');
+          setSnackbarMessage(error.response?.data?.message || 'Error al eliminar el cliente.');
           setSnackbarOpen(true);
         }
       }
     }
+  };
+
+  const handleViewClick = (cliente) => {
+    setSelectedViewClient(cliente); // Establece el cliente seleccionado para visualización
+    setViewModalOpen(true); // Abre el modal de visualización
+  };
+
+  const handleViewModalClose = () => {
+    setViewModalOpen(false);
+    setSelectedViewClient(null); // Limpia el cliente seleccionado
   };
 
   const filteredClientes = clientes.filter(cliente =>
@@ -107,11 +133,11 @@ const Clients = () => {
           <Table stickyHeader size="small">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: '50px' }}>RUT</TableCell>
+                <TableCell style={{ width: '100px' }}>RUT</TableCell>
                 <TableCell style={{ width: '150px' }}>Nombre</TableCell>
-                <TableCell style={{ width: '150px' }}>Dirección</TableCell>
                 <TableCell style={{ width: '100px' }}>Número</TableCell>
                 <TableCell style={{ width: '200px' }}>Correo</TableCell>
+                <TableCell style={{ width: '150px' }}>Dirección</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
@@ -120,16 +146,17 @@ const Clients = () => {
                 <TableRow key={cliente.rut}>
                   <TableCell>{cliente.rut}</TableCell>
                   <TableCell>{cliente.nombre}</TableCell>
-                  <TableCell>{cliente.direccion || '-'}</TableCell>
-                  <TableCell>{cliente.numero || '-'}</TableCell>
-                  <TableCell>{cliente.correo || '-'}</TableCell>
+                  <TableCell>{cliente.numero}</TableCell>
+                  <TableCell>{cliente.correo}</TableCell>
+                  <TableCell>{truncateString(cliente.direccion, 12)}</TableCell> {/* Usar la función aquí */}
                   <TableCell>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}><VisibilityIcon /></IconButton>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}><EditIcon /></IconButton>
-                    <IconButton 
-                      sx={{ '&:hover': { backgroundColor: '#FF0000' } }} 
-                      onClick={() => handleDelete(cliente.rut)}
-                    >
+                  <IconButton onClick={() => handleViewClick(cliente)} color="default">
+                      <VisibilityIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleEditClick(cliente)} color="primary">
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDelete(cliente.rut)} color="secondary">
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -140,25 +167,20 @@ const Clients = () => {
         </TableContainer>
       </Grid2>
 
-      {/* Botón para agregar nuevo cliente */}
-      <Fab 
-        color="primary" 
-        aria-label="add" 
-        onClick={handleAddClick} 
-        style={{ position: 'fixed', bottom: '16px', right: '16px' }} 
-      >
+      <Fab color="primary" onClick={handleAddClick} style={{ position: 'fixed', bottom: 16, right: 16 }}>
         <AddIcon />
       </Fab>
 
-      {/* Modal para agregar clientes */}
       <ClientFormModal open={modalOpen} onClose={handleModalClose} />
+      <EditClientModal open={editModalOpen} onClose={handleEditModalClose} cliente={selectedCliente} /> {/* Agrega el modal de edición */}
+      <ViewClientModal open={viewModalOpen} onClose={handleViewModalClose} cliente={selectedViewClient} />
 
-      {/* Snackbar para mostrar mensajes */}
-      <Snackbar 
-        open={snackbarOpen} 
-        autoHideDuration={6000} 
-        onClose={handleSnackbarClose} 
-        message={snackbarMessage} 
+      {/* Snackbar para mensajes de error */}
+      <Snackbar
+        open={snackbarOpen}
+        autoHideDuration={6000}
+        onClose={handleSnackbarClose}
+        message={snackbarMessage}
       />
     </Grid2>
   );

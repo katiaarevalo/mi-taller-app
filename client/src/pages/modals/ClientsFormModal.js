@@ -49,6 +49,13 @@ const ClientFormModal = ({ open, onClose }) => {
       }, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      // Restablecer los datos del formulario
+      setNombre('');
+      setRut('');
+      setDireccion('');
+      setNumero('');
+      setCorreo('');
+      setRutError(false); // Restablecer el error del RUT
       onClose(); // Cerrar el modal
     } catch (error) {
       console.error('Error al agregar cliente:', error);
