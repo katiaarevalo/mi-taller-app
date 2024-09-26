@@ -50,7 +50,7 @@ const WorkOrders = () => {
       <Grid2 item xs={10}>
         <Grid2 container alignItems="center" justifyContent="space-between">
           <Grid2 item>
-            <Typography variant="h4" style={{ marginBottom: '0px' }}>Órdenes de Trabajo</Typography>
+            <Typography variant="h4" style={{ marginBottom: '0px' }}> Órdenes de trabajo </Typography>
           </Grid2>
           <Grid2 item>
             <TextField

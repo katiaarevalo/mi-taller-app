@@ -26,7 +26,7 @@ const sectionStyle = {
   marginBottom: '10px',
 };
 
-//Estilo parte superior  de mi formulario. 
+//Estilo
 const sectionHeaderStyle = {
   backgroundColor: '#00a6ce',
   color: 'white',
@@ -198,7 +198,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
 
       // Realizado la verificación anterior...
       // Creo la orden de trabajo. 
-      await axios.post('http://localhost:3001/ordenesDeTrabajo', orden, {
+      await axios.post('http://localhost:3001/ordenes-de-trabajo', orden, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }

@@ -58,10 +58,20 @@ router.put('/:rut', async (req, res) => {
 // -- ELIMINAR UN CLIENTE -- //
 router.delete('/:rut', async (req, res) => {
   try {
-    const deleted = await db.Cliente.destroy({
-      where: { rut: req.params.rut }
-    });
+    const clienteRut = req.params.rut;
+
+    // Verifica si el cliente está asociado a alguna orden de trabajo
+    const tieneOrden = await db.OrdenDeTrabajo.findOne({ where: { cliente_rut: clienteRut } });
+    // Verifica si el cliente está asociado a algún auto
+    const tieneAuto = await db.Auto.findOne({ where: { cliente_actual: clienteRut } });
+
+    if (tieneOrden || tieneAuto) {
+      return res.status(400).json({ message: 'No se puede eliminar el cliente porque está asociado a una orden de trabajo o a un auto.' });
+    }
+
+    const deleted = await db.Cliente.destroy({ where: { rut: clienteRut } });
     if (!deleted) return res.status(404).json({ error: 'Cliente no encontrado' });
+    
     res.status(204).send();
   } catch (error) {
     console.error('Error al eliminar cliente:', error);
