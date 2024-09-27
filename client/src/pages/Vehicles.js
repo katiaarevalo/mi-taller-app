@@ -1,17 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Grid2 } from '@mui/material';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab, Dialog } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import VehicleFormModal from './modals/VehicleFormModal';
+import ViewVehicleModal from './modals/ViewVehicleModal';
+
 
 const Vehicles = () => {
   const [autos, setAutos] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [historialData, setHistorialData] = useState([]);
+  const [selectedAuto, setSelectedAuto] = useState(null);
 
-  // Función para obtener los autos del servidor
   const fetchAutos = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -41,8 +45,28 @@ const Vehicles = () => {
     fetchAutos(); // Volver a cargar los autos tras cerrar el modal
   };
 
+  const handleViewClick = async (auto) => {
+    setSelectedAuto(auto);
+    const token = localStorage.getItem('token');
+    try {
+      const response = await axios.get(`http://localhost:3001/autos/${auto.matricula}/historial`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setHistorialData(response.data);
+      setViewModalOpen(true);
+    } catch (error) {
+      console.error('Error al obtener historial de propietarios:', error);
+    }
+  };
+
+  const handleViewModalClose = () => {
+    setViewModalOpen(false);
+    setHistorialData([]);
+    setSelectedAuto(null);
+  };
+
   const filteredAutos = autos.filter(auto =>
-    auto.matricula.toLowerCase().includes(filtro.toLowerCase()) // Filtrar solo por matrícula
+    auto.matricula.toLowerCase().includes(filtro.toLowerCase())
   );
 
   return (
@@ -93,7 +117,7 @@ const Vehicles = () => {
                   <TableCell>{auto.color}</TableCell>
                   <TableCell>{auto.cliente_actual}</TableCell>
                   <TableCell>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}>
+                    <IconButton onClick={() => handleViewClick(auto)} sx={{ '&:hover': { backgroundColor: '#008AB4' } }}>
                       <VisibilityIcon />
                     </IconButton>
                     <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}>
@@ -120,8 +144,16 @@ const Vehicles = () => {
         <AddIcon />
       </Fab>
 
-      {/* Modal */}
+      {/* Modal para agregar nuevo auto */}
       <VehicleFormModal open={modalOpen} onClose={handleModalClose} />
+
+      {/* Modal para mostrar los detalles del vehículo y el historial de propietarios */}
+      <ViewVehicleModal 
+        open={viewModalOpen} 
+        onClose={handleViewModalClose} 
+        auto={selectedAuto} 
+        historialData={historialData} 
+      />
     </Grid2>
   );
 };

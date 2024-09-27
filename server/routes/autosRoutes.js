@@ -50,6 +50,23 @@ router.get('/:matricula', async (req, res) => {
   }
 });
 
+// -- OBTENER HISTORIAL DE PROPIETARIOS POR MATRÍCULA -- //
+router.get('/:matricula/historial', async (req, res) => {
+  try {
+    const historial = await db.HistorialPropietario.findAll({
+      where: { auto_matricula: req.params.matricula },
+      include: [{
+        model: db.Cliente, // Incluir información del cliente
+        attributes: ['rut', 'nombre'], // Cambia estos atributos según tu modelo
+      }],
+    });
+    res.status(200).json(historial);
+  } catch (error) {
+    console.error('Error al obtener historial de propietarios:', error);
+    res.status(500).json({ error: 'Error al obtener historial de propietarios' });
+  }
+});
+
 // -- MODIFICAR UN AUTO -- //
 router.put('/:matricula', async (req, res) => {
   const { cliente_actual } = req.body; // Extraemos el cliente actual si se proporciona

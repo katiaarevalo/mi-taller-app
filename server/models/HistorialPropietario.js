@@ -1,12 +1,11 @@
-'use strict';
 module.exports = (sequelize, DataTypes) => {
   const HistorialPropietario = sequelize.define('HistorialPropietario', {
-    auto_matricula: { // Cambia el nombre del campo para que sea más claro
+    auto_matricula: {
       type: DataTypes.STRING,
       allowNull: false,
       references: {
         model: 'Autos', // Nombre de la tabla de autos
-        key: 'matricula' // 'matricula'
+        key: 'matricula' // Clave primaria de la tabla Autos
       }
     },
     cliente_rut: {
@@ -14,7 +13,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
       references: {
         model: 'Clientes', // Nombre de la tabla de clientes
-        key: 'rut' // Asegúrate de que esta sea la clave primaria de Clientes
+        key: 'rut' // Clave primaria de la tabla Clientes
       }
     },
     fecha_cambio: {
@@ -29,8 +28,10 @@ module.exports = (sequelize, DataTypes) => {
 
   // Relaciones
   HistorialPropietario.associate = (models) => {
+    // Un historial de propietario pertenece a un auto
     HistorialPropietario.belongsTo(models.Auto, { foreignKey: 'auto_matricula', targetKey: 'matricula' });
-    HistorialPropietario.belongsTo(models.Cliente, { foreignKey: 'cliente_rut' });
+    // Un historial de propietario pertenece a un cliente
+    HistorialPropietario.belongsTo(models.Cliente, { foreignKey: 'cliente_rut', targetKey: 'rut' });
   };
 
   return HistorialPropietario;
