@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Grid2 } from '@mui/material';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab, Dialog } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab} from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import VehicleFormModal from './modals/VehicleFormModal';
@@ -103,9 +103,9 @@ const Vehicles = () => {
             <TableHead>
               <TableRow>
                 <TableCell style={{ width: '100px' }}>Matrícula</TableCell>
-                <TableCell style={{ width: '150px' }}>Descripción</TableCell>
-                <TableCell style={{ width: '100px' }}>Color</TableCell>
                 <TableCell style={{ width: '100px' }}>RUT Cliente Actual</TableCell>
+                <TableCell style={{ width: '100px' }}>Color</TableCell>
+                <TableCell style={{ width: '150px' }}>Descripción</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
@@ -113,9 +113,9 @@ const Vehicles = () => {
               {filteredAutos.map((auto) => (
                 <TableRow key={auto.id}>
                   <TableCell>{auto.matricula}</TableCell>
-                  <TableCell>{auto.descripcion}</TableCell>
-                  <TableCell>{auto.color}</TableCell>
                   <TableCell>{auto.cliente_actual}</TableCell>
+                  <TableCell>{auto.color}</TableCell>
+                  <TableCell>{auto.descripcion}</TableCell>
                   <TableCell>
                     <IconButton onClick={() => handleViewClick(auto)} sx={{ '&:hover': { backgroundColor: '#008AB4' } }}>
                       <VisibilityIcon />

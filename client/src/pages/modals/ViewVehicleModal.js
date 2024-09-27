@@ -1,5 +1,5 @@
 import React from 'react';
-import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid, CircularProgress } from '@mui/material';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Divider, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid, CircularProgress } from '@mui/material';
 
 const ViewVehicleModal = ({ open, onClose, auto, historialData }) => {
   // Validamos que el auto esté presente
@@ -12,21 +12,27 @@ const ViewVehicleModal = ({ open, onClose, auto, historialData }) => {
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth>
-      <DialogTitle>Detalles del Vehículo - {auto.matricula}</DialogTitle>
+      <DialogTitle>
+        <Typography variant="h6">
+          Detalles del vehículo - <span style={{ fontWeight: 800 }}>{auto.matricula}</span>
+        </Typography>
+      </DialogTitle>
       <DialogContent>
+      <Divider />
         <Grid container spacing={2}>
           {/* Información del Vehículo */}
-          <Grid item xs={12}>
+          <Grid item xs={12} marginTop='10px'>
             <Typography variant="h6">Información del Vehículo</Typography>
-            <Typography variant="body1">Descripción: {auto.descripcion}</Typography>
-            <Typography variant="body1">Color: {auto.color}</Typography>
             <Typography variant="body1">RUT Cliente Actual: {auto.cliente_actual}</Typography>
+            <Typography variant="body1">Color: {auto.color}</Typography>
+            <Typography variant="body1">Descripción: {auto.descripcion}</Typography>
+            
           </Grid>
-
           {/* Historial de Propietarios */}
-          <Grid item xs={12}>
-            <Typography variant="h6">Historial de Propietarios</Typography>
-            <TableContainer component={Paper}>
+          <Grid item xs={12} marginTop='10px'>
+          <Divider />
+            <Typography variant="h6" marginTop='10px'> Historial de Propietarios</Typography>
+            <TableContainer component={Paper} style={{ marginTop: '10px' }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
