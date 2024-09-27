@@ -55,6 +55,25 @@ router.put('/:rut', async (req, res) => {
   }
 });
 
+// -- BUSCAR CLIENTES POR RUT -- //
+router.get('/clientes/search', async (req, res) => {
+  const { rut } = req.query; // Obtenemos el RUT desde la query
+  try {
+    const clientes = await db.Cliente.findAll({
+      where: {
+        rut: {
+          [Op.like]: `%${rut}%` // Busca coincidencias que contengan el RUT
+        }
+      },
+      attributes: ['rut', 'nombre'] // Devuelve solo el RUT y el nombre
+    });
+    res.status(200).json(clientes);
+  } catch (error) {
+    console.error('Error al buscar clientes:', error);
+    res.status(500).json({ error: 'Error al buscar clientes' });
+  }
+});
+
 // -- ELIMINAR UN CLIENTE -- //
 router.delete('/:rut', async (req, res) => {
   try {

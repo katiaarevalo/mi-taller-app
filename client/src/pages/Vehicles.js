@@ -1,20 +1,21 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Grid2 } from '@mui/material';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab} from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import VehicleFormModal from './modals/VehicleFormModal';
 import ViewVehicleModal from './modals/ViewVehicleModal';
-
+import EditVehicleModal from './modals/EditVehicleModal'; // Importa el modal de edición
 
 const Vehicles = () => {
   const [autos, setAutos] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [viewModalOpen, setViewModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false); // Estado para el modal de edición
   const [historialData, setHistorialData] = useState([]);
-  const [selectedAuto, setSelectedAuto] = useState(null);
+  const [selectedAuto, setSelectedAuto] = useState(null); // Auto seleccionado para ver o editar
 
   const fetchAutos = async () => {
     try {
@@ -57,6 +58,34 @@ const Vehicles = () => {
     } catch (error) {
       console.error('Error al obtener historial de propietarios:', error);
     }
+  };
+
+  const handleDelete = async (matricula) => {
+    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este vehículo?");
+    if (confirmDelete) {
+      const confirmDeleteFinal = window.confirm("Esta acción no se puede deshacer. ¿Confirmas la eliminación?");
+      if (confirmDeleteFinal) {
+        try {
+          const token = localStorage.getItem('token');
+          await axios.delete(`http://localhost:3001/autos/${matricula}`, {
+            headers: { Authorization: `Bearer ${token}` }
+          });
+          fetchAutos(); // Refresca la lista después de eliminar
+        } catch (error) {
+          console.error('Error al eliminar el vehículo:', error);
+        }
+      }
+    }
+  };
+
+  const handleEditClick = (auto) => {
+    setSelectedAuto(auto); // Guarda el auto seleccionado para editar
+    setEditModalOpen(true); // Abre el modal de edición
+  };
+
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+    fetchAutos(); // Refresca la lista después de editar
   };
 
   const handleViewModalClose = () => {
@@ -117,13 +146,13 @@ const Vehicles = () => {
                   <TableCell>{auto.color}</TableCell>
                   <TableCell>{auto.descripcion}</TableCell>
                   <TableCell>
-                    <IconButton onClick={() => handleViewClick(auto)} sx={{ '&:hover': { backgroundColor: '#008AB4' } }}>
+                    <IconButton onClick={() => handleViewClick(auto)} color="default">
                       <VisibilityIcon />
                     </IconButton>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}>
+                    <IconButton onClick={() => handleEditClick(auto)} color="primary">
                       <EditIcon />
                     </IconButton>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}>
+                    <IconButton onClick={() => handleDelete(auto.matricula)} color="secondary">
                       <DeleteIcon />
                     </IconButton>
                   </TableCell>
@@ -153,6 +182,13 @@ const Vehicles = () => {
         onClose={handleViewModalClose} 
         auto={selectedAuto} 
         historialData={historialData} 
+      />
+
+      {/* Modal para editar el vehículo */}
+      <EditVehicleModal 
+        open={editModalOpen} 
+        onClose={handleEditModalClose} 
+        vehicle={selectedAuto} // Pasa el vehículo seleccionado al modal
       />
     </Grid2>
   );

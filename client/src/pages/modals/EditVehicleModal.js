@@ -28,11 +28,13 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
     }
   }, [vehicle]);
 
+  // Manejar los cambios en los inputs
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // Guardar los cambios en el vehículo
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -62,13 +64,14 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
             disabled // Desactiva la matrícula para que no se pueda cambiar
           />
           <TextField
-            name="descripcion"
-            label="Descripción"
+            name="cliente_actual"
+            label="Cliente Actual (RUT)"
             variant="outlined"
-            value={formData.descripcion}
+            value={formData.cliente_actual}
             onChange={handleChange}
             fullWidth
             margin="normal"
+            disabled // Desactiva el cliente_actual para que no se pueda cambiar
           />
           <TextField
             name="color"
@@ -80,10 +83,10 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
             margin="normal"
           />
           <TextField
-            name="cliente_actual"
-            label="Cliente Actual (RUT)"
+            name="descripcion"
+            label="Descripción"
             variant="outlined"
-            value={formData.cliente_actual}
+            value={formData.descripcion}
             onChange={handleChange}
             fullWidth
             margin="normal"
