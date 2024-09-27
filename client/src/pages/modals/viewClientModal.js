@@ -10,38 +10,42 @@ const ViewClientModal = ({ open, onClose, cliente }) => {
       onClose={onClose}
       PaperProps={{
         style: {
-          backgroundColor: '#f5f5f5',
-          width: '500px', // Ancho fijo del modal
-          height: '370px', // Alto fijo del modal 
-          maxWidth: 'none', // Evita que el modal reduzca su tamaño por defecto
+          backgroundColor: '#ffffff',
+          width: '500px', 
+          height: 'auto', 
+          maxWidth: 'none', 
+          border: '2px solid #000',
+          borderRadius: '8px', 
+          padding: '16px', 
         },
       }}
     >
       <DialogContent dividers>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-          <Typography variant="h6" color="textPrimary">
+          <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>
             Información del Cliente
           </Typography>
           <Divider />
-          <Typography variant="body1" color="textSecondary">
+          <Typography variant="body1" sx={{ color: 'black' }}>
             <strong>RUT:</strong> {cliente.rut}
           </Typography>
-          <Typography variant="body1" color="textSecondary">
+          <Typography variant="body1" sx={{ color: 'black' }}>
             <strong>Nombre:</strong> {cliente.nombre}
           </Typography>
-          <Typography variant="body1" color="textSecondary">
+          <Typography variant="body1" sx={{ color: 'black' }}>
             <strong>Número:</strong> {cliente.numero}
           </Typography>
-          <Typography variant="body1" color="textSecondary">
+          <Typography variant="body1" sx={{ color: 'black' }}>
             <strong>Correo:</strong> {cliente.correo}
           </Typography>
-          <Typography variant="body1" color="textSecondary">
+          <Typography variant="body1" sx={{ color: 'black' }}>
             <strong>Dirección:</strong> {cliente.direccion}
           </Typography>
         </Box>
       </DialogContent>
+      <Divider />
       <DialogActions>
-        <Button onClick={onClose} color="primary" sx={{ textTransform: 'none' }}>
+        <Button onClick={onClose} sx={{ textTransform: 'none', fontWeight: 'bold', color: 'black' }}>
           Cerrar
         </Button>
       </DialogActions>

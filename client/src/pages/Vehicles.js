@@ -6,17 +6,20 @@ import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as V
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import VehicleFormModal from './modals/VehicleFormModal';
 import ViewVehicleModal from './modals/ViewVehicleModal';
-import EditVehicleModal from './modals/EditVehicleModal'; // Importa el modal de edición
+import EditVehicleModal from './modals/EditVehicleModal'; 
 
 const Vehicles = () => {
   const [autos, setAutos] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
   const [viewModalOpen, setViewModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false); // Estado para el modal de edición
+  const [editModalOpen, setEditModalOpen] = useState(false); 
   const [historialData, setHistorialData] = useState([]);
-  const [selectedAuto, setSelectedAuto] = useState(null); // Auto seleccionado para ver o editar
+  const [selectedAuto, setSelectedAuto] = useState(null); 
 
+  // -- OBTENER LISTA DE AUTOS -- // 
+  // Función para obtener la lista de autos. 
+  // Se ejecuta al cargar la página y al cerrar el modal de agregar auto.
   const fetchAutos = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -33,19 +36,30 @@ const Vehicles = () => {
     fetchAutos();
   }, []);
 
+  // -- FILTRAR AUTOS -- //
+  // Función para filtrar autos por matrícula.
+  // Se ejecuta al escribir en el campo de búsqueda.
   const handleFilterChange = (e) => {
     setFiltro(e.target.value);
   };
 
+  // -- AGREGAR AUTO -- //
+  // Función para abrir el modal de agregar auto.
   const handleAddClick = () => {
     setModalOpen(true);
   };
 
+  // -- CERRAR MODAL DE AGREGAR AUTO -- //
+  // Función para cerrar el modal de agregar auto.
+  // Refresca la lista de autos.
   const handleModalClose = () => {
     setModalOpen(false);
-    fetchAutos(); // Volver a cargar los autos tras cerrar el modal
+    fetchAutos(); 
   };
 
+  // -- VER HISTORIAL DE PROPIETARIOS -- //
+  // Función para obtener el historial de propietarios de un auto.
+  // Guarda el auto seleccionado y abre el modal.
   const handleViewClick = async (auto) => {
     setSelectedAuto(auto);
     const token = localStorage.getItem('token');
@@ -60,6 +74,10 @@ const Vehicles = () => {
     }
   };
 
+  // -- ELIMINAR AUTO -- //
+  // Función para eliminar un auto.
+  // Pide confirmación antes de eliminar.
+  // Refresca la lista de autos después de eliminar.
   const handleDelete = async (matricula) => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este vehículo?");
     if (confirmDelete) {
@@ -70,7 +88,7 @@ const Vehicles = () => {
           await axios.delete(`http://localhost:3001/autos/${matricula}`, {
             headers: { Authorization: `Bearer ${token}` }
           });
-          fetchAutos(); // Refresca la lista después de eliminar
+          fetchAutos(); 
         } catch (error) {
           console.error('Error al eliminar el vehículo:', error);
         }
@@ -78,26 +96,40 @@ const Vehicles = () => {
     }
   };
 
+  // -- EDITAR AUTO -- //
+  // Función para abrir el modal de edición de un auto.
+  // Guarda el auto seleccionado y abre el modal.
   const handleEditClick = (auto) => {
-    setSelectedAuto(auto); // Guarda el auto seleccionado para editar
-    setEditModalOpen(true); // Abre el modal de edición
+    setSelectedAuto(auto); 
+    setEditModalOpen(true); 
   };
 
+  // -- CERRAR MODAL DE EDICIÓN -- //
+  // Función para cerrar el modal de edición de un auto.
+  // Refresca la lista de autos después de editar.
   const handleEditModalClose = () => {
     setEditModalOpen(false);
-    fetchAutos(); // Refresca la lista después de editar
+    fetchAutos(); 
   };
 
+  // -- CERRAR MODAL DE VER DETALLES -- //
+  // Función para cerrar el modal de ver detalles de un auto.
+  // Limpia los datos del auto y el historial.
+  // Se ejecuta al cerrar el modal.
   const handleViewModalClose = () => {
     setViewModalOpen(false);
     setHistorialData([]);
     setSelectedAuto(null);
   };
 
+  // -- RENDERIZADO -- //
+  // Filtra los autos según el texto ingresado en el campo de búsqueda.
+  // Muestra la tabla de autos con las acciones de ver, editar y eliminar.
   const filteredAutos = autos.filter(auto =>
     auto.matricula.toLowerCase().includes(filtro.toLowerCase())
   );
 
+  // Renderiza la página de vehículos.
   return (
     <Grid2 container spacing={3} style={{ marginLeft: '0px', padding: '0', height: '100%', width:'1050px', display: 'flex', flexDirection: 'column' }}>
       <Grid2 item xs={10}>
@@ -106,6 +138,7 @@ const Vehicles = () => {
             <Typography variant="h4" style={{ marginBottom: '0px' }}> Vehículos </Typography>
           </Grid2>
           <Grid2 item>
+            {/* -- BARRA DE BÚSQUEDA. -- */}
             <TextField
               label="Buscar por matrícula"
               variant="outlined"
@@ -132,7 +165,7 @@ const Vehicles = () => {
             <TableHead>
               <TableRow>
                 <TableCell style={{ width: '100px' }}>Matrícula</TableCell>
-                <TableCell style={{ width: '100px' }}>RUT Cliente Actual</TableCell>
+                <TableCell style={{ width: '100px' }}>RUT cliente actual</TableCell>
                 <TableCell style={{ width: '100px' }}>Color</TableCell>
                 <TableCell style={{ width: '150px' }}>Descripción</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>
@@ -163,7 +196,7 @@ const Vehicles = () => {
         </TableContainer>
       </Grid2>
 
-      {/* Botón para agregar nuevo auto */}
+      {/* -- BOTÓN DE AGREGAR -- */}
       <Fab 
         color="primary" 
         aria-label="add" 
@@ -173,10 +206,10 @@ const Vehicles = () => {
         <AddIcon />
       </Fab>
 
-      {/* Modal para agregar nuevo auto */}
+      {/* -- ABRIR MODAL AGREGAR --*/}
       <VehicleFormModal open={modalOpen} onClose={handleModalClose} />
 
-      {/* Modal para mostrar los detalles del vehículo y el historial de propietarios */}
+      {/* -- MODAL VISUALIZAR DATOS -- */}
       <ViewVehicleModal 
         open={viewModalOpen} 
         onClose={handleViewModalClose} 
@@ -184,11 +217,11 @@ const Vehicles = () => {
         historialData={historialData} 
       />
 
-      {/* Modal para editar el vehículo */}
+      {/* -- MODAL EDITAR DATOS -- */}
       <EditVehicleModal 
         open={editModalOpen} 
         onClose={handleEditModalClose} 
-        vehicle={selectedAuto} // Pasa el vehículo seleccionado al modal
+        vehicle={selectedAuto}
       />
     </Grid2>
   );

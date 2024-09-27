@@ -8,15 +8,15 @@ router.use(verifyToken);
 
 // -- CREAR UN NUEVO AUTO -- // 
 router.post('/', async (req, res) => {
-  const { matricula, cliente_actual } = req.body; // Extraemos la matrícula y el cliente actual
+  const { matricula, cliente_actual } = req.body; // extraer matricula y cliente actual
   try {
-    // Primero, creamos el nuevo auto
+    // crear auto nuevo
     const newAuto = await db.Auto.create(req.body);
 
-    // Luego, registramos el historial del propietario
+    // registrar historial
     await db.HistorialPropietario.create({
       auto_matricula: newAuto.matricula,
-      cliente_rut: cliente_actual, // Usamos el cliente actual
+      cliente_rut: cliente_actual, // usar cliente actual
       fecha_cambio: new Date() // Fecha actual
     });
 
@@ -57,7 +57,7 @@ router.get('/:matricula/historial', async (req, res) => {
       where: { auto_matricula: req.params.matricula },
       include: [{
         model: db.Cliente, // Incluir información del cliente
-        attributes: ['rut', 'nombre'], // Cambia estos atributos según tu modelo
+        attributes: ['rut', 'nombre'], 
       }],
     });
     res.status(200).json(historial);
@@ -69,7 +69,7 @@ router.get('/:matricula/historial', async (req, res) => {
 
 // -- MODIFICAR UN AUTO -- //
 router.put('/:matricula', async (req, res) => {
-  const { cliente_actual } = req.body; // Extraemos el cliente actual si se proporciona
+  const { cliente_actual } = req.body; // Extrae el cliente actual si se proporciona
   try {
     const [updated] = await db.Auto.update(req.body, {
       where: { matricula: req.params.matricula }

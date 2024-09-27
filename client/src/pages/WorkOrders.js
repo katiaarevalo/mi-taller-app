@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios'; // Puedes usar axios o fetch
+import axios from 'axios'; 
 import { Grid2 } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
@@ -11,12 +11,12 @@ const WorkOrders = () => {
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
 
-  // Función para obtener las órdenes de trabajo del servidor
+
   const fetchOrdenes = async () => {
     try {
-      const token = localStorage.getItem('token'); // O la forma en que almacenas tu token
+      const token = localStorage.getItem('token'); 
       const response = await axios.get('http://localhost:3001/ordenes-de-trabajo', {
-        headers: { Authorization: `Bearer ${token}` } // Incluyendo el token en los encabezados
+        headers: { Authorization: `Bearer ${token}` }
       });
       setOrdenes(response.data);
     } catch (error) {
@@ -38,7 +38,7 @@ const WorkOrders = () => {
 
   const handleModalClose = () => {
     setModalOpen(false);
-    fetchOrdenes(); // Volver a cargar las órdenes tras cerrar el modal
+    fetchOrdenes(); 
   };
 
   const filteredOrdenes = ordenes.filter(orden =>
@@ -72,7 +72,6 @@ const WorkOrders = () => {
         </Grid2>
       </Grid2>
 
-      {/* Tabla */}
       <Grid2 item xs={12}>
         <TableContainer component={Paper} style={{ width: '100%', height: '500px'}}>
           <Table stickyHeader size="small">
@@ -110,7 +109,6 @@ const WorkOrders = () => {
         </TableContainer>
       </Grid2>
 
-      {/* Botón para agregar nueva orden */}
       <Fab 
         color="primary" 
         aria-label="add" 
@@ -120,7 +118,6 @@ const WorkOrders = () => {
         <AddIcon />
       </Fab>
 
-      {/* Modal */}
       <OrderFormModal open={modalOpen} onClose={handleModalClose} />
     </Grid2>
   );

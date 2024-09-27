@@ -57,15 +57,15 @@ router.put('/:rut', async (req, res) => {
 
 // -- BUSCAR CLIENTES POR RUT -- //
 router.get('/clientes/search', async (req, res) => {
-  const { rut } = req.query; // Obtenemos el RUT desde la query
+  const { rut } = req.query; // RUT desde la query
   try {
     const clientes = await db.Cliente.findAll({
       where: {
         rut: {
-          [Op.like]: `%${rut}%` // Busca coincidencias que contengan el RUT
+          [Op.like]: `%${rut}%` // coincidencias que contengan el RUT
         }
       },
-      attributes: ['rut', 'nombre'] // Devuelve solo el RUT y el nombre
+      attributes: ['rut', 'nombre'] // Devuelver solo el RUT y el nombre
     });
     res.status(200).json(clientes);
   } catch (error) {

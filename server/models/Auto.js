@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.STRING,
             allowNull: false,
             references: {
-                model: 'Clientes', // Asegúrate de que este sea el nombre correcto de la tabla de clientes
+                model: 'Clientes', 
                 key: 'rut'
             }
         }

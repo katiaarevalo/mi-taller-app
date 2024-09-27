@@ -3,7 +3,7 @@ const router = express.Router();
 const { User } = require('../models');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const JWT_SECRET = 'your_jwt_secret'; // Clave secreta para JWT.
+const JWT_SECRET = 'your_jwt_secret'; 
 
 // Ruta para iniciar sesión.
 router.post('/login', async (req, res) => {

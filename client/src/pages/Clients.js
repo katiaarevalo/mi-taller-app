@@ -11,17 +11,19 @@ import Snackbar from '@mui/material/Snackbar';
 import { truncateString } from '../helpers/truncate';
 
 const Clients = () => {
-  const [clientes, setClientes] = useState([]);
-  const [filtro, setFiltro] = useState('');
-  const [modalOpen, setModalOpen] = useState(false);
-  const [editModalOpen, setEditModalOpen] = useState(false); // Estado para el modal de edición
+  const [clientes, setClientes] = useState([]); 
+  const [filtro, setFiltro] = useState(''); 
+  const [modalOpen, setModalOpen] = useState(false); 
+  const [editModalOpen, setEditModalOpen] = useState(false);  
   const [selectedCliente, setSelectedCliente] = useState(null);
   const [snackbarOpen, setSnackbarOpen] = useState(false);
   const [snackbarMessage, setSnackbarMessage] = useState('');
-  const [viewModalOpen, setViewModalOpen] = useState(false); // Estado para el modal de visualización
-  const [selectedViewClient, setSelectedViewClient] = useState(null); // Cliente seleccionado para visualización
+  const [viewModalOpen, setViewModalOpen] = useState(false); 
+  const [selectedViewClient, setSelectedViewClient] = useState(null); 
 
-  // Función para obtener los clientes del servidor
+  // -- OBTENER LISTA DE CLIENTES -- //
+  // Función para obtener la lista de clientes.
+  // Se ejecuta al cargar la página y al cerrar el modal de agregar cliente.
   const fetchClientes = async () => {
     try {
       const token = localStorage.getItem('token'); 
@@ -38,29 +40,42 @@ const Clients = () => {
     fetchClientes();
   }, []);
 
+  // -- FILTRAR CLIENTES -- //
+  // Función para filtrar clientes por nombre o RUT.
+  // Se ejecuta al escribir en el campo de búsqueda.
   const handleFilterChange = (e) => {
     setFiltro(e.target.value);
   };
 
+  // -- AGREGAR CLIENTE -- //
+  // Función para abrir el modal de agregar cliente.
   const handleAddClick = () => {
     setModalOpen(true);
   };
 
+  // -- EDITAR CLIENTE -- //
+  // Función para abrir el modal de edición de cliente.
   const handleEditClick = (cliente) => {
-    setSelectedCliente(cliente); // Establece el cliente seleccionado para editar
-    setEditModalOpen(true); // Abre el modal de edición
+    setSelectedCliente(cliente); 
+    setEditModalOpen(true); 
   };
 
+  // -- CERRAR MODAL DE AGREGAR CLIENTE -- //
+  // Función para cerrar el modal de agregar cliente.
   const handleModalClose = () => {
     setModalOpen(false);
     fetchClientes();
   };
 
+  // -- CERRAR MODAL DE EDITAR CLIENTE -- //
+  // Función para cerrar el modal de edición de cliente.
   const handleEditModalClose = () => {
     setEditModalOpen(false);
-    fetchClientes(); // Refresca la lista después de editar
+    fetchClientes(); 
   };
 
+  // -- ELIMINAR CLIENTE -- //
+  // Función para eliminar un cliente.
   const handleDelete = async (rut) => {
     const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este cliente?");
     if (confirmDelete) {
@@ -80,22 +95,27 @@ const Clients = () => {
     }
   };
 
+  // -- VER CLIENTE -- //
+  // Función para abrir el modal de visualización de cliente.
   const handleViewClick = (cliente) => {
-    setSelectedViewClient(cliente); // Establece el cliente seleccionado para visualización
-    setViewModalOpen(true); // Abre el modal de visualización
+    setSelectedViewClient(cliente); 
+    setViewModalOpen(true); 
   };
 
+  // -- CERRAR MODAL DE VER CLIENTE -- //
+  // Función para cerrar el modal de visualización de cliente.
   const handleViewModalClose = () => {
     setViewModalOpen(false);
-    setSelectedViewClient(null); // Limpia el cliente seleccionado
+    setSelectedViewClient(null); 
   };
 
+  // filteredClientes es la lista de clientes filtrada por nombre o RUT.
   const filteredClientes = clientes.filter(cliente =>
     cliente.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
     cliente.rut.toLowerCase().includes(filtro.toLowerCase())
   );
 
-  // Función para cerrar el Snackbar
+  // -- CERRAR SNACKBAR -- //
   const handleSnackbarClose = () => {
     setSnackbarOpen(false);
   };
@@ -175,7 +195,7 @@ const Clients = () => {
       <EditClientModal open={editModalOpen} onClose={handleEditModalClose} cliente={selectedCliente} /> {/* Agrega el modal de edición */}
       <ViewClientModal open={viewModalOpen} onClose={handleViewModalClose} cliente={selectedViewClient} />
 
-      {/* Snackbar para mensajes de error */}
+      {/* -- SNACKBAR --*/}
       <Snackbar
         open={snackbarOpen}
         autoHideDuration={6000}

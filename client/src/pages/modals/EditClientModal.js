@@ -29,11 +29,13 @@ const EditClientModal = ({ open, onClose, cliente }) => {
     }
   }, [cliente]);
 
+  // -- MANEJAR CAMBIOS EN LOS INPUTS -- //
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
+  // -- ACTUALIZAR CLIENTE -- //
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -41,7 +43,7 @@ const EditClientModal = ({ open, onClose, cliente }) => {
       await axios.put(`http://localhost:3001/clientes/${formData.rut}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      onClose(); // Cierra el modal
+      onClose(); 
     } catch (error) {
       console.error('Error al actualizar el cliente:', error);
     }
@@ -60,7 +62,7 @@ const EditClientModal = ({ open, onClose, cliente }) => {
             onChange={handleChange}
             fullWidth
             margin="normal"
-            disabled // Desactiva el RUT para que no se pueda cambiar
+            disabled 
           />
           <TextField
             name="nombre"
@@ -105,8 +107,8 @@ const EditClientModal = ({ open, onClose, cliente }) => {
             <Button 
               variant="outlined" 
               color="error" 
-              onClick={onClose} // Cierra el modal
-              sx={{ textTransform: 'none' }} // Evitar que el texto se convierta en mayúsculas
+              onClick={onClose} 
+              sx={{ textTransform: 'none' }} 
             >
               Cerrar
             </Button>

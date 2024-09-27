@@ -22,18 +22,20 @@ const VehicleFormModal = ({ open, onClose }) => {
     cliente_actual: ''
   });
 
-  const [clientes, setClientes] = useState([]); // Estado para almacenar las sugerencias de clientes
-  const [inputValue, setInputValue] = useState(''); // Estado para manejar lo que escribe el usuario
+  const [clientes, setClientes] = useState([]); 
+  const [inputValue, setInputValue] = useState(''); 
 
   useEffect(() => {
-    // Cargar clientes al abrir el modal
+    
+
+    // -- OBTENER CLIENTES -- //
     const fetchClientes = async () => {
       try {
-        const token = localStorage.getItem('token'); // Obtener el token del almacenamiento local
+        const token = localStorage.getItem('token'); 
         const response = await axios.get('http://localhost:3001/clientes', {
-          headers: { Authorization: `Bearer ${token}` } // Incluir el token en la cabecera
+          headers: { Authorization: `Bearer ${token}` } 
         });
-        setClientes(response.data); // Asegúrate de que esto sea un array
+        setClientes(response.data); 
       } catch (error) {
         console.error('Error al obtener clientes:', error);
       }
@@ -45,13 +47,13 @@ const VehicleFormModal = ({ open, onClose }) => {
     }
   }, [open]);
 
-  // Manejar los cambios en los inputs
+  // -- ACTUALIZAR FORMULARIO -- //
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Guardar el nuevo vehículo
+  // -- CREAR VEHÍCULO -- //
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -100,10 +102,10 @@ const VehicleFormModal = ({ open, onClose }) => {
             margin="normal"
             required
           />
-          {/* Componente Autocomplete para seleccionar un cliente existente */}
+          {/* -- AUTOCOMPLETE PARA SUGERENCIAS Y AUTOCOMPLETADO*/}
           <Autocomplete
             options={clientes}
-            getOptionLabel={(option) => `${option.rut} - ${option.nombre}`} // Cambia según tu modelo de cliente
+            getOptionLabel={(option) => `${option.rut} - ${option.nombre}`} 
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
               setInputValue(newInputValue);
@@ -131,8 +133,8 @@ const VehicleFormModal = ({ open, onClose }) => {
             <Button 
               variant="outlined" 
               color="error" 
-              onClick={onClose} // Cierra el modal
-              sx={{ textTransform: 'none' }} // Evitar que el texto se convierta en mayúsculas
+              onClick={onClose} 
+              sx={{ textTransform: 'none' }} 
             >
               Cerrar
             </Button>

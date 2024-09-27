@@ -1,51 +1,54 @@
 import React from 'react';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Divider, Button, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, Grid, CircularProgress } from '@mui/material';
 
+// -- MODAL PARA VER DETALLES DE UN VEHÍCULO -- //
+// Componente que muestra los detalles de un vehículo y su historial de propietarios.
 const ViewVehicleModal = ({ open, onClose, auto, historialData }) => {
-  // Validamos que el auto esté presente
-  if (!auto) {
+
+  if (!auto) { // Si no hay un vehículo seleccionado, no se muestra el modal
     return null;
   }
 
-  // Comprobamos si se está cargando el historial
+  // Determina si se está cargando el historial de propietarios...
   const isLoading = !historialData || historialData.length === 0;
 
   return (
-    <Dialog open={open} onClose={onClose} fullWidth>
+    <Dialog open={open} onClose={onClose} fullWidth PaperProps={{
+      style: {
+        border: '2px solid #000', 
+      },
+    }}>
       <DialogTitle>
         <Typography variant="h6">
           Detalles del vehículo - <span style={{ fontWeight: 800 }}>{auto.matricula}</span>
         </Typography>
       </DialogTitle>
       <DialogContent>
-      <Divider />
+        <Divider />
         <Grid container spacing={2}>
-          {/* Información del Vehículo */}
           <Grid item xs={12} marginTop='10px'>
-            <Typography variant="h6">Información del Vehículo</Typography>
-            <Typography variant="body1">RUT Cliente Actual: {auto.cliente_actual}</Typography>
+            <Typography variant="h6">Información del vehículo</Typography>
+            <Typography variant="body1">RUT cliente actual: {auto.cliente_actual}</Typography>
             <Typography variant="body1">Color: {auto.color}</Typography>
             <Typography variant="body1">Descripción: {auto.descripcion}</Typography>
-            
           </Grid>
-          {/* Historial de Propietarios */}
           <Grid item xs={12} marginTop='10px'>
-          <Divider />
-            <Typography variant="h6" marginTop='10px'> Historial de Propietarios</Typography>
+            <Divider />
+            <Typography variant="h6" marginTop='10px'>Historial de modificación de datos</Typography>
             <TableContainer component={Paper} style={{ marginTop: '10px' }}>
               <Table size="small">
                 <TableHead>
                   <TableRow>
-                    <TableCell>RUT Cliente</TableCell>
-                    <TableCell>Nombre Cliente</TableCell>
-                    <TableCell>Fecha de Cambio</TableCell>
+                    <TableCell>RUT cliente</TableCell>
+                    <TableCell>Nombre cliente</TableCell>
+                    <TableCell>Fecha de cambio</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
                   {isLoading ? (
                     <TableRow>
                       <TableCell colSpan={3} align="center">
-                        <CircularProgress size={24} /> {/* Indicador de carga */}
+                        <CircularProgress size={24} /> {/* -- INDICADOR DE CARGA -- */}
                       </TableCell>
                     </TableRow>
                   ) : historialData.length > 0 ? (
@@ -68,7 +71,7 @@ const ViewVehicleModal = ({ open, onClose, auto, historialData }) => {
         </Grid>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">Cerrar</Button>
+        <Button onClick={onClose} sx={{ textTransform: 'none' }} color="primary">Cerrar</Button>
       </DialogActions>
     </Dialog>
   );

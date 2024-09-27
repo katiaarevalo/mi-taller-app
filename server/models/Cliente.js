@@ -15,7 +15,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       numero: {
           type: DataTypes.STRING,
-          allowNull: true, // Permitir que sea nulo
+          allowNull: true, 
           validate: {
               is: {
                   args: /^[0-9\s+()-]*$/, // Expresión regular para validar formato de número
@@ -25,9 +25,9 @@ module.exports = (sequelize, DataTypes) => {
       },
       correo: {
           type: DataTypes.STRING,
-          allowNull: true, // Esto permite que el campo pueda ser nulo
+          allowNull: true, 
           validate: {
-              isEmail: true, // Verifica que el formato sea de un correo electrónico válido
+              isEmail: true, 
           },
       }
   }, {

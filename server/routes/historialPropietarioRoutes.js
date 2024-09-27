@@ -67,7 +67,7 @@ router.delete('/:id', verifyToken, async (req, res) => {
 
 // -- Cambiar propietario y registrar historial -- //
 router.put('/cambiar-propietario/:matricula', verifyToken, async (req, res) => {
-  const { cliente_rut } = req.body; // Asumiendo que se pasa el nuevo rut del cliente
+  const { cliente_rut } = req.body; // Pensando que se pasa el nuevo rut del cliente
   try {
     const auto = await Auto.findOne({ where: { matricula: req.params.matricula } });
     if (!auto) {
@@ -76,7 +76,7 @@ router.put('/cambiar-propietario/:matricula', verifyToken, async (req, res) => {
 
     // Guardar el historial
     await HistorialPropietario.create({
-      auto_matricula: auto.matricula, // Utilizando matrícula como referencia
+      auto_matricula: auto.matricula, // Matrícula como referencia
       cliente_rut: cliente_rut
     });
 

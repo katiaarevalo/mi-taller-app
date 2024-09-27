@@ -23,13 +23,14 @@ const ClientFormModal = ({ open, onClose }) => {
   const [correo, setCorreo] = useState('');
   const [rutError, setRutError] = useState(false);
 
+  // -- AGREGAR CLIENTE -- //
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validar el RUT antes de enviar
+    // Validar el RUT antes de enviar...
     if (!validateRut(rut)) {
       setRutError(true);
-      return; // Detener el envío si el RUT es inválido
+      return; // se detiene el envío si el RUT es inválido.
     } else {
       setRutError(false);
     }
@@ -74,7 +75,7 @@ const ClientFormModal = ({ open, onClose }) => {
             margin="normal"
             value={nombre}
             onChange={(e) => setNombre(e.target.value)}
-            required // Campo obligatorio
+            required 
           />
           <TextField
             fullWidth
@@ -83,7 +84,7 @@ const ClientFormModal = ({ open, onClose }) => {
             margin="normal"
             value={rut}
             onChange={(e) => setRut(e.target.value)}
-            required // Campo obligatorio
+            required 
             error={rutError}
             helperText={rutError ? "RUT inválido" : ""}
           />
@@ -94,7 +95,7 @@ const ClientFormModal = ({ open, onClose }) => {
             margin="normal"
             value={numero}
             onChange={(e) => setNumero(e.target.value.replace(/[^0-9]/g, ''))} // Permitir solo números
-            required // Campo obligatorio
+            required 
           />
           <TextField
             fullWidth
@@ -104,7 +105,7 @@ const ClientFormModal = ({ open, onClose }) => {
             value={correo}
             onChange={(e) => setCorreo(e.target.value)}
             type="email"
-            required // Campo obligatorio
+            required 
           />
           <TextField
             fullWidth
@@ -119,15 +120,15 @@ const ClientFormModal = ({ open, onClose }) => {
               type="submit" 
               variant="contained" 
               color="primary" 
-              sx={{ textTransform: 'none' }} // Evitar que el texto se convierta en mayúsculas
+              sx={{ textTransform: 'none' }} 
             >
               Agregar
             </Button>
             <Button 
               variant="outlined" 
               color="error" 
-              onClick={onClose} // Llama a onClose para cerrar el modal
-              sx={{ textTransform: 'none' }} // Evitar que el texto se convierta en mayúsculas
+              onClick={onClose} 
+              sx={{ textTransform: 'none' }} 
             >
               Cerrar
             </Button>

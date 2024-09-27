@@ -28,13 +28,13 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
     }
   }, [vehicle]);
 
-  // Manejar los cambios en los inputs
+  // -- MANEJAR CAMBIOS EN LOS INPUTS -- //
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  // Guardar los cambios en el vehículo
+  // -- ACTUALIZAR VEHÍCULO -- //
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -61,7 +61,7 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
             onChange={handleChange}
             fullWidth
             margin="normal"
-            disabled // Desactiva la matrícula para que no se pueda cambiar
+            disabled 
           />
           <TextField
             name="cliente_actual"
@@ -71,7 +71,7 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
             onChange={handleChange}
             fullWidth
             margin="normal"
-            disabled // Desactiva el cliente_actual para que no se pueda cambiar
+            disabled 
           />
           <TextField
             name="color"
@@ -98,8 +98,8 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
             <Button 
               variant="outlined" 
               color="error" 
-              onClick={onClose} // Cierra el modal
-              sx={{ textTransform: 'none' }} // Evitar que el texto se convierta en mayúsculas
+              onClick={onClose} 
+              sx={{ textTransform: 'none' }} 
             >
               Cerrar
             </Button>
