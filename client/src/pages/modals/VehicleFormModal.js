@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, TextField, Button, Typography, Autocomplete } from '@mui/material';
 import axios from 'axios';
+import {validarMatricula} from '../../helpers/validateMatricula'; 
 
 const style = {
   position: 'absolute',
@@ -24,10 +25,9 @@ const VehicleFormModal = ({ open, onClose }) => {
 
   const [clientes, setClientes] = useState([]); 
   const [inputValue, setInputValue] = useState(''); 
+  const [errorMatricula, setErrorMatricula] = useState(''); // Para manejar errores de matrícula
 
   useEffect(() => {
-    
-
     // -- OBTENER CLIENTES -- //
     const fetchClientes = async () => {
       try {
@@ -44,6 +44,7 @@ const VehicleFormModal = ({ open, onClose }) => {
     if (open) {
       fetchClientes(); // Carga los clientes solo si el modal está abierto
       setFormData({ matricula: '', color: '', descripcion: '', cliente_actual: '' }); // Resetea el formulario
+      setErrorMatricula(''); // Resetea el error de matrícula
     }
   }, [open]);
 
@@ -56,6 +57,13 @@ const VehicleFormModal = ({ open, onClose }) => {
   // -- CREAR VEHÍCULO -- //
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Validar matrícula antes de enviar
+    if (!validarMatricula(formData.matricula)) {
+      setErrorMatricula('La matrícula no tiene un formato válido.');
+      return; // Evitar envío si la matrícula es incorrecta
+    }
+
     try {
       const token = localStorage.getItem('token');
       await axios.post('http://localhost:3001/autos', formData, {
@@ -81,6 +89,8 @@ const VehicleFormModal = ({ open, onClose }) => {
             fullWidth
             margin="normal"
             required
+            error={!!errorMatricula} // Muestra el error si es verdadero
+            helperText={errorMatricula || "Formato antiguo: AA 1234. Formato moderno: BB.CC.12"}  // Mensaje de error
           />
           <TextField
             name="color"
@@ -102,7 +112,7 @@ const VehicleFormModal = ({ open, onClose }) => {
             margin="normal"
             required
           />
-          {/* -- AUTOCOMPLETE PARA SUGERENCIAS Y AUTOCOMPLETADO*/}
+          {/* -- AUTOCOMPLETE PARA SUGERENCIAS Y AUTOCOMPLETADO */}
           <Autocomplete
             options={clientes}
             getOptionLabel={(option) => `${option.rut} - ${option.nombre}`} 
