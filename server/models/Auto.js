@@ -35,6 +35,5 @@ module.exports = (sequelize, DataTypes) => {
       Auto.hasMany(models.HistorialPropietario, { foreignKey: 'auto_matricula' });
     };
 
-
     return Auto;
 };
