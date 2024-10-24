@@ -7,27 +7,30 @@ module.exports = (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
+      unique: true 
     },
     password: {
       type: DataTypes.STRING,
-      allowNull: false,
+      allowNull: false 
     },
     email: {
       type: DataTypes.STRING,
       allowNull: false,
-      unique: true,
-    },
+      unique: true, 
+      validate: {
+        isEmail: true 
+      }
+    }
   }, {
     tableName: 'users',
-    timestamps: false,
+    timestamps: false, // Desactivar timestamps
     hooks: {
       beforeCreate: async (user) => {
-        user.password = await bcrypt.hash(user.password, saltRounds);
+        user.password = await bcrypt.hash(user.password, saltRounds); 
       },
       beforeUpdate: async (user) => {
-        if (user.changed('password')) {
-          user.password = await bcrypt.hash(user.password, saltRounds);
+        if (user.changed('password')) { 
+          user.password = await bcrypt.hash(user.password, saltRounds); 
         }
       }
     }
