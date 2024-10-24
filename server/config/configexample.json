@@ -1,0 +1,24 @@
+{
+    "development": {
+      "username": "",
+      "password":  "",
+      "database": "",
+      "port": 1234,
+      "host": "",
+      "dialect": ""
+    },
+    "test": {
+      "username": "",
+      "password": null,
+      "database": "",
+      "host": "",
+      "dialect": ""
+    },
+    "production": {
+      "username": "",
+      "password": null,
+      "database": "",
+      "host": "",
+      "dialect": ""
+    }
+  }
