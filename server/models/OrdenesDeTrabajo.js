@@ -23,11 +23,23 @@ module.exports = (sequelize, DataTypes) => {
       },
       matricula_vehiculo: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        references: {
+          model: 'Auto', 
+          key: 'auto_matricula'
+       }
+
       },
       cliente_rut: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
+        references: {
+           model: 'cliente_actual',
+           key: 'rut'
+
+
+        }
+        
       }
     }, {
       tableName: 'OrdenesDeTrabajo',
