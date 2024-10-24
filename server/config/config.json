@@ -1,22 +1,23 @@
 {
   "development": {
     "username": "root",
-    "password":  "Jota",
-    "database": "tallerDB",
-    "host": "localhost",
+    "password":  "DNJMPxGZqCmDuHqREOqiwClLcifWDrRI",
+    "database": "railway",
+    "port": 52537,
+    "host": "junction.proxy.rlwy.net",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "Jota",
-    "database": "database_test",
+    "password": null,
+    "database": "railway",
     "host": "127.0.0.1",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "Jota",
-    "database": "database_production",
+    "password": null,
+    "database": "railway",
     "host": "127.0.0.1",
     "dialect": "mysql"
   }
