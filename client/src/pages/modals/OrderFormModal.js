@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, TextField, Button, Grid, List, ListItem, ListItemText } from '@mui/material';
 import axios from 'axios';
+import { validateRut } from '../../helpers/validateRut';
+import { validarMatricula } from '../../helpers/validateMatricula';
 
 // ESTILO DE MODAL. 
 const modalStyle = {
@@ -95,14 +97,24 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
   const handleInputChange = (e, setState) => {
     const { name, value } = e.target;
     setState(prev => ({ ...prev, [name]: value }));
-
+  
     if (name === 'rut') {
+      if (!validateRut(value)) {
+        console.error('RUT no válido');
+        return; // Sale si el RUT no es válido
+      }
+  
       const filteredClientes = clientes.filter(cliente => cliente.rut.includes(value));
       setSugerenciasClientes(filteredClientes);
       setIsClienteEditable(true); // Cliente habilitado para ser editable.
     }
-
+  
     if (name === 'matricula') {
+      if (!validarMatricula(value)) {
+        console.error('Matrícula no válida');
+        return; // Sale si la matrícula no es válida
+      }
+  
       const filteredAutos = autos.filter(auto => auto.matricula.includes(value));
       setSugerenciasAutos(filteredAutos);
       setIsAutoEditable(true); // Auto habilitado para ser editable.
@@ -144,6 +156,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     setOrden(prev => ({
       ...prev,
       matricula_vehiculo: auto.matricula,
+      cliente_rut: auto.cliente_actual // Esto establece el RUT del cliente directamente
     }));
     setSugerenciasAutos([]); // Limpia sugerencias.
     setIsAutoEditable(false); // Bloquea los campos.
@@ -175,40 +188,77 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
   // Sigue la logica establecedida de que se debe enviar primero el cliente, //
   // una vez existente se debe crear el auto y, posterior, crear la orden de trabajo. //
   const handleSubmit = async () => {
-    try {
-      // Cliente editable = cliente nuevo. 
-      if (isClienteEditable) {
-        // Si es editable... crear un nuevo cliente.
-        await axios.post('http://localhost:3001/clientes', nuevoCliente, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-      }
-      
-      // Auto editable es auto nuevo. 
-      if (isAutoEditable) {
-        // Si es editable... crear un nuevo auto.
-        await axios.post('http://localhost:3001/autos', auto, {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`
-          }
-        });
-      }
+  try {
+    // Validar RUT antes de continuar
+    if (!validateRut(nuevoCliente.rut)) {
+      console.error('RUT no válido');
+      return;
+    }
 
-      // Realizado la verificación anterior...
-      // Creo la orden de trabajo. 
-      await axios.post('http://localhost:3001/ordenes-de-trabajo', orden, {
+    // Validar matrícula antes de continuar
+    if (!validarMatricula(auto.matricula)) {
+      console.error('Matrícula no válida');
+      return;
+    }
+
+    console.log('Nuevo Cliente:', nuevoCliente);
+    console.log('Auto:', auto);
+    console.log('Orden:', orden);
+
+    // Cliente editable es cliente nuevo.
+    if (isClienteEditable) {
+      // Crear nuevo cliente
+      await axios.post('http://localhost:3001/clientes', nuevoCliente, {
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
         }
       });
-
-      onClose();
-    } catch (error) {
-      console.error('Error al guardar la orden de trabajo:', error);
     }
-  };
+
+    // Auto editable es auto nuevo.
+    if (isAutoEditable) {
+      // Crear nuevo auto
+      await axios.post('http://localhost:3001/autos', auto, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`
+        }
+      });
+    }
+
+    // Crear la orden de trabajo
+    const orderData = {
+      ...orden,
+      cliente_rut: nuevoCliente.rut,
+      matricula_vehiculo: auto.matricula,
+    };
+
+    console.log('Order Data:', orderData); // Verifica que la data sea correcta
+
+    await axios.post('http://localhost:3001/ordenes-de-trabajo', orderData, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    // Limpiar el formulario
+    handleRevertCliente();
+    handleRevertAuto();
+    setOrden({
+      descripcion: '',
+      monto_total: '',
+      monto_pagado: '',
+      fecha_inicio: '',
+      fecha_termino: '',
+      matricula_vehiculo: '',
+      cliente_rut: '',
+      cliente_nombre: ''
+    });
+
+    onClose(); // Cerrar el modal
+  } catch (error) {
+    console.error('Error al guardar la orden de trabajo:', error);
+  }
+};
 
   return (
     <Modal open={open} onClose={onClose}>
