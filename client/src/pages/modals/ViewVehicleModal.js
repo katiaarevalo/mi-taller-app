@@ -9,6 +9,20 @@ const ViewVehicleModal = ({ open, onClose, auto, historialData }) => {
     return null;
   }
 
+  const formatRUT = (rut) => {
+    // Eliminar puntos y guiones existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+  
+    // Extraer el dígito verificador
+    const dv = rut.slice(-1);
+    const rutWithoutDV = rut.slice(0, -1);
+  
+    // Formatear el RUT con puntos y guión
+    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+  
+    return formattedRUT;
+  };
+
   // Determina si se está cargando el historial de propietarios...
   const isLoading = !historialData || historialData.length === 0;
 
@@ -28,7 +42,7 @@ const ViewVehicleModal = ({ open, onClose, auto, historialData }) => {
         <Grid container spacing={2}>
           <Grid item xs={12} marginTop='10px'>
             <Typography variant="h6">Información del vehículo</Typography>
-            <Typography variant="body1">RUT cliente: {auto.cliente_actual}</Typography>
+            <Typography variant="body1">RUT cliente: {formatRUT(auto.cliente_actual)}</Typography>
             <Typography variant="body1">Color: {auto.color}</Typography>
             <Typography variant="body1">Descripción: {auto.descripcion}</Typography>
           </Grid>
@@ -54,7 +68,7 @@ const ViewVehicleModal = ({ open, onClose, auto, historialData }) => {
                   ) : historialData.length > 0 ? (
                     historialData.map((historial) => (
                       <TableRow key={historial.id}>
-                        <TableCell>{historial.cliente_rut}</TableCell>
+                        <TableCell>{formatRUT(historial.cliente_rut)}</TableCell>
                         <TableCell>{historial.Cliente?.nombre || 'No disponible'}</TableCell>
                         <TableCell>{new Date(historial.fecha_cambio).toLocaleDateString()}</TableCell>
                       </TableRow>

@@ -109,6 +109,20 @@ const Clients = () => {
     setSelectedViewClient(null); 
   };
 
+  const formatRUT = (rut) => {
+    // Eliminar puntos y guiones existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+  
+    // Extraer el dígito verificador
+    const dv = rut.slice(-1);
+    const rutWithoutDV = rut.slice(0, -1);
+  
+    // Formatear el RUT con puntos y guión
+    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+  
+    return formattedRUT;
+  };
+
   // filteredClientes es la lista de clientes filtrada por nombre o RUT.
   const filteredClientes = clientes.filter(cliente =>
     cliente.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
@@ -164,7 +178,7 @@ const Clients = () => {
             <TableBody>
               {filteredClientes.map((cliente) => (
                 <TableRow key={cliente.rut}>
-                  <TableCell>{cliente.rut}</TableCell>
+                  <TableCell>{formatRUT(cliente.rut)}</TableCell>
                   <TableCell>{cliente.nombre}</TableCell>
                   <TableCell>{cliente.numero}</TableCell>
                   <TableCell>{cliente.correo}</TableCell>

@@ -5,7 +5,7 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, Print as PrintIcon } from '@mui/icons-material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import OrderFormModal from './modals/OrderFormModal';
-import { jsPDF } from 'jspdf';
+import { generarPDF } from './pdf/WorkOrderPDF';
 
 const WorkOrders = () => {
   const [ordenes, setOrdenes] = useState([]);
@@ -43,20 +43,30 @@ const WorkOrders = () => {
   };
 
   const handlePrintClick = (orden) => {
-    const doc = new jsPDF();
-    doc.text(`ID: ${orden.id}`, 10, 10);
-    doc.text(`Matrícula: ${orden.matricula_vehiculo}`, 10, 20);
-    doc.text(`RUT cliente: ${orden.cliente_rut}`, 10, 30);
-    doc.text(`Fecha de inicio: ${formatDate(orden.fecha_inicio)}`, 10, 40);
-    doc.text(`Fecha de término: ${formatDate(orden.fecha_termino)}`, 10, 50);
-    doc.text(`Monto total: ${orden.monto_total}`, 10, 60);
-    doc.text(`Monto pagado: ${orden.monto_pagado}`, 10, 70);
-    doc.save(`Orden_de_Trabajo_${orden.id}.pdf`);
+    generarPDF(orden); // Llamar a la función generarPDF con la orden seleccionada
   };
 
   const formatDate = (dateString) => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const formatRUT = (rut) => {
+    // Eliminar puntos y guiones existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+  
+    // Extraer el dígito verificador
+    const dv = rut.slice(-1);
+    const rutWithoutDV = rut.slice(0, -1);
+  
+    // Formatear el RUT con puntos y guión
+    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+  
+    return formattedRUT;
+  };
+
+  const formatAmount = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 
   const filteredOrdenes = ordenes.filter(orden =>
@@ -110,16 +120,16 @@ const WorkOrders = () => {
                 <TableRow key={orden.id}>
                   <TableCell>{orden.id}</TableCell>
                   <TableCell>{orden.matricula_vehiculo}</TableCell>
-                  <TableCell>{orden.cliente_rut}</TableCell>
+                  <TableCell>{formatRUT(orden.cliente_rut)}</TableCell>
                   <TableCell>{formatDate(orden.fecha_inicio)}</TableCell>
                   <TableCell>{formatDate(orden.fecha_termino)}</TableCell>
-                  <TableCell>{orden.monto_total}</TableCell>
-                  <TableCell>{orden.monto_pagado}</TableCell>
+                  <TableCell>${formatAmount(orden.monto_total)}</TableCell>
+                  <TableCell>${formatAmount(orden.monto_pagado)}</TableCell>
                   <TableCell>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}><VisibilityIcon /></IconButton>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}><EditIcon /></IconButton>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}><DeleteIcon /></IconButton>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }} onClick={() => handlePrintClick(orden)} ><PrintIcon /></IconButton>
+                    <IconButton color="default"><VisibilityIcon /></IconButton>
+                    <IconButton color="primary"><EditIcon /></IconButton>
+                    <IconButton color="secondary"><DeleteIcon /></IconButton>
+                    <IconButton color="info" onClick={() => handlePrintClick(orden)} ><PrintIcon /></IconButton>
                   </TableCell>
                 </TableRow>
               ))}

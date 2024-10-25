@@ -122,6 +122,20 @@ const Vehicles = () => {
     setSelectedAuto(null);
   };
 
+  const formatRUT = (rut) => {
+    // Eliminar puntos y guiones existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+  
+    // Extraer el dígito verificador
+    const dv = rut.slice(-1);
+    const rutWithoutDV = rut.slice(0, -1);
+  
+    // Formatear el RUT con puntos y guión
+    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+  
+    return formattedRUT;
+  };
+
   // -- RENDERIZADO -- //
   // Filtra los autos según el texto ingresado en el campo de búsqueda.
   // Muestra la tabla de autos con las acciones de ver, editar y eliminar.
@@ -175,7 +189,7 @@ const Vehicles = () => {
               {filteredAutos.map((auto) => (
                 <TableRow key={auto.id}>
                   <TableCell>{auto.matricula}</TableCell>
-                  <TableCell>{auto.cliente_actual}</TableCell>
+                  <TableCell>{formatRUT(auto.cliente_actual)}</TableCell>
                   <TableCell>{auto.color}</TableCell>
                   <TableCell>{auto.descripcion}</TableCell>
                   <TableCell>
