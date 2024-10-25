@@ -5,14 +5,15 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, Print as PrintIcon } from '@mui/icons-material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import OrderFormModal from './modals/OrderFormModal';
-import ViewFormModal from './modals/ViewFormModal';
+import ViewOrderModal from './modals/ViewOrderModal';
 import { generarPDF } from './pdf/WorkOrderPDF';
 
 const WorkOrders = () => {
   const [ordenes, setOrdenes] = useState([]);
+  const [clientes, setClientes] = useState([]); // Estado para los clientes
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalViewOpen, setViewOpen] = useState(false)
+  const [modalViewOpen, setViewOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
   const fetchOrdenes = async () => {
@@ -27,8 +28,21 @@ const WorkOrders = () => {
     }
   };
 
+  const fetchClientes = async () => {
+    try {
+      const token = localStorage.getItem('token'); 
+      const response = await axios.get('http://localhost:3001/clientes', {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      setClientes(response.data);
+    } catch (error) {
+      console.error('Error al obtener clientes:', error);
+    }
+  };
+
   useEffect(() => {
     fetchOrdenes();
+    fetchClientes(); // Llama a la función para obtener clientes
   }, []);
 
   const handleFilterChange = (e) => {
@@ -39,16 +53,14 @@ const WorkOrders = () => {
     setModalOpen(true);
   };
 
-  /*Agregado por miguel 24/10 */
   const handleViewClick = (orden) => {
     setSelectedOrder(orden);
     setViewOpen(true);
-
   };
-  const handleModalViewClose = () =>{
+
+  const handleModalViewClose = () => {
     setViewOpen(false);
     fetchOrdenes();
-
   };
 
   const handleModalClose = () => {
@@ -57,7 +69,7 @@ const WorkOrders = () => {
   };
 
   const handlePrintClick = (orden) => {
-    generarPDF(orden); // Llamar a la función generarPDF con la orden seleccionada
+    generarPDF(orden); // Llama a la función generarPDF con la orden seleccionada
   };
 
   const formatDate = (dateString) => {
@@ -140,10 +152,18 @@ const WorkOrders = () => {
                   <TableCell>${formatAmount(orden.monto_total)}</TableCell>
                   <TableCell>${formatAmount(orden.monto_pagado)}</TableCell>
                   <TableCell>
-                    <IconButton onClick={() =>handleViewClick(orden)}  color="default"><VisibilityIcon /></IconButton>
-                    <IconButton color="primary"><EditIcon /></IconButton>
-                    <IconButton color="secondary"><DeleteIcon /></IconButton>
-                    <IconButton color="info" onClick={() => handlePrintClick(orden)} ><PrintIcon /></IconButton>
+                    <IconButton onClick={() => handleViewClick(orden)} color="default">
+                      <VisibilityIcon />
+                    </IconButton>
+                    <IconButton color="primary">
+                      <EditIcon />
+                    </IconButton>
+                    <IconButton color="secondary">
+                      <DeleteIcon />
+                    </IconButton>
+                    <IconButton color="info" onClick={() => handlePrintClick(orden)}>
+                      <PrintIcon />
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))}
@@ -161,7 +181,12 @@ const WorkOrders = () => {
         <AddIcon />
       </Fab>
       
-      <ViewFormModal open={modalViewOpen} Orders={selectedOrder} onClose={handleModalViewClose} />
+      <ViewOrderModal 
+        open={modalViewOpen} 
+        orden={selectedOrder} 
+        onClose={handleModalViewClose} 
+        clientes={clientes} // Pasa la lista de clientes
+      />
       <OrderFormModal open={modalOpen} onClose={handleModalClose} />
     </Grid2>
   );
