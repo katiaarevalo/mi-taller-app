@@ -163,7 +163,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
           <Grid item xs={12}>
             <Box sx={sectionStyle}>
               <Typography variant="subtitle1" sx={sectionHeaderStyle}>
-                Datos de la Orden de Trabajo
+                Datos de la orden de trabajo
               </Typography>
               <Grid container spacing={0.5}>
                 {/* Primera fila: Rut Cliente y Fecha de Inicio */}

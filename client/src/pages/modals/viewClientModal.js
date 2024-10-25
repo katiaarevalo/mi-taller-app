@@ -4,6 +4,20 @@ import { Dialog, DialogContent, DialogActions, Button, Typography, Divider, Box 
 const ViewClientModal = ({ open, onClose, cliente }) => {
   if (!cliente) return null;
 
+  const formatRUT = (rut) => {
+    // Eliminar puntos y guiones existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+  
+    // Extraer el dígito verificador
+    const dv = rut.slice(-1);
+    const rutWithoutDV = rut.slice(0, -1);
+  
+    // Formatear el RUT con puntos y guión
+    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+  
+    return formattedRUT;
+  };
+
   return (
     <Dialog
       open={open}
@@ -23,11 +37,11 @@ const ViewClientModal = ({ open, onClose, cliente }) => {
       <DialogContent dividers>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>
-            Información del Cliente
+            Información del cliente
           </Typography>
           <Divider />
           <Typography variant="body1" sx={{ color: 'black' }}>
-            <strong>RUT:</strong> {cliente.rut}
+            <strong>RUT cliente:</strong> {formatRUT(cliente.rut)}
           </Typography>
           <Typography variant="body1" sx={{ color: 'black' }}>
             <strong>Nombre:</strong> {cliente.nombre}

@@ -2,9 +2,10 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios'; 
 import { Grid2 } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, Print as PrintIcon } from '@mui/icons-material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import OrderFormModal from './modals/OrderFormModal';
+import { generarPDF } from './pdf/WorkOrderPDF';
 
 const WorkOrders = () => {
   const [ordenes, setOrdenes] = useState([]);
@@ -39,6 +40,33 @@ const WorkOrders = () => {
   const handleModalClose = () => {
     setModalOpen(false);
     fetchOrdenes(); 
+  };
+
+  const handlePrintClick = (orden) => {
+    generarPDF(orden); // Llamar a la función generarPDF con la orden seleccionada
+  };
+
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+
+  const formatRUT = (rut) => {
+    // Eliminar puntos y guiones existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+  
+    // Extraer el dígito verificador
+    const dv = rut.slice(-1);
+    const rutWithoutDV = rut.slice(0, -1);
+  
+    // Formatear el RUT con puntos y guión
+    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+  
+    return formattedRUT;
+  };
+
+  const formatAmount = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 
   const filteredOrdenes = ordenes.filter(orden =>
@@ -79,12 +107,12 @@ const WorkOrders = () => {
               <TableRow>
                 <TableCell style={{ width: '50px' }}>ID</TableCell>
                 <TableCell style={{ width: '100px' }}>Matrícula</TableCell>
-                <TableCell style={{ width: '100px' }}>RUT Cliente</TableCell>
+                <TableCell style={{ width: '100px' }}>RUT cliente</TableCell>
                 <TableCell style={{ width: '100px' }}>Fecha de inicio</TableCell>
                 <TableCell style={{ width: '120px' }}>Fecha de término</TableCell>
                 <TableCell style={{ width: '100px' }}>Monto total</TableCell>
                 <TableCell style={{ width: '100px' }}>Monto pagado</TableCell>
-                <TableCell style={{ width: '150px' }}>Acciones</TableCell>
+                <TableCell style={{ width: '160px' }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -92,15 +120,16 @@ const WorkOrders = () => {
                 <TableRow key={orden.id}>
                   <TableCell>{orden.id}</TableCell>
                   <TableCell>{orden.matricula_vehiculo}</TableCell>
-                  <TableCell>{orden.cliente_rut}</TableCell>
-                  <TableCell>{orden.fecha_inicio}</TableCell>
-                  <TableCell>{orden.fecha_termino}</TableCell>
-                  <TableCell>{orden.monto_total}</TableCell>
-                  <TableCell>{orden.monto_pagado}</TableCell>
+                  <TableCell>{formatRUT(orden.cliente_rut)}</TableCell>
+                  <TableCell>{formatDate(orden.fecha_inicio)}</TableCell>
+                  <TableCell>{formatDate(orden.fecha_termino)}</TableCell>
+                  <TableCell>${formatAmount(orden.monto_total)}</TableCell>
+                  <TableCell>${formatAmount(orden.monto_pagado)}</TableCell>
                   <TableCell>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}><VisibilityIcon /></IconButton>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}><EditIcon /></IconButton>
-                    <IconButton sx={{ '&:hover': { backgroundColor: '#008AB4' } }}><DeleteIcon /></IconButton>
+                    <IconButton color="default"><VisibilityIcon /></IconButton>
+                    <IconButton color="primary"><EditIcon /></IconButton>
+                    <IconButton color="secondary"><DeleteIcon /></IconButton>
+                    <IconButton color="info" onClick={() => handlePrintClick(orden)} ><PrintIcon /></IconButton>
                   </TableCell>
                 </TableRow>
               ))}

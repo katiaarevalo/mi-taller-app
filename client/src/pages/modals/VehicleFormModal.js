@@ -128,7 +128,7 @@ const VehicleFormModal = ({ open, onClose }) => {
             renderInput={(params) => (
               <TextField
                 {...params}
-                label="Cliente Actual (RUT)"
+                label="RUT cliente"
                 variant="outlined"
                 margin="normal"
                 fullWidth

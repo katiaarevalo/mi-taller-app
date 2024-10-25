@@ -122,6 +122,20 @@ const Vehicles = () => {
     setSelectedAuto(null);
   };
 
+  const formatRUT = (rut) => {
+    // Eliminar puntos y guiones existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+  
+    // Extraer el dígito verificador
+    const dv = rut.slice(-1);
+    const rutWithoutDV = rut.slice(0, -1);
+  
+    // Formatear el RUT con puntos y guión
+    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+  
+    return formattedRUT;
+  };
+
   // -- RENDERIZADO -- //
   // Filtra los autos según el texto ingresado en el campo de búsqueda.
   // Muestra la tabla de autos con las acciones de ver, editar y eliminar.
@@ -131,7 +145,7 @@ const Vehicles = () => {
 
   // Renderiza la página de vehículos.
   return (
-    <Grid2 container spacing={3} style={{ marginLeft: '0px', padding: '0', height: '100%', width:'1050px', display: 'flex', flexDirection: 'column' }}>
+    <Grid2 container spacing={3} style={{ marginLeft: '240px', padding: '0', height: '100%', width:'1050px', display: 'flex', flexDirection: 'column' }}>
       <Grid2 item xs={10}>
         <Grid2 container alignItems="center" justifyContent="space-between">
           <Grid2 item>
@@ -165,7 +179,7 @@ const Vehicles = () => {
             <TableHead>
               <TableRow>
                 <TableCell style={{ width: '100px' }}>Matrícula</TableCell>
-                <TableCell style={{ width: '100px' }}>RUT cliente actual</TableCell>
+                <TableCell style={{ width: '100px' }}>RUT cliente</TableCell>
                 <TableCell style={{ width: '100px' }}>Color</TableCell>
                 <TableCell style={{ width: '150px' }}>Descripción</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>
@@ -175,7 +189,7 @@ const Vehicles = () => {
               {filteredAutos.map((auto) => (
                 <TableRow key={auto.id}>
                   <TableCell>{auto.matricula}</TableCell>
-                  <TableCell>{auto.cliente_actual}</TableCell>
+                  <TableCell>{formatRUT(auto.cliente_actual)}</TableCell>
                   <TableCell>{auto.color}</TableCell>
                   <TableCell>{auto.descripcion}</TableCell>
                   <TableCell>
