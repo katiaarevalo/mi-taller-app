@@ -16,6 +16,9 @@ const ViewOrderModal = ({ open, onClose, orden, clientes }) => {
     return null;
   }
 
+  const formatAmount = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
   // Busca el cliente en la lista
   const cliente = clientes.find(cliente => cliente.rut === orden.cliente_rut);
   const clienteNombre = cliente ? cliente.nombre : 'Nombre no disponible'; // Maneja el caso donde no se encuentra el cliente
@@ -46,8 +49,8 @@ const ViewOrderModal = ({ open, onClose, orden, clientes }) => {
             <Typography variant="body1">Descripción: {orden.descripcion}</Typography>    
             <Divider />
             <Typography variant="h6" marginTop='5px' >Detalle pago</Typography>
-            <Typography variant="body1">Monto total: ${orden.monto_total.toLocaleString()}</Typography>
-            <Typography variant="body1">Monto pagado: ${orden.monto_pagado.toLocaleString()}</Typography>
+            <Typography variant="body1">Monto total: ${formatAmount(orden.monto_total.toLocaleString())}</Typography>
+            <Typography variant="body1">Monto pagado: ${formatAmount(orden.monto_pagado.toLocaleString())}</Typography>
           </Grid>
         </Grid>
       </DialogContent>
