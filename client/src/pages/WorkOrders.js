@@ -5,13 +5,15 @@ import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon, Print as PrintIcon } from '@mui/icons-material';
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import OrderFormModal from './modals/OrderFormModal';
+import ViewFormModal from './modals/ViewFormModal';
 import { generarPDF } from './pdf/WorkOrderPDF';
 
 const WorkOrders = () => {
   const [ordenes, setOrdenes] = useState([]);
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-
+  const [modalViewOpen, setViewOpen] = useState(false)
+  const [selectedOrder, setSelectedOrder] = useState(null);
 
   const fetchOrdenes = async () => {
     try {
@@ -35,6 +37,18 @@ const WorkOrders = () => {
 
   const handleAddClick = () => {
     setModalOpen(true);
+  };
+
+  /*Agregado por miguel 24/10 */
+  const handleViewClick = (orden) => {
+    setSelectedOrder(orden);
+    setViewOpen(true);
+
+  };
+  const handleModalViewClose = () =>{
+    setViewOpen(false);
+    fetchOrdenes();
+
   };
 
   const handleModalClose = () => {
@@ -126,7 +140,7 @@ const WorkOrders = () => {
                   <TableCell>${formatAmount(orden.monto_total)}</TableCell>
                   <TableCell>${formatAmount(orden.monto_pagado)}</TableCell>
                   <TableCell>
-                    <IconButton color="default"><VisibilityIcon /></IconButton>
+                    <IconButton onClick={() =>handleViewClick(orden)}  color="default"><VisibilityIcon /></IconButton>
                     <IconButton color="primary"><EditIcon /></IconButton>
                     <IconButton color="secondary"><DeleteIcon /></IconButton>
                     <IconButton color="info" onClick={() => handlePrintClick(orden)} ><PrintIcon /></IconButton>
@@ -146,7 +160,8 @@ const WorkOrders = () => {
       >
         <AddIcon />
       </Fab>
-
+      
+      <ViewFormModal open={modalViewOpen} Orders={selectedOrder} onClose={handleModalViewClose} />
       <OrderFormModal open={modalOpen} onClose={handleModalClose} />
     </Grid2>
   );
