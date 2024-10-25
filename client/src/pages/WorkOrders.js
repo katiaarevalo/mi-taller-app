@@ -82,6 +82,7 @@ const WorkOrders = () => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
+  
   const deleteOrderF = async (deletewith) =>{
     let confi = window.confirm("¿Confirma la eliminación de la orden?\n\nBorrarlo hará que la información de pierda para siempre\n");
     if (confi) {

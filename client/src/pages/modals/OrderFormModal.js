@@ -53,6 +53,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
   const [alertOpen, setAlertOpen] = useState(false); 
   const [errorFormat, setErrorFormat] = useState('');
   const [montoErrorOpen, setMontoErrorOpen] = useState(false);
+  const [dateErrorOpen, setDateErrorOpen] = useState(false);
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -143,6 +144,12 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     return;
   }
 
+  // Validar que la fecha de inicio no sea posterior a la fecha de término
+  if (new Date(orden.fecha_inicio) > new Date(orden.fecha_termino)) {
+    setDateErrorOpen(true); // Mostrar alerta de fecha inválida
+    return;
+  }
+
     try {
       console.log('Orden:', orden);
       const response = await axios.post('http://localhost:3001/ordenes-de-trabajo', orden, {
@@ -163,6 +170,9 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     setMontoErrorOpen(false); // Cerrar alerta de monto pagado mayor
   };
 
+  const handleDateErrorClose = () => {
+    setDateErrorOpen(false); // Cerrar alerta de fecha inválida
+  };
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -348,7 +358,15 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
           autoHideDuration={3000}
           onClose={handleMontoErrorClose}
           message="El monto pagado no puede ser mayor que el monto total"
-        />
+          />
+
+        {/* Snackbar de alerta para fecha inválida */}
+          <Snackbar
+            open={dateErrorOpen}
+            onClose={handleDateErrorClose}
+            autoHideDuration={3000}
+            message="La fecha de inicio no puede ser posterior a la fecha de término."
+          />
       </Box>
     </Modal>
   );
