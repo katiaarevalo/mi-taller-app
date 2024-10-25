@@ -50,8 +50,9 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     cliente_rut: '',
     cliente_nombre: ''
   });
-  const [alertOpen, setAlertOpen] = useState(false); // Controla la alerta de campos faltantes
-  const [errorFormat, setErrorFormat] = useState(''); // Mensaje de error
+  const [alertOpen, setAlertOpen] = useState(false); 
+  const [errorFormat, setErrorFormat] = useState('');
+  const [montoErrorOpen, setMontoErrorOpen] = useState(false);
 
   useEffect(() => {
     const fetchClientes = async () => {
@@ -92,6 +93,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     }
   };
 
+
   const handleClienteSuggestionClick = (cliente) => {
     setOrden(prev => ({
       ...prev,
@@ -130,10 +132,16 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     }
 
     // Validar que los montos no sean negativos
-    if (orden.monto_total < 0 || orden.monto_pagado < 0) {
-      setErrorFormat('Formato incorrecto'); // Mostrar error de formato
-      return;
-    }
+  if (orden.monto_total < 0 || orden.monto_pagado < 0) {
+    setErrorFormat('Formato incorrecto'); // Mostrar error de formato
+    return;
+  }
+
+  // Verificar que el monto pagado no sea mayor que el monto total
+  if (Number(orden.monto_pagado) > Number(orden.monto_total)) {
+    setMontoErrorOpen(true); // Mostrar alerta de monto pagado mayor
+    return;
+  }
 
     try {
       console.log('Orden:', orden);
@@ -150,6 +158,11 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
   const handleAlertClose = () => {
     setAlertOpen(false); // Cerrar alerta
   };
+
+  const handleMontoErrorClose = () => {
+    setMontoErrorOpen(false); // Cerrar alerta de monto pagado mayor
+  };
+
 
   return (
     <Modal open={open} onClose={onClose}>
@@ -327,6 +340,14 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
           autoHideDuration={3000}
           onClose={handleAlertClose}
           message="Faltan campos por completar."
+        />
+  
+          {/* Alerta de monto pagado mayor */}
+          <Snackbar
+          open={montoErrorOpen}
+          autoHideDuration={3000}
+          onClose={handleMontoErrorClose}
+          message="El monto pagado no puede ser mayor que el monto total"
         />
       </Box>
     </Modal>
