@@ -183,7 +183,7 @@ const ViewFormModal = ({ open, onClose, orderId, Orders }) => {
                 <Grid item xs={4}>
                 {/* --- ORDEN_TRABAJO: CAMPO CLIENTE RUT --- */}
                 <TextField
-                label="RUT Cliente"
+                label="RUT cliente"
                 name="cliente_rut"
                 value={Orders.cliente_rut}
 
@@ -208,7 +208,7 @@ const ViewFormModal = ({ open, onClose, orderId, Orders }) => {
                 <Grid item xs={6}>
                   {/* --- ORDEN_TRABAJO: FECHA INICIO --- */}
                 <TextField
-                    label="Fecha de Inicio"
+                    label="Fecha de inicio"
                     name="fecha_inicio"
                     
                     value={formatDate(Orders.fecha_inicio)}
@@ -238,7 +238,7 @@ const ViewFormModal = ({ open, onClose, orderId, Orders }) => {
                 <Grid item xs={4}>
                 {/* --- ORDEN_TRABAJO: CAMPO MATRICULA VEHICULO --- */}
                 <TextField
-                  label="Matrícula Vehículo"
+                  label="Matrícula vehículo"
                   name="matricula_vehiculo"
                   value={Orders.matricula_vehiculo}
 
@@ -262,7 +262,7 @@ const ViewFormModal = ({ open, onClose, orderId, Orders }) => {
                 <Grid item xs={6}>
                 {/* --- ORDEN_TRABAJO: CAMPO FECHA TÉRMINO --- */}
                 <TextField
-                    label="Fecha de Término"
+                    label="Fecha de término"
                     name="fecha_termino"
                     
                     value={formatDate(Orders.fecha_termino)}
@@ -314,7 +314,7 @@ const ViewFormModal = ({ open, onClose, orderId, Orders }) => {
               />
               {/* --- ORDEN_TRABAJO: MONTO TOTAL --- */}
               <TextField
-                label="Monto Total"
+                label="Monto total"
                 name="monto_total"
                 value={Orders.monto_total}
 
@@ -336,7 +336,7 @@ const ViewFormModal = ({ open, onClose, orderId, Orders }) => {
               />
               {/* --- ORDEN_TRABAJO: MONTO PAGADO --- */}
               <TextField
-                label="Monto Pagado"
+                label="Monto pagado"
                 name="monto_pagado"
                 value={Orders.monto_pagado}
                 size="small"
