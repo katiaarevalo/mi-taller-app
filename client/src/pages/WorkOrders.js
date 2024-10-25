@@ -6,6 +6,8 @@ import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as V
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import OrderFormModal from './modals/OrderFormModal';
 import ViewOrderModal from './modals/ViewOrderModal';
+/*import ViewFormModal from './modals/ViewFormModal';*/
+
 import { generarPDF } from './pdf/WorkOrderPDF';
 
 const WorkOrders = () => {
@@ -63,6 +65,10 @@ const WorkOrders = () => {
     fetchOrdenes();
   };
 
+
+
+
+
   const handleModalClose = () => {
     setModalOpen(false);
     fetchOrdenes(); 
@@ -76,7 +82,23 @@ const WorkOrders = () => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
-
+  const deleteOrderF = async (deletewith) =>{
+    let confi = window.confirm("¿Confirma la eliminación de la orden?\n\nBorrarlo hará que la información de pierda para siempre\n");
+    if (confi) {
+      try {
+        const token = localStorage.getItem('token');
+        console.log(deletewith)
+        await axios.delete(`http://localhost:3001/ordenes-de-trabajo/${deletewith}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        fetchOrdenes(); // Refresca la lista después de eliminar*/
+        window.alert("Orden eliminada con éxito");
+      } catch (error) {
+        window.alert("Error al eliminar orden");
+      }
+    }
+    
+  };
   const formatRUT = (rut) => {
     // Eliminar puntos y guiones existentes
     rut = rut.replace(/\./g, '').replace(/-/g, '');
@@ -158,7 +180,7 @@ const WorkOrders = () => {
                     <IconButton color="primary">
                       <EditIcon />
                     </IconButton>
-                    <IconButton color="secondary">
+                    <IconButton onClick={() =>deleteOrderF(orden.id)} color="secondary">
                       <DeleteIcon />
                     </IconButton>
                     <IconButton color="info" onClick={() => handlePrintClick(orden)}>
@@ -188,6 +210,7 @@ const WorkOrders = () => {
         clientes={clientes} // Pasa la lista de clientes
       />
       <OrderFormModal open={modalOpen} onClose={handleModalClose} />
+     
     </Grid2>
   );
 };
