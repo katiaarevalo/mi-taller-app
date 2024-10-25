@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
       }
     },
     fecha_cambio: {
-      type: DataTypes.DATE,
+      type: DataTypes.DATEONLY,
       allowNull: false, // Fecha obligatoria
       defaultValue: DataTypes.NOW // Valor por defecto: fecha actual
     }

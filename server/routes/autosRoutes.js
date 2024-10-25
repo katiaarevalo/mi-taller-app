@@ -50,6 +50,19 @@ router.get('/:matricula', async (req, res) => {
   }
 });
 
+// -- OBTENER VEHÍCULOS POR RUT DEL CLIENTE -- //
+router.get('/cliente/:rut', async (req, res) => {
+  try {
+    const autos = await db.Auto.findAll({
+      where: { cliente_actual: req.params.rut } 
+    });
+    res.status(200).json(autos);
+  } catch (error) {
+    console.error('Error al obtener vehículos por cliente:', error);
+    res.status(500).json({ error: 'Error al obtener vehículos por cliente' });
+  }
+});
+
 // -- OBTENER HISTORIAL DE PROPIETARIOS POR MATRÍCULA -- //
 router.get('/:matricula/historial', async (req, res) => {
   try {

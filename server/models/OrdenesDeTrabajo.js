@@ -14,11 +14,11 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: 0 // Valor por defecto es 0
       },
       fecha_inicio: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true 
       },
       fecha_termino: {
-        type: DataTypes.DATE,
+        type: DataTypes.DATEONLY,
         allowNull: true 
       },
       matricula_vehiculo: {
