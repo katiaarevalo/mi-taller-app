@@ -131,7 +131,7 @@ const Vehicles = () => {
 
   // Renderiza la página de vehículos.
   return (
-    <Grid2 container spacing={3} style={{ marginLeft: '0px', padding: '0', height: '100%', width:'1050px', display: 'flex', flexDirection: 'column' }}>
+    <Grid2 container spacing={3} style={{ marginLeft: '240px', padding: '0', height: '100%', width:'1050px', display: 'flex', flexDirection: 'column' }}>
       <Grid2 item xs={10}>
         <Grid2 container alignItems="center" justifyContent="space-between">
           <Grid2 item>
@@ -165,7 +165,7 @@ const Vehicles = () => {
             <TableHead>
               <TableRow>
                 <TableCell style={{ width: '100px' }}>Matrícula</TableCell>
-                <TableCell style={{ width: '100px' }}>RUT cliente actual</TableCell>
+                <TableCell style={{ width: '100px' }}>RUT cliente</TableCell>
                 <TableCell style={{ width: '100px' }}>Color</TableCell>
                 <TableCell style={{ width: '150px' }}>Descripción</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>

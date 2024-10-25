@@ -23,11 +23,11 @@ const ViewClientModal = ({ open, onClose, cliente }) => {
       <DialogContent dividers>
         <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>
-            Información del Cliente
+            Información del cliente
           </Typography>
           <Divider />
           <Typography variant="body1" sx={{ color: 'black' }}>
-            <strong>RUT:</strong> {cliente.rut}
+            <strong>RUT cliente:</strong> {cliente.rut}
           </Typography>
           <Typography variant="body1" sx={{ color: 'black' }}>
             <strong>Nombre:</strong> {cliente.nombre}

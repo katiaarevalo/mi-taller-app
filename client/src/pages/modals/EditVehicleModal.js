@@ -65,7 +65,7 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
           />
           <TextField
             name="cliente_actual"
-            label="Cliente Actual (RUT)"
+            label="Cliente actual (RUT)"
             variant="outlined"
             value={formData.cliente_actual}
             onChange={handleChange}

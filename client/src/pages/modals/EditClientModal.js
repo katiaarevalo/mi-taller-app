@@ -56,7 +56,7 @@ const EditClientModal = ({ open, onClose, cliente }) => {
         <form onSubmit={handleSubmit}>
           <TextField
             name="rut"
-            label="RUT"
+            label="RUT cliente"
             variant="outlined"
             value={formData.rut}
             onChange={handleChange}

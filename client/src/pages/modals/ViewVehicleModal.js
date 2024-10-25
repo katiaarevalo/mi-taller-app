@@ -28,7 +28,7 @@ const ViewVehicleModal = ({ open, onClose, auto, historialData }) => {
         <Grid container spacing={2}>
           <Grid item xs={12} marginTop='10px'>
             <Typography variant="h6">Información del vehículo</Typography>
-            <Typography variant="body1">RUT cliente actual: {auto.cliente_actual}</Typography>
+            <Typography variant="body1">RUT cliente: {auto.cliente_actual}</Typography>
             <Typography variant="body1">Color: {auto.color}</Typography>
             <Typography variant="body1">Descripción: {auto.descripcion}</Typography>
           </Grid>

@@ -201,7 +201,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
       return;
     }
 
-    console.log('Nuevo Cliente:', nuevoCliente);
+    console.log('Nuevo cliente:', nuevoCliente);
     console.log('Auto:', auto);
     console.log('Orden:', orden);
 
@@ -382,7 +382,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
               )}
               {/* --- AUTO: CAMPO CLIENTE REGISTRADO --- */}
               <TextField
-                label="Cliente Actual"
+                label="Cliente actual"
                 name="cliente_actual"
                 value={auto.cliente_actual}
                 onChange={(e) => handleInputChange(e, setAuto)}
@@ -434,13 +434,13 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
           <Grid item xs={12}>
             <Box sx={sectionStyle}>
               <Typography variant="subtitle1" sx={sectionHeaderStyle}>
-                Datos de la Orden de Trabajo
+                Datos de la orden de trabajo
               </Typography>
               <Grid container spacing={2}>
                 <Grid item xs={4}>
                 {/* --- ORDEN_TRABAJO: CAMPO CLIENTE RUT --- */}
                 <TextField
-                label="RUT Cliente"
+                label="RUT cliente"
                 name="cliente_rut"
                 value={orden.cliente_rut}
                 onChange={(e) => handleInputChange(e, setOrden)}
@@ -456,7 +456,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 <Grid item xs={6}>
                   {/* --- ORDEN_TRABAJO: FECHA INICIO --- */}
                 <TextField
-                    label="Fecha de Inicio"
+                    label="Fecha de inicio"
                     name="fecha_inicio"
                     type="date"
                     value={orden.fecha_inicio}
@@ -474,7 +474,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 <Grid item xs={4}>
                 {/* --- ORDEN_TRABAJO: CAMPO MATRICULA VEHICULO --- */}
                 <TextField
-                  label="Matrícula Vehículo"
+                  label="Matrícula vehículo"
                   name="matricula_vehiculo"
                   value={orden.matricula_vehiculo}
                   onChange={(e) => handleInputChange(e, setOrden)}
@@ -490,7 +490,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 <Grid item xs={6}>
                 {/* --- ORDEN_TRABAJO: CAMPO FECHA TÉRMINO --- */}
                 <TextField
-                    label="Fecha de Término"
+                    label="Fecha de término"
                     name="fecha_termino"
                     type="date"
                     value={orden.fecha_termino}
@@ -517,7 +517,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
               />
               {/* --- ORDEN_TRABAJO: MONTO TOTAL --- */}
               <TextField
-                label="Monto Total"
+                label="Monto total"
                 name="monto_total"
                 value={orden.monto_total}
                 onChange={(e) => handleInputChange(e, setOrden)}
@@ -527,7 +527,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
               />
               {/* --- ORDEN_TRABAJO: MONTO PAGADO --- */}
               <TextField
-                label="Monto Pagado"
+                label="Monto pagado"
                 name="monto_pagado"
                 value={orden.monto_pagado}
                 onChange={(e) => handleInputChange(e, setOrden)}

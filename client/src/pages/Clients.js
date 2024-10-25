@@ -153,7 +153,7 @@ const Clients = () => {
           <Table stickyHeader size="small">
             <TableHead>
               <TableRow>
-                <TableCell style={{ width: '100px' }}>RUT</TableCell>
+                <TableCell style={{ width: '100px' }}>RUT cliente</TableCell>
                 <TableCell style={{ width: '150px' }}>Nombre</TableCell>
                 <TableCell style={{ width: '100px' }}>Número</TableCell>
                 <TableCell style={{ width: '200px' }}>Correo</TableCell>

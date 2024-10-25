@@ -79,7 +79,7 @@ const WorkOrders = () => {
               <TableRow>
                 <TableCell style={{ width: '50px' }}>ID</TableCell>
                 <TableCell style={{ width: '100px' }}>Matrícula</TableCell>
-                <TableCell style={{ width: '100px' }}>RUT Cliente</TableCell>
+                <TableCell style={{ width: '100px' }}>RUT cliente</TableCell>
                 <TableCell style={{ width: '100px' }}>Fecha de inicio</TableCell>
                 <TableCell style={{ width: '120px' }}>Fecha de término</TableCell>
                 <TableCell style={{ width: '100px' }}>Monto total</TableCell>
