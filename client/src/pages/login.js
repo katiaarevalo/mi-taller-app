@@ -134,6 +134,7 @@ const Login = () => {
                     '&:hover': {
                       backgroundColor: '#008AB4',
                     },
+                    textTransform: 'none',
                   }}
                 >
                   Ingresar
