@@ -169,7 +169,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 {/* Primera fila: Rut Cliente y Fecha de Inicio */}
                 <Grid item xs={12} md={6}>
                   <TextField
-                    label="RUT Cliente"
+                    label="RUT cliente"
                     name="cliente_rut"
                     value={orden.cliente_rut}
                     onChange={handleInputChange}
@@ -205,7 +205,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 {/* Segunda fila: Nombre Cliente y Fecha de Término */}
                 <Grid item xs={12} md={6}>
                   <TextField
-                    label="Nombre del Cliente"
+                    label="Nombre cliente"
                     name="cliente_nombre"
                     value={orden.cliente_nombre}
                     onChange={handleInputChange}
@@ -273,7 +273,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 <Grid item xs={12}>
                   <Grid item xs={4}>
                     <TextField
-                      label="Monto Total"
+                      label="Monto total"
                       name="monto_total"
                       value={orden.monto_total}
                       onChange={handleInputChange}
@@ -290,7 +290,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                 <Grid item xs={12}>
                   <Grid item xs={4}>
                     <TextField
-                      label="Monto Pagado"
+                      label="Monto pagado"
                       name="monto_pagado"
                       value={orden.monto_pagado}
                       onChange={handleInputChange}
