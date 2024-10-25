@@ -6,6 +6,7 @@ import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as V
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import OrderFormModal from './modals/OrderFormModal';
 import ViewOrderModal from './modals/ViewOrderModal';
+import EditOrderModal from './modals/EditOrderModal';
 /*import ViewFormModal from './modals/ViewFormModal';*/
 
 import { generarPDF } from './pdf/WorkOrderPDF';
@@ -15,6 +16,7 @@ const WorkOrders = () => {
   const [clientes, setClientes] = useState([]); // Estado para los clientes
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
+  const [editModalOpen, setEditModalOpen] = useState(false); 
   const [modalViewOpen, setViewOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
 
@@ -82,8 +84,25 @@ const WorkOrders = () => {
     const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
+
+  // -- EDITAR Orden -- //
+  // Función para abrir el modal de edición de cliente.
+  const handleEditClick = (orden) => {
+    setSelectedOrder(orden); 
+    setEditModalOpen(true); 
+  };
+
+  // -- CERRAR MODAL DE EDITAR Orden -- //
+  // Función para cerrar el modal de edición de orden.
+  const handleEditModalClose = () => {
+    setEditModalOpen(false);
+    fetchOrdenes(); 
+  };
+
+//Eliminar Orden
+
   const deleteOrderF = async (deletewith) =>{
-    let confi = window.confirm("¿Confirma la eliminación de la orden?\n\nBorrarlo hará que la información de pierda para siempre\n");
+    let confi = window.confirm("¿Confirma la eliminación de la orden?\n\nBorrarlo hará que la información se pierda para siempre\n");
     if (confi) {
       try {
         const token = localStorage.getItem('token');
@@ -177,7 +196,7 @@ const WorkOrders = () => {
                     <IconButton onClick={() => handleViewClick(orden)} color="default">
                       <VisibilityIcon />
                     </IconButton>
-                    <IconButton color="primary">
+                    <IconButton onClick={() => handleEditClick(orden)} color="primary">
                       <EditIcon />
                     </IconButton>
                     <IconButton onClick={() =>deleteOrderF(orden.id)} color="secondary">
@@ -210,6 +229,7 @@ const WorkOrders = () => {
         clientes={clientes} // Pasa la lista de clientes
       />
       <OrderFormModal open={modalOpen} onClose={handleModalClose} />
+      <EditOrderModal open={editModalOpen} onClose={handleEditModalClose} orden={selectedOrder} /> {/* Agrega el modal de edición */}
      
     </Grid2>
   );
