@@ -138,6 +138,8 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     return;
   }
 
+
+
   // Verificar que el monto pagado no sea mayor que el monto total
   if (Number(orden.monto_pagado) > Number(orden.monto_total)) {
     setMontoErrorOpen(true); // Mostrar alerta de monto pagado mayor
