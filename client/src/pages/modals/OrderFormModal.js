@@ -163,7 +163,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
           <Grid item xs={12}>
             <Box sx={sectionStyle}>
               <Typography variant="subtitle1" sx={sectionHeaderStyle}>
-                Datos de la orden de trabajo
+                Datos de orden de trabajo
               </Typography>
               <Grid container spacing={0.5}>
                 {/* Primera fila: Rut Cliente y Fecha de Inicio */}
@@ -309,13 +309,13 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
           {/* Botones centrados */}
           <Grid container justifyContent="center" spacing={2} sx={{ marginTop: '20px' }}>
             <Grid item>
-              <Button variant="contained" onClick={handleSubmit}>
-                Guardar Orden de Trabajo
+              <Button variant="contained" onClick={handleSubmit} sx={{ textTransform: 'none' }}>
+                Guardar 
               </Button>
             </Grid>
             <Grid item>
-              <Button variant="outlined" onClick={onClose}>
-                Cerrar Modal
+              <Button variant="outlined" onClick={onClose} sx={{ textTransform: 'none' }}>
+                Cerrar 
               </Button>
             </Grid>
           </Grid>
