@@ -39,7 +39,7 @@ const ViewOrderModal = ({ open, onClose, orden, clientes }) => {
         <Grid container spacing={2}>
           <Grid item xs={12} marginTop='10px'>
             <Typography variant="h6">Datos de identificación</Typography>
-            <Typography variant="body1">RUT Cliente: {orden.cliente_rut}</Typography>
+            <Typography variant="body1">RUT cliente: {orden.cliente_rut}</Typography>
             <Typography variant="body1">Nombre cliente: {clienteNombre}</Typography>
             <Typography variant="body1">Vehículo: {orden.matricula_vehiculo}</Typography>
             <Divider />

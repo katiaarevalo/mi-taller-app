@@ -38,7 +38,7 @@ import { jsPDF } from 'jspdf';
       const descripcionAltura = doc.getTextDimensions(descripcion).h;
     
       // Ajustar la posición de las líneas siguientes
-      const yPosTotales = 135 + descripcionAltura + 5;
+      const yPosTotales = 135 + descripcionAltura + 10;
     
       // Espacio para totales
       doc.line(10, yPosTotales, 200, yPosTotales);
@@ -46,8 +46,8 @@ import { jsPDF } from 'jspdf';
       doc.text(`Monto total: $${formatAmount(orden.monto_total)}`, 10, yPosTotales + 20);
       doc.text(`Monto pagado: $${formatAmount(orden.monto_pagado)}`, 10, yPosTotales + 30);
     
-      // Guardar el archivo con un nombre más descriptivo
-      doc.save(`Orden_de_trabajo_${orden.id}.pdf`);
+      // Devolver el Data URI del PDF
+      return doc.output('datauristring');
     };
     
     const formatDate = (dateString) => {

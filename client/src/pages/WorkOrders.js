@@ -8,8 +8,8 @@ import OrderFormModal from './modals/OrderFormModal';
 import ViewOrderModal from './modals/ViewOrderModal';
 import EditOrderModal from './modals/EditOrderModal';
 /*import ViewFormModal from './modals/ViewFormModal';*/
-
 import { generarPDF } from './pdf/WorkOrderPDF';
+import PDFPreviewModal from './modals/PDFPreviewModal';
 
 const WorkOrders = () => {
   const [ordenes, setOrdenes] = useState([]);
@@ -19,6 +19,8 @@ const WorkOrders = () => {
   const [editModalOpen, setEditModalOpen] = useState(false); 
   const [modalViewOpen, setViewOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
+  const [pdfPreviewUri, setPdfPreviewUri] = useState(null);
+  const [isPreviewOpen, setIsPreviewOpen] = useState(false);
 
   const fetchOrdenes = async () => {
     try {
@@ -66,18 +68,23 @@ const WorkOrders = () => {
     setViewOpen(false);
     fetchOrdenes();
   };
-
-
-
-
-
+  
   const handleModalClose = () => {
     setModalOpen(false);
     fetchOrdenes(); 
   };
 
   const handlePrintClick = (orden) => {
-    generarPDF(orden); // Llama a la función generarPDF con la orden seleccionada
+    const pdfUri = generarPDF(orden); // Llama a la función generarPDF con la orden seleccionada
+    setPdfPreviewUri(pdfUri);
+    setSelectedOrder(orden);
+    setIsPreviewOpen(true);
+  };
+
+  const handleClosePreview = () => {
+    setIsPreviewOpen(false);
+    setPdfPreviewUri(null);
+    setSelectedOrder(null);
   };
 
   const formatDate = (dateString) => {
@@ -230,7 +237,8 @@ const WorkOrders = () => {
       />
       <OrderFormModal open={modalOpen} onClose={handleModalClose} />
       <EditOrderModal open={editModalOpen} onClose={handleEditModalClose} orden={selectedOrder} /> {/* Agrega el modal de edición */}
-     
+      <PDFPreviewModal open={isPreviewOpen} onClose={handleClosePreview} pdfUri={pdfPreviewUri} orden={selectedOrder} />
+
     </Grid2>
   );
 };
