@@ -3,6 +3,7 @@ import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divid
 import { Dashboard, TimeToLeave, Person, ExitToApp, Construction } from '@mui/icons-material';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const drawerWidth = 240;
 
@@ -29,6 +30,25 @@ const Sidebar = () => {
   // Función para manejar la navegación
   const handleNavigation = (path) => {
     navigate(path);
+  };
+
+  // Función para manejar el clic en el botón "Salir"
+  const handleLogoutClick = () => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: '¿Deseas cerrar sesión?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, salir',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Lógica para cerrar sesión
+        navigate('/login');
+      }
+    });
   };
 
   return (
@@ -103,7 +123,7 @@ const Sidebar = () => {
           </List>
           <Divider />
           <List>
-            <ListItem button sx={listItemStyles} onClick={() => handleNavigation('/login')}>
+            <ListItem button sx={listItemStyles} onClick={handleLogoutClick}>
               <ListItemIcon sx={{ color: 'inherit' }}>
                 <ExitToApp />
               </ListItemIcon>

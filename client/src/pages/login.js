@@ -12,6 +12,7 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import LoginIcon from '@mui/icons-material/Login';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
 const Login = () => {
   const [username, setUsername] = useState('');
@@ -33,14 +34,32 @@ const Login = () => {
       if (response.status === 200) {
         const token = response.data.token;
         localStorage.setItem('token', token);
+        Swal.fire({
+          title: '¡Bienvenido!',
+          text: 'Inicio de sesión exitoso',
+          icon: 'success',
+          confirmButtonText: 'Aceptar',
+        });
 
         //iniciar sesión exitosamente... navega a...
         navigate('/analytics'); // RUTA DE REDIRECCIÓN.
       }
     } catch (error) {
       if (error.response && error.response.status === 401) {
+        Swal.fire({
+          title: 'Error',
+          text: 'Credenciales incorrectas',
+          icon: 'error',
+          confirmButtonText: 'Aceptar',
+        });
         setError('Credenciales incorrectas');
       } else {
+        Swal.fire({
+          title: 'Error',
+          text: 'Ocurrió un error al intentar iniciar sesión',
+          icon: 'question',
+          confirmButtonText: 'Aceptar',
+        });
         setError('Ocurrió un error al intentar iniciar sesión');
       }
     } finally {
