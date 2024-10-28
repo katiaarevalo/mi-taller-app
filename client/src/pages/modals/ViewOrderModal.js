@@ -38,17 +38,17 @@ const ViewOrderModal = ({ open, onClose, orden, clientes }) => {
         <Divider />
         <Grid container spacing={2}>
           <Grid item xs={12} marginTop='10px'>
-            <Typography variant="h6">Datos de identificación</Typography>
+            <Typography variant="h6">Datos de identificación:</Typography>
             <Typography variant="body1">RUT cliente: {orden.cliente_rut}</Typography>
             <Typography variant="body1">Nombre cliente: {clienteNombre}</Typography>
-            <Typography variant="body1">Vehículo: {orden.matricula_vehiculo}</Typography>
+            <Typography variant="body1">Matrícula: {orden.matricula_vehiculo}</Typography>
             <Divider />
-            <Typography variant="h6" marginTop='5px'>Datos de trabajo </Typography>
+            <Typography variant="h6" marginTop='5px'>Datos de trabajo:</Typography>
             <Typography variant="body1">Fecha de inicio: {new Date(orden.fecha_inicio).toLocaleDateString()}</Typography>
             <Typography variant="body1">Fecha de término: {new Date(orden.fecha_termino).toLocaleDateString()}</Typography>
             <Typography variant="body1">Descripción: {orden.descripcion}</Typography>    
             <Divider />
-            <Typography variant="h6" marginTop='5px' >Detalle pago</Typography>
+            <Typography variant="h6" marginTop='5px' >Detalle de pago:</Typography>
             <Typography variant="body1">Monto total: ${formatAmount(orden.monto_total.toLocaleString())}</Typography>
             <Typography variant="body1">Monto pagado: ${formatAmount(orden.monto_pagado.toLocaleString())}</Typography>
           </Grid>
