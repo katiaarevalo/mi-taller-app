@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { Modal, Box, TextField, Button, Typography, Snackbar } from '@mui/material';
 import axios from 'axios';
+import moment from 'moment'; // Importa moment
 
 const style = {
   position: 'absolute',
@@ -31,8 +32,8 @@ const EditOrderModal = ({ open, onClose, orden }) => {
     if (orden) {
       setFormData({
         matricula_vehiculo: orden.matricula_vehiculo || '',
-        fecha_inicio: orden.fecha_inicio || '',
-        fecha_termino: orden.fecha_termino || '',
+        fecha_inicio: orden.fecha_inicio ? moment(orden.fecha_inicio).subtract(1, 'days').format('YYYY-MM-DD') : '',
+        fecha_termino: orden.fecha_termino ? moment(orden.fecha_termino).subtract(1, 'days').format('YYYY-MM-DD') : '',
         monto_total: orden.monto_total || '',
         monto_pagado: orden.monto_pagado || '',
         descripcion: orden.descripcion || ''
@@ -173,3 +174,4 @@ const EditOrderModal = ({ open, onClose, orden }) => {
 };
 
 export default EditOrderModal;
+

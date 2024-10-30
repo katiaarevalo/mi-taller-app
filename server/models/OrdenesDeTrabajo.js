@@ -1,4 +1,5 @@
 'use strict';
+const moment = require('moment');
 module.exports = (sequelize, DataTypes) => {
     const OrdenDeTrabajo = sequelize.define('OrdenDeTrabajo', {
       descripcion: {
@@ -15,11 +16,21 @@ module.exports = (sequelize, DataTypes) => {
       },
       fecha_inicio: {
         type: DataTypes.DATEONLY,
-        allowNull: true 
+            allowNull: true,
+            get() {
+                const fechaInicio = this.getDataValue('fecha_inicio');
+                // Suma 1 día al mostrar la fecha
+                return fechaInicio ? moment(fechaInicio).add(2, 'days').format('YYYY-MM-DD') : null;
+            }
       },
       fecha_termino: {
         type: DataTypes.DATEONLY,
-        allowNull: true 
+            allowNull: true,
+            get() {
+                const fechaTermino = this.getDataValue('fecha_termino');
+                // Suma 1 día al mostrar la fecha
+                return fechaTermino ? moment(fechaTermino).add(2, 'days').format('YYYY-MM-DD') : null;
+            }
       },
       matricula_vehiculo: {
         type: DataTypes.STRING,

@@ -158,10 +158,25 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
         headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
       });
       console.log('Orden guardada:', response.data);
+      limpiarFormulario();
       onClose(); // Cerrar el modal después de guardar
     } catch (error) {
       console.error('Error al guardar la orden de trabajo:', error);
     }
+  };
+
+  const limpiarFormulario = () => {
+    setOrden({
+      descripcion: '',
+      monto_total: '',
+      monto_pagado: '',
+      fecha_inicio: '',
+      fecha_termino: '',
+      matricula_vehiculo: '',
+      cliente_rut: '',
+      cliente_nombre: ''
+    });
+  
   };
 
   const handleAlertClose = () => {
@@ -177,7 +192,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
   };
 
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal open={open} onClose={() => { limpiarFormulario(); onClose(); }}>
       <Box sx={modalStyle}>
         <Typography variant="h5" sx={{ backgroundColor: '#1976d2', color: 'white', padding: '10px' }}>
           Orden de trabajo
