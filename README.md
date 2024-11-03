@@ -47,11 +47,13 @@ Para ejecutar este programa lo haremos en 2 partes, y por orden:
 
 Primero, debemos ejecutar el servidor, para eso debemos ingresar en el `CMD` lo siguiente:
 > ...\mi-taller-app> cd server
+
 Y luego ingresar en el `CMD`:
 > ...\mi-taller-app\server> npm start
 
 Segundo, debemos ejecutar el cliente, para eso debemos ingresar en el `CMD` lo siguiente:
 > ...\mi-taller-app> cd client
+
 Y luego ingresar en el `CMD`:
 > ...\mi-taller-app\client> npm run start
 
