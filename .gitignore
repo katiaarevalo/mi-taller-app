@@ -2,3 +2,4 @@
 server/config/config.json
 server/config/config.json
 .vscode/launch.json
+/server/config
