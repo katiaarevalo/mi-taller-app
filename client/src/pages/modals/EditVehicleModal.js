@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const style = {
   position: 'absolute',
@@ -42,9 +43,22 @@ const EditVehicleModal = ({ open, onClose, vehicle }) => {
       await axios.put(`http://localhost:3001/autos/${formData.matricula}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      Swal.fire({
+        title: 'Vehículo editado',
+        text: 'El vehículo ha sido editado exitosamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
       onClose(); // Cierra el modal
     } catch (error) {
       console.error('Error al actualizar el vehículo:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al editar el vehículo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+      onClose(); // Cierra el modal
     }
   };
 

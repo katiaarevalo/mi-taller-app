@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Typography, TextField, Button, Grid, List, ListItem, ListItemText, Select, MenuItem, FormControl, InputLabel, Snackbar } from '@mui/material';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 // ESTILO DE MODAL.
 const modalStyle = {
@@ -160,8 +161,21 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
       console.log('Orden guardada:', response.data);
       limpiarFormulario();
       onClose(); // Cerrar el modal después de guardar
+      Swal.fire({
+        title: 'Orden de trabajo creada',
+        text: 'La orden de trabajo ha sido creada exitosamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
     } catch (error) {
-      console.error('Error al guardar la orden de trabajo:', error);
+      console.error('Error al crear la orden de trabajo:', error);
+      onClose(); // Cerrar el modal en caso de error
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al crear la orden de trabajo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
   };
 
@@ -350,7 +364,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
           <Grid container justifyContent="center" spacing={2} sx={{ marginTop: '20px' }}>
             <Grid item>
               <Button variant="contained" onClick={handleSubmit} sx={{ textTransform: 'none' }}>
-                Guardar 
+                Crear 
               </Button>
             </Grid>
             <Grid item>

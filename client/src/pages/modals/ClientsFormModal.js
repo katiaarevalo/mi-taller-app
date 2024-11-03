@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Modal, Box, Button, TextField, Typography } from '@mui/material';
 import axios from 'axios';
-import { validateRut } from '../../helpers/validateRut'; 
+import { validateRut } from '../../helpers/validateRut';
+import Swal from 'sweetalert2';
 
 const style = {
   position: 'absolute',
@@ -58,11 +59,23 @@ const ClientFormModal = ({ open, onClose }) => {
       setCorreo('');
       setRutError(false); // Restablecer el error del RUT
       onClose(); // Cerrar el modal
+      Swal.fire({
+        title: 'Cliente agregado',
+        text: 'El cliente ha sido agregado exitosamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
     } catch (error) {
       console.error('Error al agregar cliente:', error);
+      onClose(); // Cerrar el modal
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al agregar el cliente.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
   };
-
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>

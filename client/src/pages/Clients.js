@@ -7,8 +7,8 @@ import PersonIcon from '@mui/icons-material/Person';
 import ClientFormModal from './modals/ClientsFormModal';
 import EditClientModal from './modals/EditClientModal'; 
 import ViewClientModal from './modals/viewClientModal';
-import Snackbar from '@mui/material/Snackbar'; 
 import { truncateString } from '../helpers/truncate';
+import Swal from 'sweetalert2';
 
 const Clients = () => {
   const [clientes, setClientes] = useState([]); 
@@ -16,8 +16,6 @@ const Clients = () => {
   const [modalOpen, setModalOpen] = useState(false); 
   const [editModalOpen, setEditModalOpen] = useState(false);  
   const [selectedCliente, setSelectedCliente] = useState(null);
-  const [snackbarOpen, setSnackbarOpen] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState('');
   const [viewModalOpen, setViewModalOpen] = useState(false); 
   const [selectedViewClient, setSelectedViewClient] = useState(null); 
 
@@ -77,22 +75,53 @@ const Clients = () => {
   // -- ELIMINAR CLIENTE -- //
   // Función para eliminar un cliente.
   const handleDelete = async (rut) => {
-    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este cliente?");
-    if (confirmDelete) {
-      const confirmDeleteFinal = window.confirm("Esta acción no se puede deshacer. ¿Confirmas la eliminación?");
-      if (confirmDeleteFinal) {
-        try {
-          const token = localStorage.getItem('token');
-          await axios.delete(`http://localhost:3001/clientes/${rut}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          fetchClientes(); // Refresca la lista después de eliminar
-        } catch (error) {
-          setSnackbarMessage(error.response?.data?.message || 'Error al eliminar el cliente.');
-          setSnackbarOpen(true);
-        }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Confirmar eliminación',
+          text: "Esta acción no se puede deshacer. ¿Confirmas la eliminación?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+        }).then(async (finalResult) => {
+          if (finalResult.isConfirmed) {
+            try {
+              const token = localStorage.getItem('token');
+              await axios.delete(`http://localhost:3001/clientes/${rut}`, {
+                headers: { Authorization: `Bearer ${token}` }
+              });
+              fetchClientes(); // Refresca la lista después de eliminar
+              Swal.fire({
+                title: 'Cliente eliminado',
+                text: 'El cliente ha sido eliminado exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+            } catch (error) {
+              console.error('Error al eliminar el cliente:', error);
+              Swal.fire({
+                title: 'Error',
+                text: 'Hubo un problema al eliminar el cliente.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+            }
+          }
+        });
       }
-    }
+    });
   };
 
   // -- VER CLIENTE -- //
@@ -128,11 +157,6 @@ const Clients = () => {
     cliente.nombre.toLowerCase().includes(filtro.toLowerCase()) ||
     cliente.rut.toLowerCase().includes(filtro.toLowerCase())
   );
-
-  // -- CERRAR SNACKBAR -- //
-  const handleSnackbarClose = () => {
-    setSnackbarOpen(false);
-  };
 
   return (
     <Grid2 container spacing={3} style={{ marginLeft: '240px', padding: '0', height: '100%', display: 'flex', flexDirection: 'column' }}>
@@ -209,13 +233,6 @@ const Clients = () => {
       <EditClientModal open={editModalOpen} onClose={handleEditModalClose} cliente={selectedCliente} /> {/* Agrega el modal de edición */}
       <ViewClientModal open={viewModalOpen} onClose={handleViewModalClose} cliente={selectedViewClient} />
 
-      {/* -- SNACKBAR --*/}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={handleSnackbarClose}
-        message={snackbarMessage}
-      />
     </Grid2>
   );
 };

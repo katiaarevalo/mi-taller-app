@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Box, TextField, Button, Typography, Snackbar } from '@mui/material';
 import axios from 'axios';
 import moment from 'moment'; // Importa moment
+import Swal from 'sweetalert2';
 
 const style = {
   position: 'absolute',
@@ -69,9 +70,22 @@ const EditOrderModal = ({ open, onClose, orden }) => {
       await axios.put(`http://localhost:3001/ordenes-de-trabajo/${orden.id}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
+      Swal.fire({
+        title: 'Orden de trabajo actualizada',
+        text: 'La orden de trabajo ha sido actualizada exitosamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
       onClose(); // Cierra el modal después de actualizar
     } catch (error) {
       console.error('Error al actualizar la orden:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al editar la orden de trabajo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+      onClose();
     }
   };
 

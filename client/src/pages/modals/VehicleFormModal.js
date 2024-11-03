@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Box, TextField, Button, Typography, Autocomplete } from '@mui/material';
 import axios from 'axios';
 import {validarMatricula} from '../../helpers/validateMatricula'; 
+import Swal from 'sweetalert2';
 
 const style = {
   position: 'absolute',
@@ -70,15 +71,28 @@ const VehicleFormModal = ({ open, onClose }) => {
         headers: { Authorization: `Bearer ${token}` }
       });
       onClose(); // Cierra el modal
+      Swal.fire({
+        title: 'Vehículo añadido',
+        text: 'El vehículo ha sido añadido exitosamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
     } catch (error) {
-      console.error('Error al crear el vehículo:', error);
+      console.error('Error al añadir el vehículo:', error);
+      onClose(); // Cierra el modal
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al añadir el vehículo.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
     }
   };
 
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
-        <Typography variant="h6" component="h2">Crear nuevo vehículo</Typography>
+        <Typography variant="h6" component="h2">Añadir nuevo vehículo</Typography>
         <form onSubmit={handleSubmit}>
           <TextField
             name="matricula"
@@ -138,7 +152,7 @@ const VehicleFormModal = ({ open, onClose }) => {
           />
           <Box display="flex" justifyContent="space-between" marginTop="16px">
             <Button type="submit" variant="contained" color="primary" sx={{ textTransform: 'none' }}>
-              Crear
+              Añadir
             </Button>
             <Button 
               variant="outlined" 

@@ -10,6 +10,7 @@ import EditOrderModal from './modals/EditOrderModal';
 /*import ViewFormModal from './modals/ViewFormModal';*/
 import { generarPDF } from './pdf/WorkOrderPDF';
 import PDFPreviewModal from './modals/PDFPreviewModal';
+import Swal from 'sweetalert2';
 
 const WorkOrders = () => {
   const [ordenes, setOrdenes] = useState([]);
@@ -109,21 +110,53 @@ const WorkOrders = () => {
 //Eliminar Orden
 
   const deleteOrderF = async (deletewith) =>{
-    let confi = window.confirm("¿Confirma la eliminación de la orden?\n\nBorrarlo hará que la información se pierda para siempre\n");
-    if (confi) {
-      try {
-        const token = localStorage.getItem('token');
-        console.log(deletewith)
-        await axios.delete(`http://localhost:3001/ordenes-de-trabajo/${deletewith}`, {
-          headers: { Authorization: `Bearer ${token}` }
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Confirmar eliminación',
+          text: "Esta acción no se puede deshacer. ¿Confirmas la eliminación?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+        }).then(async (finalResult) => {
+          if (finalResult.isConfirmed) {
+            try {
+              const token = localStorage.getItem('token');
+              await axios.delete(`http://localhost:3001/ordenes-de-trabajo/${deletewith}`, {
+                headers: { Authorization: `Bearer ${token}` }
+              });
+              fetchOrdenes(); // Refresca la lista después de eliminar
+              Swal.fire({
+                title: 'Orden eliminada',
+                text: 'La orden ha sido eliminada exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+              });
+            } catch (error) {
+              console.error('Error al eliminar orden:', error);
+              Swal.fire({
+                title: 'Error',
+                text: 'Hubo un problema al eliminar la orden.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+            }
+          }
         });
-        fetchOrdenes(); // Refresca la lista después de eliminar*/
-        window.alert("Orden eliminada con éxito");
-      } catch (error) {
-        window.alert("Error al eliminar orden");
       }
-    }
-    
+    });
   };
   const formatRUT = (rut) => {
     // Eliminar puntos y guiones existentes

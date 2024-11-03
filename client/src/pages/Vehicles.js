@@ -6,7 +6,8 @@ import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as V
 import DirectionsCarIcon from '@mui/icons-material/DirectionsCar';
 import VehicleFormModal from './modals/VehicleFormModal';
 import ViewVehicleModal from './modals/ViewVehicleModal';
-import EditVehicleModal from './modals/EditVehicleModal'; 
+import EditVehicleModal from './modals/EditVehicleModal';
+import Swal from 'sweetalert2';
 
 const Vehicles = () => {
   const [autos, setAutos] = useState([]);
@@ -79,21 +80,53 @@ const Vehicles = () => {
   // Pide confirmación antes de eliminar.
   // Refresca la lista de autos después de eliminar.
   const handleDelete = async (matricula) => {
-    const confirmDelete = window.confirm("¿Estás seguro de que deseas eliminar este vehículo?");
-    if (confirmDelete) {
-      const confirmDeleteFinal = window.confirm("Esta acción no se puede deshacer. ¿Confirmas la eliminación?");
-      if (confirmDeleteFinal) {
-        try {
-          const token = localStorage.getItem('token');
-          await axios.delete(`http://localhost:3001/autos/${matricula}`, {
-            headers: { Authorization: `Bearer ${token}` }
-          });
-          fetchAutos(); 
-        } catch (error) {
-          console.error('Error al eliminar el vehículo:', error);
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: "¡No podrás revertir esto!",
+      icon: 'question',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        Swal.fire({
+          title: 'Confirmar eliminación',
+          text: "Esta acción no se puede deshacer. ¿Confirmas la eliminación?",
+          icon: 'warning',
+          showCancelButton: true,
+          confirmButtonColor: '#3085d6',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Sí, eliminar',
+          cancelButtonText: 'Cancelar'
+        }).then(async (finalResult) => {
+          if (finalResult.isConfirmed) {
+            try {
+              const token = localStorage.getItem('token');
+              await axios.delete(`http://localhost:3001/autos/${matricula}`, {
+                headers: { Authorization: `Bearer ${token}` }
+              });
+              fetchAutos(); // Refresca la lista después de eliminar
+              Swal.fire({
+                title: 'Vehículo eliminado',
+                text: 'El vehículo ha sido eliminado exitosamente.',
+                icon: 'success',
+                confirmButtonText: 'Aceptar'
+            });
+            } catch (error) {
+              console.error('Error al eliminar el vehículo:', error);
+              Swal.fire({
+                title: 'Error',
+                text: 'Hubo un problema al eliminar el vehículo.',
+                icon: 'error',
+                confirmButtonText: 'Aceptar'
+              });
+            }
+          }
         }
-      }
-    }
+    )}
+    });
   };
 
   // -- EDITAR AUTO -- //

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
+import Swal from 'sweetalert2';
 
 const style = {
   position: 'absolute',
@@ -43,9 +44,22 @@ const EditClientModal = ({ open, onClose, cliente }) => {
       await axios.put(`http://localhost:3001/clientes/${formData.rut}`, formData, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      onClose(); 
+      Swal.fire({
+        title: 'Cliente editado',
+        text: 'El cliente ha sido editado exitosamente.',
+        icon: 'success',
+        confirmButtonText: 'Aceptar'
+      });
+      onClose();
     } catch (error) {
       console.error('Error al actualizar el cliente:', error);
+      Swal.fire({
+        title: 'Error',
+        text: 'Hubo un problema al editar el cliente.',
+        icon: 'error',
+        confirmButtonText: 'Aceptar'
+      });
+      onClose();
     }
   };
 
