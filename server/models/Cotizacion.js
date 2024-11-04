@@ -43,6 +43,13 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
+    fecha: {
+      type: DataTypes.DATE, // Define el tipo de dato como DATE
+      allowNull: false, // Este campo es obligatorio
+      validate: {
+        isDate: true, // Verifica que el valor sea una fecha válida
+      },
+    },
     precio: {
       type: DataTypes.FLOAT,
       allowNull: false,
