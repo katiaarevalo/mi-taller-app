@@ -88,7 +88,7 @@ const CotizacionFormulario = () => {
     const empresaInfo = [
       'RUT: 76.123.456-7',  // Reemplazar con el RUT de la empresa
       'Teléfono: +56 9 8765 4321', // Reemplazar con el número de teléfono de la empresa
-      'Dirección: Av. Siempre Viva 123, Santiago, Chile' // Reemplazar con la dirección de la empresa
+      'Dirección: Guillermo Hollstein 841' // Reemplazar con la dirección de la empresa
     ];
 
     // Colocar la información de la empresa al lado del logo
