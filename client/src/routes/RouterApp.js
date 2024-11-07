@@ -7,6 +7,7 @@ import Clients from "../pages/Clients";
 import ErrorScreen from "../pages/ErrorScreen";
 import { Grid2 } from "@mui/material";
 import Sidebar from "../components/Sidebar";
+import Cotizaciones from "../pages/Cotizaciones";
 
 const RouterApp = () => {
   return (
@@ -31,6 +32,7 @@ const RouterApp = () => {
                 <Route path="/work-orders" element={<WorkOrders />} />
                 <Route path="/vehicles" element={<Vehicles />} />
                 <Route path="/clients" element={<Clients />} />
+                <Route path="/cotizaciones" element={<Cotizaciones />} />
                 <Route path="/*" element={<ErrorScreen />} />
               </Routes>
             </Grid2>
