@@ -100,7 +100,7 @@ const CotizacionFormulario = () => {
     let verticalOffset = 70; // Inicializar desplazamiento vertical para el primer texto (debajo de la info de la empresa)
 
     // Título centrado
-    const title = "Cotización de Vehículo";
+    const title = "Cotización de vehículo";
     const pageWidth = doc.internal.pageSize.getWidth();
     const titleWidth = doc.getTextWidth(title);
     const xPositionTitle = (pageWidth - titleWidth) / 2; // Calcular la posición para centrar
@@ -132,7 +132,7 @@ const CotizacionFormulario = () => {
     verticalOffset += 10;
 
     // Agregar el Tamaño de Vehículo (campo seleccionable)
-    doc.text(`Tamaño de Vehículo: ${cotizacion.tamañoVehiculo}`, 20, verticalOffset);
+    doc.text(`Tamaño de vehículo: ${cotizacion.tamañoVehiculo}`, 20, verticalOffset);
     verticalOffset += 10;
 
     // Agregar la Patente (por encima de la Descripción)
@@ -184,7 +184,7 @@ const CotizacionFormulario = () => {
       <Grid item xs={12} sm={8} md={6}>
         <Paper elevation={3} sx={{ padding: 3 }}>
           <Typography variant="h6" gutterBottom>
-            Crear Cotización
+            Crear cotización
           </Typography>
           <form onSubmit={handleSubmit}>
             <TextField
@@ -237,7 +237,7 @@ const CotizacionFormulario = () => {
               rows={4}
             />
             <FormControl fullWidth margin="normal">
-              <InputLabel>Tipo de Vehículo</InputLabel>
+              <InputLabel>Tipo de vehículo</InputLabel>
               <Select
                 name="tipoVehiculo"
                 value={cotizacion.tipoVehiculo}
@@ -251,7 +251,7 @@ const CotizacionFormulario = () => {
               </Select>
             </FormControl>
             <FormControl fullWidth margin="normal">
-              <InputLabel>Tamaño de Vehículo</InputLabel>
+              <InputLabel>Tamaño de vehículo</InputLabel>
               <Select
                 name="tamañoVehiculo"
                 value={cotizacion.tamañoVehiculo}
@@ -275,7 +275,7 @@ const CotizacionFormulario = () => {
               margin="normal"
             />
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              Generar Cotización
+              Generar cotización
             </Button>
           </form>
         </Paper>
