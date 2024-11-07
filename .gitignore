@@ -3,3 +3,6 @@ server/config/config.json
 server/config/config.json
 .vscode/launch.json
 /server/config
+client/package-lock.json
+client/package.json
+server/config/config.json
