@@ -188,7 +188,9 @@ const CotizacionFormulario = () => {
               required
               margin="normal"
               InputLabelProps={{ shrink: true }}
+              inputProps={{ min: today }} // Agregando el atributo `min` con el valor de la fecha actual
             />
+
             <TextField
               label="Patente"
               name="patente"
