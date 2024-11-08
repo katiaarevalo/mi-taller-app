@@ -46,7 +46,7 @@ const WorkOrdersCalendar = () => {
 
     return (
         <div>
-            <h2>Calendario de Órdenes de Trabajo</h2>
+            <h2>Calendario de órdenes de trabajo</h2>
             {events.length === 0 ? (
                 <p>No hay órdenes de trabajo para mostrar en el calendario.</p>
             ) : (

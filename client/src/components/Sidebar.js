@@ -109,8 +109,8 @@ const Sidebar = () => {
               { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
               { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
               { text: 'Clientes', icon: <Person />, path: '/clients' },
-              { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' }, // Corrección aquí
-              { text: 'Calendario de Órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' } // Agrega esta línea
+              { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' }, 
+              { text: 'Calendario de órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' } 
 
       
             ].map((item, index) => ( 
