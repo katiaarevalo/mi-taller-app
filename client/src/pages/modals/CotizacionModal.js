@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Button, Typography, Paper, MenuItem, Select, InputLabel, FormControl, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
-import jsPDF from 'jspdf';
+import { Dialog, DialogTitle, DialogContent, DialogActions, Button, Grid, TextField, Typography, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
+import { jsPDF } from 'jspdf';
 import { logoBase64 } from './pdf/logo'; // Importar el logo
 
-const CotizacionFormulario = () => {
+const CotizacionModal = ({ open, onClose }) => {
   const today = new Date().toISOString().split('T')[0];
   const [cotizacion, setCotizacion] = useState({
     nombre: '',
@@ -15,9 +15,6 @@ const CotizacionFormulario = () => {
     tamañoVehiculo: '',
     patente: '',
   });
-
-  const [openModal, setOpenModal] = useState(false); // Estado para controlar la visibilidad del modal
-  const [cotizaciones, setCotizaciones] = useState([]); // Estado para almacenar las cotizaciones generadas
 
   const IVA_RATE = 0.19;
 
@@ -77,7 +74,12 @@ const CotizacionFormulario = () => {
     doc.setFontSize(12);
     doc.addImage(logoBase64, 'PNG', 10, 10, 30, 30);
 
-    const empresaInfo = ['RUT: 76.123.456-7', 'Teléfono: +56 9 8765 4321', 'Dirección: Guillermo Hollstein 841'];
+    const empresaInfo = [
+      'RUT: 76.123.456-7',
+      'Teléfono: +56 9 8765 4321',
+      'Dirección: Guillermo Hollstein 841'
+    ];
+
     let yOffset = 15;
     empresaInfo.forEach((line, index) => {
       doc.text(line, 50, yOffset + index * 7);
@@ -141,9 +143,6 @@ const CotizacionFormulario = () => {
 
     doc.save(`${cotizacion.nombre}_cotizacion.pdf`);
 
-    // Guardar la cotización en el estado
-    setCotizaciones([...cotizaciones, { ...cotizacion, precioNeto, iva }]);
-
     setCotizacion({
       nombre: '',
       rut: '',
@@ -154,131 +153,114 @@ const CotizacionFormulario = () => {
       tamañoVehiculo: '',
       patente: '',
     });
-
-    setOpenModal(false); // Cerrar el modal después de generar el PDF
+    onClose();
   };
 
   return (
-    <div>
-      <Button variant="contained" color="primary" onClick={() => setOpenModal(true)}>
-        Crear Cotización
-      </Button>
-
-      <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-        <DialogTitle>Crear Cotización</DialogTitle>
-        <DialogContent>
-          <form onSubmit={handleSubmit}>
-            <TextField
-              label="Nombre"
-              name="nombre"
-              value={cotizacion.nombre}
+    <Dialog open={open} onClose={onClose} fullWidth>
+      <DialogTitle>
+        <Typography variant="h6">Crear Cotización</Typography>
+      </DialogTitle>
+      <DialogContent>
+        <form onSubmit={handleSubmit}>
+          <TextField
+            label="Nombre"
+            name="nombre"
+            value={cotizacion.nombre}
+            onChange={handleInputChange}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <TextField
+            label="RUT"
+            name="rut"
+            value={cotizacion.rut}
+            onChange={handleInputChange}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <TextField
+            label="Fecha"
+            name="fecha"
+            type="date"
+            value={cotizacion.fecha}
+            onChange={handleInputChange}
+            fullWidth
+            required
+            margin="normal"
+            InputLabelProps={{ shrink: true }}
+          />
+          <TextField
+            label="Patente"
+            name="patente"
+            value={cotizacion.patente}
+            onChange={handleInputChange}
+            fullWidth
+            required
+            margin="normal"
+          />
+          <TextField
+            label="Descripción"
+            name="descripcion"
+            value={cotizacion.descripcion}
+            onChange={handleInputChange}
+            fullWidth
+            required
+            margin="normal"
+            multiline
+            rows={4}
+          />
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Tipo de vehículo</InputLabel>
+            <Select
+              name="tipoVehiculo"
+              value={cotizacion.tipoVehiculo}
               onChange={handleInputChange}
-              fullWidth
               required
-              margin="normal"
-            />
-            <TextField
-              label="RUT"
-              name="rut"
-              value={cotizacion.rut}
+            >
+              <MenuItem value="Auto">Auto</MenuItem>
+              <MenuItem value="Camioneta">Camioneta</MenuItem>
+              <MenuItem value="Furgón">Furgón</MenuItem>
+              <MenuItem value="Moto">Moto</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth margin="normal">
+            <InputLabel>Tamaño de vehículo</InputLabel>
+            <Select
+              name="tamañoVehiculo"
+              value={cotizacion.tamañoVehiculo}
               onChange={handleInputChange}
-              fullWidth
               required
-              margin="normal"
-            />
-            <TextField
-              label="Fecha"
-              name="fecha"
-              type="date"
-              value={cotizacion.fecha}
-              onChange={handleInputChange}
-              fullWidth
-              required
-              margin="normal"
-              InputLabelProps={{ shrink: true }}
-            />
-            <TextField
-              label="Patente"
-              name="patente"
-              value={cotizacion.patente}
-              onChange={handleInputChange}
-              fullWidth
-              required
-              margin="normal"
-            />
-            <TextField
-              label="Descripción"
-              name="descripcion"
-              value={cotizacion.descripcion}
-              onChange={handleInputChange}
-              fullWidth
-              required
-              margin="normal"
-              multiline
-              rows={4}
-            />
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Tipo de vehículo</InputLabel>
-              <Select
-                name="tipoVehiculo"
-                value={cotizacion.tipoVehiculo}
-                onChange={handleInputChange}
-                required
-              >
-                <MenuItem value="Auto">Auto</MenuItem>
-                <MenuItem value="Camioneta">Camioneta</MenuItem>
-                <MenuItem value="Furgón">Furgón</MenuItem>
-                <MenuItem value="Moto">Moto</MenuItem>
-              </Select>
-            </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Tamaño de vehículo</InputLabel>
-              <Select
-                name="tamañoVehiculo"
-                value={cotizacion.tamañoVehiculo}
-                onChange={handleInputChange}
-                required
-              >
-                <MenuItem value="Pequeño">Pequeño</MenuItem>
-                <MenuItem value="Mediano">Mediano</MenuItem>
-                <MenuItem value="Grande">Grande</MenuItem>
-              </Select>
-            </FormControl>
-            <TextField
-              label="Precio"
-              name="precio"
-              type="text"
-              value={cotizacion.precio}
-              onChange={handleInputChange}
-              fullWidth
-              required
-              margin="normal"
-            />
-            <DialogActions>
-              <Button onClick={() => setOpenModal(false)} color="secondary">
-                Cancelar
-              </Button>
-              <Button type="submit" color="primary">
-                Generar Cotización
-              </Button>
-            </DialogActions>
-          </form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Mostrar las cotizaciones */}
-      <Paper elevation={3} style={{ marginTop: '20px', padding: '10px' }}>
-        <Typography variant="h6">Cotizaciones Generadas</Typography>
-        <ul>
-          {cotizaciones.map((cot, index) => (
-            <li key={index}>
-              <Typography variant="body2">{`${cot.nombre} - $${cot.precioNeto.toLocaleString()} (Válido hasta ${new Date(cot.fecha).toLocaleDateString()})`}</Typography>
-            </li>
-          ))}
-        </ul>
-      </Paper>
-    </div>
+            >
+              <MenuItem value="Pequeño">Pequeño</MenuItem>
+              <MenuItem value="Mediano">Mediano</MenuItem>
+              <MenuItem value="Grande">Grande</MenuItem>
+            </Select>
+          </FormControl>
+          <TextField
+            label="Precio"
+            name="precio"
+            value={cotizacion.precio}
+            onChange={handleInputChange}
+            fullWidth
+            required
+            margin="normal"
+            type="number"
+          />
+          <DialogActions>
+            <Button onClick={onClose} color="primary">
+              Cancelar
+            </Button>
+            <Button type="submit" color="primary">
+              Crear Cotización
+            </Button>
+          </DialogActions>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 
-export default CotizacionFormulario;
+export default CotizacionModal;
