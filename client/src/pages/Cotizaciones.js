@@ -3,6 +3,17 @@ import { Grid, TextField, Button, Typography, Paper, MenuItem, Select, InputLabe
 import jsPDF from 'jspdf';
 import { logoBase64 } from './pdf/logo';
 
+export const validarMatricula = (matricula) => {
+  // Expresión regular para el formato antiguo AA 1234
+  const formatoAntiguo = /^[A-Z]{2} \d{4}$/;
+
+  // Expresión regular para el formato moderno BB.CC.12
+  const formatoModerno = /^[A-Z]{2}\.[A-Z]{2}\.\d{2}$/;
+
+  // Verificar si la matrícula coincide con alguno de los formatos
+  return formatoAntiguo.test(matricula) || formatoModerno.test(matricula);
+};
+
 const CotizacionFormulario = () => {
   const today = new Date().toISOString().split('T')[0];
   const [cotizacion, setCotizacion] = useState({
@@ -57,6 +68,11 @@ const CotizacionFormulario = () => {
 
     if (!validarRUT(cotizacion.rut)) {
       alert("El RUT ingresado no es válido.");
+      return;
+    }
+
+    if (!validarMatricula(cotizacion.patente)) {
+      alert("La patente ingresada no es válida. Debe ser en formato AA 1234 o BB.CC.12.");
       return;
     }
 
@@ -188,7 +204,7 @@ const CotizacionFormulario = () => {
               required
               margin="normal"
               InputLabelProps={{ shrink: true }}
-              inputProps={{ min: today }} // Agregando el atributo `min` con el valor de la fecha actual
+              inputProps={{ min: today }}
             />
 
             <TextField
@@ -233,11 +249,11 @@ const CotizacionFormulario = () => {
               fullWidth
               required
               type="number"
-              inputProps={{ min: "0", step: "0.01" }}
               margin="normal"
+              InputProps={{ inputProps: { min: 0 } }}
             />
             <Button type="submit" variant="contained" color="primary" fullWidth>
-              Generar cotización
+              Generar PDF
             </Button>
           </form>
         </Paper>
