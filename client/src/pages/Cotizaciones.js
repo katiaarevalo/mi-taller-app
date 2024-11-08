@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Button, Typography, Paper, MenuItem, Select, InputLabel, FormControl, Dialog, DialogActions, DialogContent, DialogTitle } from '@mui/material';
+import { Grid, TextField, Button, Typography, Paper, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import jsPDF from 'jspdf';
-import { logoBase64 } from './pdf/logo'; // Importar el logo
+import { logoBase64 } from './pdf/logo';
 
 const CotizacionFormulario = () => {
   const today = new Date().toISOString().split('T')[0];
@@ -12,12 +12,8 @@ const CotizacionFormulario = () => {
     precio: '',
     descripcion: '',
     tipoVehiculo: '',
-    tamañoVehiculo: '',
     patente: '',
   });
-
-  const [openModal, setOpenModal] = useState(false); // Estado para controlar la visibilidad del modal
-  const [cotizaciones, setCotizaciones] = useState([]); // Estado para almacenar las cotizaciones generadas
 
   const IVA_RATE = 0.19;
 
@@ -54,7 +50,7 @@ const CotizacionFormulario = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    if (!cotizacion.nombre || !cotizacion.rut || !cotizacion.fecha || !cotizacion.precio || !cotizacion.descripcion || !cotizacion.tipoVehiculo || !cotizacion.tamañoVehiculo || !cotizacion.patente) {
+    if (!cotizacion.nombre || !cotizacion.rut || !cotizacion.fecha || !cotizacion.precio || !cotizacion.descripcion || !cotizacion.tipoVehiculo || !cotizacion.patente) {
       alert("Por favor complete todos los campos.");
       return;
     }
@@ -75,15 +71,22 @@ const CotizacionFormulario = () => {
     const doc = new jsPDF();
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(12);
+
     doc.addImage(logoBase64, 'PNG', 10, 10, 30, 30);
 
-    const empresaInfo = ['RUT: 76.123.456-7', 'Teléfono: +56 9 8765 4321', 'Dirección: Guillermo Hollstein 841'];
+    const empresaInfo = [
+      'RUT: 76.123.456-7',
+      'Teléfono: +56 9 8765 4321',
+      'Dirección: Guillermo Hollstein 841'
+    ];
+
     let yOffset = 15;
     empresaInfo.forEach((line, index) => {
       doc.text(line, 50, yOffset + index * 7);
     });
 
     let verticalOffset = 70;
+
     const title = "Cotización de vehículo";
     const pageWidth = doc.internal.pageSize.getWidth();
     const titleWidth = doc.getTextWidth(title);
@@ -112,9 +115,6 @@ const CotizacionFormulario = () => {
     doc.text(`Tipo de Vehículo: ${cotizacion.tipoVehiculo}`, 20, verticalOffset);
     verticalOffset += 10;
 
-    doc.text(`Tamaño de vehículo: ${cotizacion.tamañoVehiculo}`, 20, verticalOffset);
-    verticalOffset += 10;
-
     doc.text(`Patente: ${cotizacion.patente}`, 20, verticalOffset);
     verticalOffset += 10;
 
@@ -141,9 +141,6 @@ const CotizacionFormulario = () => {
 
     doc.save(`${cotizacion.nombre}_cotizacion.pdf`);
 
-    // Guardar la cotización en el estado
-    setCotizaciones([...cotizaciones, { ...cotizacion, precioNeto, iva }]);
-
     setCotizacion({
       nombre: '',
       rut: '',
@@ -151,22 +148,17 @@ const CotizacionFormulario = () => {
       precio: '',
       descripcion: '',
       tipoVehiculo: '',
-      tamañoVehiculo: '',
       patente: '',
     });
-
-    setOpenModal(false); // Cerrar el modal después de generar el PDF
   };
 
   return (
-    <div>
-      <Button variant="contained" color="primary" onClick={() => setOpenModal(true)}>
-        Crear Cotización
-      </Button>
-
-      <Dialog open={openModal} onClose={() => setOpenModal(false)}>
-        <DialogTitle>Crear Cotización</DialogTitle>
-        <DialogContent>
+    <Grid container justifyContent="center" spacing={2}>
+      <Grid item xs={12} sm={8} md={6}>
+        <Paper elevation={3} sx={{ padding: 3 }}>
+          <Typography variant="h6" gutterBottom>
+            Crear cotización
+          </Typography>
           <form onSubmit={handleSubmit}>
             <TextField
               label="Nombre"
@@ -231,53 +223,24 @@ const CotizacionFormulario = () => {
                 <MenuItem value="Moto">Moto</MenuItem>
               </Select>
             </FormControl>
-            <FormControl fullWidth margin="normal">
-              <InputLabel>Tamaño de vehículo</InputLabel>
-              <Select
-                name="tamañoVehiculo"
-                value={cotizacion.tamañoVehiculo}
-                onChange={handleInputChange}
-                required
-              >
-                <MenuItem value="Pequeño">Pequeño</MenuItem>
-                <MenuItem value="Mediano">Mediano</MenuItem>
-                <MenuItem value="Grande">Grande</MenuItem>
-              </Select>
-            </FormControl>
             <TextField
               label="Precio"
               name="precio"
-              type="text"
               value={cotizacion.precio}
               onChange={handleInputChange}
               fullWidth
               required
+              type="number"
+              inputProps={{ min: "0", step: "0.01" }}
               margin="normal"
             />
-            <DialogActions>
-              <Button onClick={() => setOpenModal(false)} color="secondary">
-                Cancelar
-              </Button>
-              <Button type="submit" color="primary">
-                Generar Cotización
-              </Button>
-            </DialogActions>
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Generar cotización
+            </Button>
           </form>
-        </DialogContent>
-      </Dialog>
-
-      {/* Mostrar las cotizaciones */}
-      <Paper elevation={3} style={{ marginTop: '20px', padding: '10px' }}>
-        <Typography variant="h6">Cotizaciones Generadas</Typography>
-        <ul>
-          {cotizaciones.map((cot, index) => (
-            <li key={index}>
-              <Typography variant="body2">{`${cot.nombre} - $${cot.precioNeto.toLocaleString()} (Válido hasta ${new Date(cot.fecha).toLocaleDateString()})`}</Typography>
-            </li>
-          ))}
-        </ul>
-      </Paper>
-    </div>
+        </Paper>
+      </Grid>
+    </Grid>
   );
 };
 
