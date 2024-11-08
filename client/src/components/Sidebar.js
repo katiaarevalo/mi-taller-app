@@ -1,6 +1,6 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia } from '@mui/material';
-import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment } from '@mui/icons-material';
+import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment,CalendarToday  } from '@mui/icons-material';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -109,7 +109,9 @@ const Sidebar = () => {
               { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
               { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
               { text: 'Clientes', icon: <Person />, path: '/clients' },
-              { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' } // Corrección aquí
+              { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' }, // Corrección aquí
+              { text: 'Calendario de Órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' } // Agrega esta línea
+
       
             ].map((item, index) => ( 
               <ListItem 
