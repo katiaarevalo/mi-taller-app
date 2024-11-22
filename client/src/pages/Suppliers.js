@@ -191,13 +191,13 @@ const Suppliers = () => {
                     <TableCell>{supplier.address}</TableCell>
                     <TableCell>{supplier.provides}</TableCell>
                     <TableCell>
-                      <IconButton onClick={() => handleViewClick(supplier)} aria-label="Ver" color="primary">
+                      <IconButton onClick={() => handleViewClick(supplier)} aria-label="Ver" color="default">
                         <VisibilityIcon />
                       </IconButton>
                       <IconButton onClick={() => handleEditClick(supplier)} aria-label="Editar" color="primary">
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={() => handleDeleteClick(supplier.company)} aria-label="Eliminar" color="error">
+                      <IconButton onClick={() => handleDeleteClick(supplier.company)} aria-label="Eliminar" color="secondary">
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>
