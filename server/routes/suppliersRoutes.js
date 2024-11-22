@@ -24,15 +24,16 @@ router.get('/', verifyToken, async (req, res) => {
   }
 });
 
-// -- OBTENER UN PROVEEDOR SEGÚN PALABRAS INCLUIDAS EN LO QUE PROVEE -- //
-router.get('/:provides', verifyToken, async (req, res) => {
+// -- OBTENER UN PROVEEDOR SEGÚN EL NOMBRE DE LA EMPRESA O POR PRODUCTO QUE PROVEE -- //
+router.get('/:company', verifyToken, async (req, res) => {
   try {
-    const proveedores = await Supplier.findAll({
-      where: { provides: { [Op.like]: `%${req.params.provides}%` } }
-    });
-    res.status(200).json(proveedores);
+    const proveedor = await Supplier.findOne({ where: { company: req.params.company } });
+    if (!proveedor) {
+      return res.status(404).json({ error: 'Proveedor no encontrado' });
+    }
+    res.status(200).json(proveedor);
   } catch (error) {
-    res.status(500).json({ error: 'Error al obtener los proveedores' });
+    res.status(500).json({ error: 'Error al obtener el proveedor' });
   }
 });
 

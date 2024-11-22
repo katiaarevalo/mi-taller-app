@@ -50,16 +50,17 @@ const SupplierFormModal = ({ open, onClose }) => {
             Swal.fire({
                 icon: 'success',
                 title: 'Proveedor agregado',
-                showConfirmButton: false,
-                timer: 1500
+                text: 'El proveedor ha sido agregado correctamente',
+                confirmButtonText: 'Aceptar'
             });
         } catch (error) {
             console.error('Error al agregar proveedor:', error);
+            onClose(); // Cerrar el modal
             Swal.fire({
                 icon: 'error',
-                title: 'Error al agregar proveedor',
-                showConfirmButton: false,
-                timer: 1500
+                title: 'Error',
+                text: 'Hubo un problema al agregar el proveedor',
+                confirmButtonText: 'Aceptar'
             });
         }
     };
@@ -96,7 +97,7 @@ const SupplierFormModal = ({ open, onClose }) => {
                         fullWidth
                         required
                         value={phone}
-                        onChange={(e) => setPhone(e.target.value)}
+                        onChange={(e) => setPhone(e.target.value.replace(/[^0-9]/g, ''))}
                     />
                     <TextField
                         label="Correo"
@@ -106,6 +107,7 @@ const SupplierFormModal = ({ open, onClose }) => {
                         required
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
+                        type="email"
                     />
                     <TextField
                         label="Dirección"

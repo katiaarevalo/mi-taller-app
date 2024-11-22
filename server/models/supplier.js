@@ -4,8 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   const Supplier = sequelize.define('Supplier', {
     company: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true
+      allowNull: false
     },
     name: {
       type: DataTypes.STRING,
@@ -13,23 +12,30 @@ module.exports = (sequelize, DataTypes) => {
     },
     phone: {
       type: DataTypes.INTEGER,
-      allowNull: false
+      allowNull: true,
+      validate: {
+        is: {
+          args: /^[0-9\s+()-]*$/,
+          msg: 'El número debe contener solo dígitos y ciertos caracteres especiales.'
+        }
+      }
     },
     email: {
       type: DataTypes.STRING,
-      allowNull: false,
-      unique: true,
+      allowNull: true,
       validate: {
-        isEmail: true
+        isEmail: {
+          msg: 'Debe ser un correo válido.'
+        }
       }
     },
     address: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     },
     provides: {
       type: DataTypes.STRING,
-      allowNull: false
+      allowNull: true
     }
   }, {
     tableName: 'suppliers',
