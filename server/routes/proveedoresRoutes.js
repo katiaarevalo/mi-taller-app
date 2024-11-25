@@ -1,13 +1,13 @@
 const express = require('express');
 const router = express.Router();
+const db = require('../models');
 const { verifyToken } = require('../middleware/authMiddleware');
-const { Supplier } = require('../models');
 
 // -- CREAR UN PROVEEDOR -- //
 router.post('/', async (req, res) => {
   try {
     const { company, name, phone, email, address, provides } = req.body;
-    const nuevoProveedor = await Supplier.create({ company, name, phone, email, address, provides });
+    const nuevoProveedor = await db.create({ company, name, phone, email, address, provides });
     res.status(201).json(nuevoProveedor);
   } catch (error) {
     res.status(500).json({ error: 'Error al crear el proveedor' });
@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
 // -- OBTENER TODOS LOS PROVEEDORES -- //
 router.get('/', verifyToken, async (req, res) => {
   try {
-    const proveedores = await Supplier.findAll();
+    const proveedores = await db.findAll();
     res.status(200).json(proveedores);
   } catch (error) {
     res.status(500).json({ error: 'Error al obtener los proveedores' });
@@ -27,7 +27,7 @@ router.get('/', verifyToken, async (req, res) => {
 // -- OBTENER UN PROVEEDOR SEGÚN EL NOMBRE DE LA EMPRESA O POR PRODUCTO QUE PROVEE -- //
 router.get('/:company', verifyToken, async (req, res) => {
   try {
-    const proveedor = await Supplier.findOne({ where: { company: req.params.company } });
+    const proveedor = await db.findOne({ where: { company: req.params.company } });
     if (!proveedor) {
       return res.status(404).json({ error: 'Proveedor no encontrado' });
     }
@@ -40,7 +40,7 @@ router.get('/:company', verifyToken, async (req, res) => {
 // -- ACTUALIZAR UN PROVEEDOR POR NOMBRE DE EMPRESA (PROTEGIDO) -- //
 router.put('/:company', verifyToken, async (req, res) => {
   try {
-    const proveedor = await Supplier.findOne({ where: { company: req.params.company } });
+    const proveedor = await db.findOne({ where: { company: req.params.company } });
     if (!proveedor) {
       return res.status(404).json({ error: 'Proveedor no encontrado' });
     }
@@ -54,7 +54,7 @@ router.put('/:company', verifyToken, async (req, res) => {
 // -- ELIMINAR UN PROVEEDOR POR NOMBRE DE EMPRESA (PROTEGIDO) -- //
 router.delete('/:company', verifyToken, async (req, res) => {
   try {
-    const proveedor = await Supplier.findOne({ where: { company: req.params.company } });
+    const proveedor = await db.findOne({ where: { company: req.params.company } });
     if (!proveedor) {
       return res.status(404).json({ error: 'Proveedor no encontrado' });
     }

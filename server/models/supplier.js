@@ -1,7 +1,7 @@
 'use strict';
 
 module.exports = (sequelize, DataTypes) => {
-  const Supplier = sequelize.define('Supplier', {
+  const Proveedor = sequelize.define('Proveedor', {
     company: {
       type: DataTypes.STRING,
       allowNull: false
@@ -38,9 +38,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true
     }
   }, {
-    tableName: 'suppliers',
+    tableName: 'Proveedores',
     timestamps: false
   });
 
-  return Supplier;
+  return Proveedor;
 }
