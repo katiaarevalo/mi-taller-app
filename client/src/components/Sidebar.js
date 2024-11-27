@@ -1,6 +1,7 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia } from '@mui/material';
 import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment } from '@mui/icons-material';
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -107,6 +108,7 @@ const Sidebar = () => {
             {[
               { text: 'Analítica', icon: <Dashboard />, path: '/analytics' },
               { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
+              { text: ' Historial órdenes de trabajo', icon: <ManageHistoryIcon />, path: '/Historial' },
               { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
               { text: 'Clientes', icon: <Person />, path: '/clients' },
               { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' } // Corrección aquí
