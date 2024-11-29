@@ -86,14 +86,14 @@ const Historial = () => {
       {/* Filtros */}
       <Box style={{ marginBottom: '20px' }}>
         <TextField
-          label="Buscar por RUT"
+          label="Buscar por rut"
           variant="outlined"
           value={searchRut}
           onChange={handleRutChange} // Usamos la función con validación para el RUT
           style={{ marginRight: '10px' }}
         />
         <TextField
-          label="Buscar por Patente"
+          label="Buscar por patente"
           variant="outlined"
           value={searchMatricula}
           onChange={handleMatriculaChange} // Usamos la función con validación para la matrícula
@@ -103,7 +103,7 @@ const Historial = () => {
           Buscar
         </Button>
         <Button variant="outlined" onClick={handleClearFilters}>
-          Limpiar Filtros
+          Limpiar filtros
         </Button>
       </Box>
 
@@ -113,12 +113,12 @@ const Historial = () => {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Matrícula</TableCell>
-              <TableCell>RUT Cliente</TableCell>
-              <TableCell>Fecha de Inicio</TableCell>
-              <TableCell>Fecha de Término</TableCell>
-              <TableCell>Monto Total</TableCell>
-              <TableCell>Monto Pagado</TableCell>
-              <TableCell>Fecha de Eliminación</TableCell>
+              <TableCell>RUT cliente</TableCell>
+              <TableCell>Fecha de inicio</TableCell>
+              <TableCell>Fecha de término</TableCell>
+              <TableCell>Monto total</TableCell>
+              <TableCell>Monto pagado</TableCell>
+              <TableCell>Fecha de eliminación</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
