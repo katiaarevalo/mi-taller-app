@@ -97,13 +97,12 @@ const Historial = () => {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Matrícula</TableCell>
-              <TableCell>RUT cliente</TableCell>
-              <TableCell>Fecha de inicio</TableCell>
-              <TableCell>Fecha de término</TableCell>
-              <TableCell>Descripcion</TableCell>
-              <TableCell>Monto total</TableCell>
-              <TableCell>Monto pagado</TableCell>
-              <TableCell>Fecha de eliminación</TableCell>
+              <TableCell>RUT Cliente</TableCell>
+              <TableCell>Fecha de Inicio</TableCell>
+              <TableCell>Fecha de Término</TableCell>
+              <TableCell>Monto Total</TableCell>
+              <TableCell>Monto Pagado</TableCell>
+              <TableCell>Fecha de Eliminación</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -114,7 +113,6 @@ const Historial = () => {
                 <TableCell>{historial.cliente_rut}</TableCell>
                 <TableCell>{formatDate(historial.fecha_inicio)}</TableCell>
                 <TableCell>{formatDate(historial.fecha_termino)}</TableCell>
-                <TableCell>{historial.descripcion}</TableCell>
                 <TableCell>${formatAmount(historial.monto_total)}</TableCell>
                 <TableCell>${formatAmount(historial.monto_pagado)}</TableCell>
                 <TableCell>{formatDate(historial.fecha_eliminacion)}</TableCell>
