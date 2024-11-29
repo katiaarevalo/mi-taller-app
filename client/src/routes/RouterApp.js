@@ -12,6 +12,7 @@ import Historial from "../pages/Historial";
 import WorkOrdersCalendar from '../pages/WorkOrdersCalendar';
 import Reservations from '../pages/Reservations';
 import Suppliers from "../pages/Suppliers";
+import AccountPayable from "../pages/AccountPayable";
 
 const RouterApp = () => {
   return (
@@ -42,6 +43,9 @@ const RouterApp = () => {
                 <Route path="/historial-ordenes" element={<Historial />} />
                 <Route path="/cotizaciones" element={<Cotizaciones />} />
                 <Route path="/suppliers" element={<Suppliers />} />
+                
+                <Route path="/account-payable" element={<AccountPayable />} /> 
+
                 <Route path="/*" element={<ErrorScreen />} />
               </Routes>
             </Grid2>

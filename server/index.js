@@ -11,6 +11,8 @@ const proveedoresRoutes = require('./routes/proveedoresRoutes');
 const reservasRoutes = require('./routes/reservasRoutes');
 const HistorialOrdenes = require('./routes/HistorialOrdenes'); 
 
+const accountpayables = require('./routes/accountpayableRoutes');
+
 
 const cors = require('cors');
 
@@ -28,6 +30,8 @@ app.use('/proveedores', proveedoresRoutes);
 app.use('/reservas', reservasRoutes);
 app.use('/historial-ordenes', HistorialOrdenes);
 
+app.use('/proveedores', suppliersRoutes);
+app.use('/account-payable', accountpayables)
 
 // Sincronización de la base de datos y inicio del servidor
 sequelize.sync({ force: false }) 
