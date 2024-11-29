@@ -63,6 +63,22 @@ const Historial = () => {
     setFilteredHistorial(historial); // Restaurar a todos los elementos
   };
 
+  const handleRutChange = (e) => {
+    const value = e.target.value;
+    // Solo números y la letra "K" permitidos en el RUT
+    if (/^[0-9kK]*$/.test(value)) {
+      setSearchRut(value.toUpperCase()); // Convertir a mayúsculas si contiene "k"
+    }
+  };
+
+  const handleMatriculaChange = (e) => {
+    const value = e.target.value;
+    // Solo letras mayúsculas y números permitidos en la matrícula
+    if (/^[A-Z0-9]*$/.test(value)) {
+      setSearchMatricula(value.toUpperCase()); // Convertir a mayúsculas automáticamente
+    }
+  };
+
   return (
     <div style={{ margin: '20px' }}>
       <Typography variant="h4" style={{ marginBottom: '20px' }}>Historial de órdenes de trabajo</Typography>
@@ -73,14 +89,14 @@ const Historial = () => {
           label="Buscar por RUT"
           variant="outlined"
           value={searchRut}
-          onChange={(e) => setSearchRut(e.target.value)}
+          onChange={handleRutChange} // Usamos la función con validación para el RUT
           style={{ marginRight: '10px' }}
         />
         <TextField
           label="Buscar por Patente"
           variant="outlined"
           value={searchMatricula}
-          onChange={(e) => setSearchMatricula(e.target.value)}
+          onChange={handleMatriculaChange} // Usamos la función con validación para la matrícula
           style={{ marginRight: '10px' }}
         />
         <Button variant="contained" color="primary" onClick={handleSearch} style={{ marginRight: '10px' }}>
