@@ -31,14 +31,14 @@ const AccountPayableModal = ({ open, onClose }) => {
   const [Today, setToday]=useState('');
 
 
-
   useEffect(() => {
  
     setEstado("Por pagar");
     var f = new Date();
     setToday(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
-    
+
   }, []);
+
 
 
 
@@ -55,6 +55,15 @@ const AccountPayableModal = ({ open, onClose }) => {
 
     try {
       const token = localStorage.getItem('token');
+      
+      
+      if (Amount<0){
+
+        throw "El monto no puede ser menor a 0";
+        
+      }
+
+
       await axios.post('http://localhost:3001/account-payable', {
         Services,
         Company,
@@ -73,11 +82,14 @@ const AccountPayableModal = ({ open, onClose }) => {
         confirmButtonText: 'Aceptar'
       });
     } catch (error) {
+    
       console.error('Error al añadir la cuenta:', error);
       onClose(); // Cierra el modal
+
+     
       Swal.fire({
         title: 'Error',
-        text: 'Hubo un problema al añadir la cuenta.',
+        html: `Hubo un problema al añadir la cuenta.<br/> ${error}`,
         icon: 'error',
         confirmButtonText: 'Aceptar'
       });
