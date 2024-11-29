@@ -112,16 +112,7 @@ const AccountPayableModal = ({ open, onClose }) => {
             margin="normal"
             required
           />
-          <TextField
-            name="DeadLine"
-            label="Fecha límite"
-            variant="outlined"
-            value={Deadline}
-            onChange={(e) => setFechaLimite(e.target.value)}
-            fullWidth
-            margin="normal"
-            required
-          />
+
           <TextField
             name="Amount"
             label="Monto"
