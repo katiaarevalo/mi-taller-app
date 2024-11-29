@@ -30,7 +30,7 @@ app.use('/proveedores', proveedoresRoutes);
 app.use('/reservas', reservasRoutes);
 app.use('/historial-ordenes', HistorialOrdenes);
 
-app.use('/proveedores', suppliersRoutes);
+//app.use('/proveedores', suppliersRoutes);
 app.use('/account-payable', accountpayables)
 
 // Sincronización de la base de datos y inicio del servidor
