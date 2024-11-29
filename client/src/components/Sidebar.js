@@ -109,7 +109,6 @@ const Sidebar = () => {
             {[
               { text: 'Analítica', icon: <Dashboard />, path: '/analytics' },
               { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
-              { text: 'Historial órdenes de trabajo', icon: <ManageHistoryIcon />, path: '/Historial' },
               { text: 'Historial órdenes de trabajo', icon: < ManageHistoryIcon/>, path: '/historial-ordenes' },
               { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
               { text: 'Clientes', icon: <Person />, path: '/clients' },
