@@ -9,6 +9,7 @@ const clientesRoutes = require('./routes/clientesRoutes');
 const historialRoutes = require('./routes/historialPropietarioRoutes'); 
 const proveedoresRoutes = require('./routes/proveedoresRoutes');
 const reservasRoutes = require('./routes/reservasRoutes');
+const HistorialOrdenes = require('./routes/HistorialOrdenes'); 
 
 
 const cors = require('cors');
@@ -25,6 +26,7 @@ app.use('/clientes', clientesRoutes);
 app.use('/historial-propietario', historialRoutes);
 app.use('/proveedores', proveedoresRoutes);
 app.use('/reservas', reservasRoutes);
+app.use('/historial-ordenes', HistorialOrdenes);
 
 
 // Sincronización de la base de datos y inicio del servidor

@@ -1,9 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TextField, Box, Button } from '@mui/material';
 
 const Historial = () => {
+  const [today, setToday] = useState('');
   const [historial, setHistorial] = useState([]);
+  const [filteredHistorial, setFilteredHistorial] = useState([]);
+  const [searchRut, setSearchRut] = useState('');
+  const [searchMatricula, setSearchMatricula] = useState('');
 
   const fetchHistorial = async () => {
     try {
@@ -12,6 +16,7 @@ const Historial = () => {
         headers: { Authorization: `Bearer ${token}` }
       });
       setHistorial(response.data);
+      setFilteredHistorial(response.data); // Inicialmente mostramos todo el historial
     } catch (error) {
       console.error('Error al obtener el historial:', error);
     }
@@ -19,6 +24,8 @@ const Historial = () => {
 
   useEffect(() => {
     fetchHistorial();
+    const f = new Date();
+    setToday(f.getDate() + "/" + (f.getMonth() + 1) + "/" + f.getFullYear());
   }, []);
 
   const formatDate = (dateString) => {
@@ -30,9 +37,60 @@ const Historial = () => {
     return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
   };
 
+  const handleSearch = () => {
+    let filteredData = historial;
+
+    // Filtrar por RUT
+    if (searchRut) {
+      filteredData = filteredData.filter((item) =>
+        item.cliente_rut.includes(searchRut)
+      );
+    }
+
+    // Filtrar por matrícula
+    if (searchMatricula) {
+      filteredData = filteredData.filter((item) =>
+        item.matricula_vehiculo.toLowerCase().includes(searchMatricula.toLowerCase())
+      );
+    }
+
+    setFilteredHistorial(filteredData);
+  };
+
+  const handleClearFilters = () => {
+    setSearchRut('');
+    setSearchMatricula('');
+    setFilteredHistorial(historial); // Restaurar a todos los elementos
+  };
+
   return (
     <div style={{ margin: '20px' }}>
-      <Typography variant="h4" style={{ marginBottom: '20px' }}>Historial de Órdenes</Typography>
+      <Typography variant="h4" style={{ marginBottom: '20px' }}>Historial de órdenes de trabajo</Typography>
+
+      {/* Filtros */}
+      <Box style={{ marginBottom: '20px' }}>
+        <TextField
+          label="Buscar por RUT"
+          variant="outlined"
+          value={searchRut}
+          onChange={(e) => setSearchRut(e.target.value)}
+          style={{ marginRight: '10px' }}
+        />
+        <TextField
+          label="Buscar por Patente"
+          variant="outlined"
+          value={searchMatricula}
+          onChange={(e) => setSearchMatricula(e.target.value)}
+          style={{ marginRight: '10px' }}
+        />
+        <Button variant="contained" color="primary" onClick={handleSearch} style={{ marginRight: '10px' }}>
+          Buscar
+        </Button>
+        <Button variant="outlined" onClick={handleClearFilters}>
+          Limpiar Filtros
+        </Button>
+      </Box>
+
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
@@ -48,16 +106,16 @@ const Historial = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {historial.map((orden) => (
-              <TableRow key={orden.id}>
-                <TableCell>{orden.id_original}</TableCell>
-                <TableCell>{orden.matricula_vehiculo}</TableCell>
-                <TableCell>{orden.cliente_rut}</TableCell>
-                <TableCell>{formatDate(orden.fecha_inicio)}</TableCell>
-                <TableCell>{formatDate(orden.fecha_termino)}</TableCell>
-                <TableCell>${formatAmount(orden.monto_total)}</TableCell>
-                <TableCell>${formatAmount(orden.monto_pagado)}</TableCell>
-                <TableCell>{formatDate(orden.fecha_eliminacion)}</TableCell>
+            {filteredHistorial.map((historial) => (
+              <TableRow key={historial.id}>
+                <TableCell>{historial.id}</TableCell>
+                <TableCell>{historial.matricula_vehiculo}</TableCell>
+                <TableCell>{historial.cliente_rut}</TableCell>
+                <TableCell>{formatDate(historial.fecha_inicio)}</TableCell>
+                <TableCell>{formatDate(historial.fecha_termino)}</TableCell>
+                <TableCell>${formatAmount(historial.monto_total)}</TableCell>
+                <TableCell>${formatAmount(historial.monto_pagado)}</TableCell>
+                <TableCell>{formatDate(historial.fecha_eliminacion)}</TableCell>
               </TableRow>
             ))}
           </TableBody>

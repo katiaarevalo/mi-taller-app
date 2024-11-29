@@ -8,6 +8,7 @@ import ErrorScreen from "../pages/ErrorScreen";
 import { Grid2 } from "@mui/material";
 import Sidebar from "../components/Sidebar";
 import Cotizaciones from "../pages/Cotizaciones";
+import Historial from "../pages/Historial";
 import WorkOrdersCalendar from '../pages/WorkOrdersCalendar';
 import Reservations from '../pages/Reservations';
 import Suppliers from "../pages/Suppliers";
@@ -38,6 +39,7 @@ const RouterApp = () => {
                 <Route path="/work-orders" element={<WorkOrders />} />
                 <Route path="/vehicles" element={<Vehicles />} />
                 <Route path="/clients" element={<Clients />} />
+                <Route path="/historial-ordenes" element={<Historial />} />
                 <Route path="/cotizaciones" element={<Cotizaciones />} />
                 <Route path="/suppliers" element={<Suppliers />} />
                 <Route path="/*" element={<ErrorScreen />} />
