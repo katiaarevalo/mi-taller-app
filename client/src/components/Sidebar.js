@@ -1,13 +1,10 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia } from '@mui/material';
-import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment,CalendarToday  } from '@mui/icons-material';
+import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment, CalendarToday, LocalShipping } from '@mui/icons-material';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
-
-
-const drawerWidth = 240;
 
 // listItemStyles: Me da los estilos comunes para los botones. 
 const listItemStyles = {
@@ -28,6 +25,9 @@ const activeListItemStyles = {
 const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
+
+  // Ajuste dinámico del ancho del Sidebar dependiendo de la ruta
+  const currentDrawerWidth = location.pathname === '/work-orders-calendar' ? 260 : 240; // Ajuste específico para el calendario
 
   // Función para manejar la navegación
   const handleNavigation = (path) => {
@@ -59,10 +59,10 @@ const Sidebar = () => {
       <Drawer
         variant="permanent"  // Que sea permanente. 
         sx={{
-          width: drawerWidth,
+          width: currentDrawerWidth, // Ancho dinámico según la ruta
           flexShrink: 0,
           '& .MuiDrawer-paper': {
-            width: drawerWidth,
+            width: currentDrawerWidth, // Ancho dinámico según la ruta
             boxSizing: 'border-box',
             display: 'flex',
             justifyContent: 'space-between',
@@ -109,11 +109,12 @@ const Sidebar = () => {
             {[
               { text: 'Analítica', icon: <Dashboard />, path: '/analytics' },
               { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
-              { text: 'Historial órdenes de trabajo', icon: < ManageHistoryIcon/>, path: '/Historial' },
+              { text: 'Historial órdenes de trabajo', icon: <ManageHistoryIcon />, path: '/Historial' },
               { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
               { text: 'Clientes', icon: <Person />, path: '/clients' },
               { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' },
               { text: 'Calendario de órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' },
+              { text: 'Reservas', icon: <Assignment />, path: '/reservations' },
               { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' }
             ].map((item, index) => ( 
               <ListItem 
