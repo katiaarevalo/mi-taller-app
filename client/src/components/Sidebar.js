@@ -1,6 +1,7 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia } from '@mui/material';
-import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment,CalendarToday, LocalShipping  } from '@mui/icons-material';
+import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment,CalendarToday  } from '@mui/icons-material';
+import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -108,13 +109,12 @@ const Sidebar = () => {
             {[
               { text: 'Analítica', icon: <Dashboard />, path: '/analytics' },
               { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
+              { text: 'Historial órdenes de trabajo', icon: < ManageHistoryIcon/>, path: '/Historial' },
               { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
               { text: 'Clientes', icon: <Person />, path: '/clients' },
               { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' },
               { text: 'Calendario de órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' },
-              { text: 'Reservas', icon: <Assignment />, path: '/reservations' },
               { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' }
-
             ].map((item, index) => ( 
               <ListItem 
                 button 
@@ -127,7 +127,7 @@ const Sidebar = () => {
               </ListItem>
             ))}
           </List>
-          <Divider sx={{ my: 0.5, borderColor: '#fff' }} />
+          <Divider />
           <List>
             <ListItem button sx={listItemStyles} onClick={handleLogoutClick}>
               <ListItemIcon sx={{ color: 'inherit' }}>

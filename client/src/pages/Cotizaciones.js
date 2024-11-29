@@ -3,6 +3,17 @@ import { Grid, TextField, Button, Typography, Paper, MenuItem, Select, InputLabe
 import jsPDF from 'jspdf';
 import { logoBase64 } from './pdf/logo';
 
+export const validarMatricula = (matricula) => {
+  // Expresión regular para el formato antiguo AA 1234
+  const formatoAntiguo = /^[A-Z]{2} \d{4}$/;
+
+  // Expresión regular para el formato moderno BB.CC.12
+  const formatoModerno = /^[A-Z]{2}\.[A-Z]{2}\.\d{2}$/;
+
+  // Verificar si la matrícula coincide con alguno de los formatos
+  return formatoAntiguo.test(matricula) || formatoModerno.test(matricula);
+};
+
 const CotizacionFormulario = () => {
   const today = new Date().toISOString().split('T')[0];
   const [cotizacion, setCotizacion] = useState({
@@ -42,20 +53,6 @@ const CotizacionFormulario = () => {
     return dv === digitoVerificador;
   };
 
-  const formatRUT = (rut) => {
-    rut = rut.replace(/\./g, '').replace(/-/g, '');
-    const dv = rut.slice(-1);
-    const rutWithoutDV = rut.slice(0, -1);
-    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
-    return formattedRUT;
-  };
-
-  const validarPatente = (patente) => {
-    const formatoAntiguo = /^[A-Z]{2} \d{4}$/;
-    const formatoModerno = /^[A-Z]{2}\.[A-Z]{2}\.\d{2}$/;
-    return formatoAntiguo.test(patente) || formatoModerno.test(patente);
-  };
-
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setCotizacion({ ...cotizacion, [name]: value });
@@ -74,8 +71,8 @@ const CotizacionFormulario = () => {
       return;
     }
 
-    if (!validarPatente(cotizacion.patente)) {
-      alert("La patente ingresada no es válida.");
+    if (!validarMatricula(cotizacion.patente)) {
+      alert("La patente ingresada no es válida. Debe ser en formato AA 1234 o BB.CC.12.");
       return;
     }
 
@@ -90,6 +87,7 @@ const CotizacionFormulario = () => {
     const doc = new jsPDF();
     doc.setFont('helvetica', 'normal');
     doc.setFontSize(12);
+
     doc.addImage(logoBase64, 'PNG', 10, 10, 30, 30);
 
     const empresaInfo = [
@@ -104,7 +102,8 @@ const CotizacionFormulario = () => {
     });
 
     let verticalOffset = 70;
-    const title = "Cotización";
+
+    const title = "Cotización de vehículo";
     const pageWidth = doc.internal.pageSize.getWidth();
     const titleWidth = doc.getTextWidth(title);
     const xPositionTitle = (pageWidth - titleWidth) / 2;
@@ -122,13 +121,17 @@ const CotizacionFormulario = () => {
     doc.setFontSize(12);
     doc.text(`Nombre: ${cotizacion.nombre}`, 20, verticalOffset);
     verticalOffset += 10;
-    doc.text(`RUT: ${formatRUT(cotizacion.rut)}`, 20, verticalOffset);
+
+    doc.text(`RUT: ${cotizacion.rut}`, 20, verticalOffset);
     verticalOffset += 10;
+
     doc.text(`Fecha: ${cotizacion.fecha}`, 20, verticalOffset);
     verticalOffset += 10;
-    doc.text(`Tipo de vehículo: ${cotizacion.tipoVehiculo}`, 20, verticalOffset);
+
+    doc.text(`Tipo de Vehículo: ${cotizacion.tipoVehiculo}`, 20, verticalOffset);
     verticalOffset += 10;
-    doc.text(`Matrícula: ${cotizacion.patente}`, 20, verticalOffset);
+
+    doc.text(`Patente: ${cotizacion.patente}`, 20, verticalOffset);
     verticalOffset += 10;
 
     const description = `Descripción: ${cotizacion.descripcion}`;
@@ -143,11 +146,13 @@ const CotizacionFormulario = () => {
       verticalOffset = 20;
     }
 
-    doc.text(`Precio bruto (Total): $${precioBruto.toLocaleString()}`, 20, verticalOffset);
+    doc.text(`Precio Bruto (Total): $${precioBruto.toLocaleString()}`, 20, verticalOffset);
     verticalOffset += 10;
+
     doc.text(`IVA (19%): $${iva.toFixed(2).toLocaleString()}`, 20, verticalOffset);
     verticalOffset += 10;
-    doc.text(`Precio neto: $${precioNeto.toFixed(2).toLocaleString()}`, 20, verticalOffset);
+
+    doc.text(`Precio Neto: $${precioNeto.toFixed(2).toLocaleString()}`, 20, verticalOffset);
     verticalOffset += 10;
 
     doc.save(`${cotizacion.nombre}_cotizacion.pdf`);
@@ -165,9 +170,9 @@ const CotizacionFormulario = () => {
 
   return (
     <Grid container justifyContent="center" spacing={2}>
-      <Grid item xs={12} sm={10} md={8}>
+      <Grid item xs={12} sm={8} md={6}>
         <Paper elevation={3} sx={{ padding: 3 }}>
-          <Typography variant="h6" gutterBottom align="center">
+          <Typography variant="h6" gutterBottom>
             Crear cotización
           </Typography>
           <form onSubmit={handleSubmit}>
@@ -201,8 +206,9 @@ const CotizacionFormulario = () => {
               InputLabelProps={{ shrink: true }}
               inputProps={{ min: today }}
             />
+
             <TextField
-              label="Matrícula"
+              label="Patente"
               name="patente"
               value={cotizacion.patente}
               onChange={handleInputChange}
@@ -217,9 +223,9 @@ const CotizacionFormulario = () => {
               onChange={handleInputChange}
               fullWidth
               required
-              multiline
-              rows={2}
               margin="normal"
+              multiline
+              rows={4}
             />
             <FormControl fullWidth margin="normal">
               <InputLabel>Tipo de vehículo</InputLabel>
@@ -243,19 +249,12 @@ const CotizacionFormulario = () => {
               fullWidth
               required
               type="number"
-              inputProps={{ min: "0", step: "0.01" }}
               margin="normal"
+              InputProps={{ inputProps: { min: 0 } }}
             />
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-              fullWidth
-              sx={{ marginTop: 2, textTransform: 'none' }}
-            >
-            Generar cotización
+            <Button type="submit" variant="contained" color="primary" fullWidth>
+              Generar PDF
             </Button>
-
           </form>
         </Paper>
       </Grid>
@@ -264,6 +263,3 @@ const CotizacionFormulario = () => {
 };
 
 export default CotizacionFormulario;
-
-
-
