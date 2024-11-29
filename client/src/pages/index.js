@@ -4,3 +4,6 @@ export { default as Vehicles } from './Vehicles';
 export { default as Clients } from './Clients';
 export { default as ErrorScreen } from './ErrorScreen';
 export { default as Login } from './login';
+export { default as Suppliers } from './Suppliers';
+export { default as WorkOrdersCalendar } from './WorkOrdersCalendar';
+export { default as Cotizaciones } from './Cotizaciones';

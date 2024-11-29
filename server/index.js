@@ -7,6 +7,7 @@ const ordenesDeTrabajoRoutes = require('./routes/ordenesDeTrabajoRoutes');
 const autosRoutes = require('./routes/autosRoutes');
 const clientesRoutes = require('./routes/clientesRoutes');
 const historialRoutes = require('./routes/historialPropietarioRoutes'); 
+const proveedoresRoutes = require('./routes/proveedoresRoutes');
 
 const cors = require('cors');
 
@@ -20,6 +21,7 @@ app.use('/ordenes-de-trabajo', ordenesDeTrabajoRoutes);
 app.use('/autos', autosRoutes);
 app.use('/clientes', clientesRoutes);
 app.use('/historial-propietario', historialRoutes);
+app.use('/proveedores', proveedoresRoutes);
 
 // Sincronización de la base de datos y inicio del servidor
 sequelize.sync({ force: false }) 
