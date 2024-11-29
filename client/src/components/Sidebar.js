@@ -5,6 +5,7 @@ import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
 
+
 const drawerWidth = 240;
 
 // listItemStyles: Me da los estilos comunes para los botones. 
@@ -111,7 +112,9 @@ const Sidebar = () => {
               { text: 'Clientes', icon: <Person />, path: '/clients' },
               { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' },
               { text: 'Calendario de órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' },
+              { text: 'Reservas', icon: <Assignment />, path: '/reservations' },
               { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' }
+
             ].map((item, index) => ( 
               <ListItem 
                 button 
