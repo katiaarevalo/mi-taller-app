@@ -117,6 +117,7 @@ const Sidebar = () => {
               { text: 'Calendario de órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' },
               { text: 'Reservas', icon: <Assignment />, path: '/reservations' },
               { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' },
+              { text: 'Personal', icon: <Person />, path: '/personal'},
               { text: 'Servicios', icon: <RequestQuoteIcon />, path: '/account-payable' }
             ].map((item, index) => ( 
               <ListItem 

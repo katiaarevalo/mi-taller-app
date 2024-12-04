@@ -8,6 +8,7 @@ const autosRoutes = require('./routes/autosRoutes');
 const clientesRoutes = require('./routes/clientesRoutes');
 const historialRoutes = require('./routes/historialPropietarioRoutes'); 
 const proveedoresRoutes = require('./routes/proveedoresRoutes');
+const PersonalRoutes = require('./routes/PersonalRoutes');
 const reservasRoutes = require('./routes/reservasRoutes');
 const HistorialOrdenes = require('./routes/HistorialOrdenes'); 
 
@@ -27,6 +28,7 @@ app.use('/autos', autosRoutes);
 app.use('/clientes', clientesRoutes);
 app.use('/historial-propietario', historialRoutes);
 app.use('/proveedores', proveedoresRoutes);
+app.use('/personal', PersonalRoutes);
 app.use('/reservas', reservasRoutes);
 app.use('/historial-ordenes', HistorialOrdenes);
 

@@ -13,6 +13,7 @@ import WorkOrdersCalendar from '../pages/WorkOrdersCalendar';
 import Reservations from '../pages/Reservations';
 import Suppliers from "../pages/Suppliers";
 import AccountPayable from "../pages/AccountPayable";
+import Personals from "../pages/Personals";
 
 const RouterApp = () => {
   return (
@@ -43,6 +44,7 @@ const RouterApp = () => {
                 <Route path="/historial-ordenes" element={<Historial />} />
                 <Route path="/cotizaciones" element={<Cotizaciones />} />
                 <Route path="/suppliers" element={<Suppliers />} />
+                <Route path="/personal" element={<Personals />} />
                 
                 <Route path="/account-payable" element={<AccountPayable />} /> 
 
