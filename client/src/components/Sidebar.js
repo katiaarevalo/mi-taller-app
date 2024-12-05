@@ -79,9 +79,9 @@ const Sidebar = () => {
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
                 alignItems: 'center',
-                mt: 3,
+                mt: 1,
                 minHeight: 0,
               }}
             >
@@ -91,13 +91,14 @@ const Sidebar = () => {
                 alt="mitaller"
                 image={logo}
                 sx={{
-                  width: 180, 
+                  width: 50, 
                   height: 'auto',
                   mb: 2,
+                  marginBottom: '4px'
                 }}
               />
               {/* BIENVENIDO, USUARIO */}
-              <Typography variant="h6" sx={{ textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ textAlign: 'center', marginLeft:'10px' }}>
                 ¡Bienvenido!
               </Typography>
             </Box>
