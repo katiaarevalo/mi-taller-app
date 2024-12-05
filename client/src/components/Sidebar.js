@@ -1,9 +1,11 @@
 import React from 'react';
-import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia } from '@mui/material';
+import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia} from '@mui/material';
 import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment,CalendarToday, LocalShipping  } from '@mui/icons-material';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { LibraryBooks } from '@mui/icons-material';
+
 
 const drawerWidth = 240;
 
@@ -111,7 +113,8 @@ const Sidebar = () => {
               { text: 'Clientes', icon: <Person />, path: '/clients' },
               { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' },
               { text: 'Calendario de órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' },
-              { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' }
+              { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' },
+              { text: 'Inventario', icon: <LibraryBooks />, path: '/InventoryPage' }
             ].map((item, index) => ( 
               <ListItem 
                 button 

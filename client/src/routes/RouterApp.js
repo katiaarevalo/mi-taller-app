@@ -10,6 +10,7 @@ import Sidebar from "../components/Sidebar";
 import Cotizaciones from "../pages/Cotizaciones";
 import WorkOrdersCalendar from '../pages/WorkOrdersCalendar';
 import Suppliers from "../pages/Suppliers";
+import InventoryPage from "../pages/InventoryPage";
 
 const RouterApp = () => {
   return (
@@ -38,6 +39,8 @@ const RouterApp = () => {
                 <Route path="/cotizaciones" element={<Cotizaciones />} />
                 <Route path="/suppliers" element={<Suppliers />} />
                 <Route path="/*" element={<ErrorScreen />} />
+                <Route path="/InventoryPage*" element={<InventoryPage />} />
+
               </Routes>
             </Grid2>
           </Grid2>
