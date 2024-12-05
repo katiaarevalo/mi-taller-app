@@ -6,6 +6,7 @@ import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { LibraryBooks } from '@mui/icons-material';
 
 // listItemStyles: Me da los estilos comunes para los botones. 
 const listItemStyles = {
@@ -119,7 +120,8 @@ const Sidebar = () => {
               { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' },
               { text: 'Personal', icon: <Person />, path: '/personal'},
               { text: 'Servicios', icon: <RequestQuoteIcon />, path: '/account-payable' },
-              { text: 'Deudores', icon: <PersonOff />, path: '/debtors' }
+              { text: 'Deudores', icon: <PersonOff />, path: '/debtors' },
+              { text: 'Inventario', icon: <LibraryBooks />, path: '/InventoryPage' }
             ].map((item, index) => ( 
               <ListItem 
                 button 
