@@ -11,7 +11,7 @@ const proveedoresRoutes = require('./routes/proveedoresRoutes');
 const PersonalRoutes = require('./routes/PersonalRoutes');
 const reservasRoutes = require('./routes/reservasRoutes');
 const HistorialOrdenes = require('./routes/HistorialOrdenes'); 
-
+const deudoresRoutes = require('./routes/deudoresRoutes');
 const accountpayables = require('./routes/accountpayableRoutes');
 
 
@@ -31,7 +31,7 @@ app.use('/proveedores', proveedoresRoutes);
 app.use('/personal', PersonalRoutes);
 app.use('/reservas', reservasRoutes);
 app.use('/historial-ordenes', HistorialOrdenes);
-
+app.use('/deudores', deudoresRoutes);
 //app.use('/proveedores', suppliersRoutes);
 app.use('/account-payable', accountpayables)
 

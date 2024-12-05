@@ -9,3 +9,4 @@ export { default as WorkOrdersCalendar } from './WorkOrdersCalendar';
 export { default as Cotizaciones } from './Cotizaciones';
 export { default as AccountPayable} from './AccountPayable';
 export { default as Historial } from './Historial';
+export { default as Debtors } from './Debtors';
