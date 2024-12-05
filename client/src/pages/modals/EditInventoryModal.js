@@ -121,5 +121,4 @@ const EditInventoryModal = ({ open, onClose, item }) => {
         </Modal>
     );
 };
-
 export default EditInventoryModal;
