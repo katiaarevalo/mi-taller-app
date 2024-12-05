@@ -4,9 +4,9 @@ import { Grid2 } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab } from '@mui/material';
 import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
 import PersonIcon from '@mui/icons-material/Person';
-//import DebtorFormModal from './modals/DebtorFormModal';
-//import EditDebtorModal from './modals/EditDebtorModal';
-//import ViewDebtorModal from './modals/ViewDebtorModal';
+import DebtorFormModal from './modals/DebtorFormModal';
+import EditDebtorModal from './modals/EditDebtorModal';
+import ViewDebtorModal from './modals/ViewDebtorModal';
 import Swal from 'sweetalert2';
 
 const Debtors = () => {
@@ -15,8 +15,8 @@ const Debtors = () => {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedDebtor, setSelectedDebtor] = useState(null);
-  const [openViewModal, setOpenViewModal] = useState(false);
-  //const [selectedViewDebtor, setSelectedViewDebtor] = useState(null);
+  //const [openViewModal, setOpenViewModal] = useState(false);
+  const [selectedViewDebtor, setSelectedViewDebtor] = useState(null);
     
   // -- OBTENER LISTA DE DEUDORES -- //
   // Función para obtener la lista de deudores.
@@ -52,17 +52,35 @@ const Debtors = () => {
 
   // -- EDITAR DEUDOR -- //
   // Función para abrir el modal de edición de deudor.
-  const handleEditModalOpen = (debtor) => {
-    setSelectedDebtor(debtor); 
+  const handleEditModalOpen = (edit_debtor) => {
+    setSelectedDebtor(edit_debtor); 
     setOpenEditModal(true); 
   }
 
   // -- VER DEUDOR -- //
   // Función para abrir el modal de ver deudor.
   const handleViewModalOpen = (debtor) => {
-    //setSelectedViewDebtor(debtor); 
-    setOpenViewModal(true); 
+    setSelectedDebtor(debtor);  
+    setSelectedViewDebtor(true); 
   }
+
+  const handleViewModalClose = () => {
+    setSelectedViewDebtor(false);
+    setSelectedDebtor(null);
+    fetchDebtors();
+  };
+
+  const handleAddModalClose = () => {
+    //setSelectedViewDebtor(false);
+    setOpenAddModal(null);
+    fetchDebtors();
+  };
+
+  const handleEditModalClose = () => {
+    setOpenEditModal(false);
+    setSelectedDebtor(null);
+    fetchDebtors();
+  };
 
   // -- ELIMINAR DEUDOR -- //
   // Función para eliminar un deudor.
@@ -167,13 +185,13 @@ const Debtors = () => {
                       <TableCell>{debtor.fecha_vencimiento}</TableCell>
                       <TableCell>{debtor.estado}</TableCell>
                       <TableCell>
-                        <IconButton onClick={() => handleViewModalOpen(debtor.cliente_rut)} aria-label='Ver' color='default'>
+                        <IconButton onClick={() => handleViewModalOpen(debtor)} aria-label='Ver' color='default'>
                           <VisibilityIcon />
                         </IconButton>
-                        <IconButton onClick={() => handleEditModalOpen(debtor.cliente_rut)} aria-label="Editar" color="primary">
+                        <IconButton onClick={() => handleEditModalOpen(debtor)} aria-label="Editar" color="primary">
                           <EditIcon />
                         </IconButton>
-                        <IconButton onClick={() => handleDeleteDebtor(debtor.cliente_rut)} aria-label="Eliminar" color="secondary">
+                        <IconButton onClick={() => handleDeleteDebtor(debtor.id)} aria-label="Eliminar" color="secondary">
                           <DeleteIcon />
                         </IconButton>
                       </TableCell>
@@ -186,13 +204,16 @@ const Debtors = () => {
           <Fab color="primary" onClick={handleAddClick} style={{ position: 'fixed', bottom: 16, right: 16 }}>
             <AddIcon />
           </Fab>
-
+          <EditDebtorModal open={openEditModal} onClose={handleEditModalClose} debtor={selectedDebtor} />
+          <ViewDebtorModal open={selectedViewDebtor} onClose={handleViewModalClose} debtor={selectedDebtor} />
+          <DebtorFormModal open={openAddModal} onClose={handleAddModalClose} />
       </Grid2>
+      
   );
 };
 
-//<DebtorFormModal open={openAddModal} onClose={handleAddModalClose} />
-//<EditDebtorModal open={openEditModal} onClose={handleEditModalClose} debtor={selectedDebtor} />
-//<ViewDebtorModal open={openViewModal} onClose={handleViewModalClose} debtor={selectedDebtor} />
+//
+//
+
 
 export default Debtors;

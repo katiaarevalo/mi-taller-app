@@ -7,7 +7,7 @@ const { verifyToken } = require('../middleware/authMiddleware');
 //Habilitar para verificar el token
 
 // Aplico el middleware a todas las rutas. 
-//router.use(verifyToken);
+router.use(verifyToken);
 
 
 

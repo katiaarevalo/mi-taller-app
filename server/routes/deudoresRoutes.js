@@ -6,6 +6,20 @@ const { verifyToken } = require('../middleware/authMiddleware');
 // Middleware en todas las rutas.
 router.use(verifyToken);
 
+
+// -- OBTENER TODOS LOS DEUDORES -- //
+router.get('/', async (req, res) => {
+    try {
+        const deudores = await db.Deudor.findAll();
+        res.status(200).json(deudores);
+    } catch (error) {
+        res.status(500).json({ error: 'Error al obtener los deudores' });
+    }
+});
+
+
+
+
 // -- CREAR UN DEUDOR MOROSO -- //
 router.post('/', async (req, res) => {
     try {
@@ -17,15 +31,6 @@ router.post('/', async (req, res) => {
     }
 });
 
-// -- OBTENER TODOS LOS DEUDORES -- //
-router.get('/', async (req, res) => {
-    try {
-        const deudores = await db.Deudor.findAll();
-        res.status(200).json(deudores);
-    } catch (error) {
-        res.status(500).json({ error: 'Error al obtener los deudores' });
-    }
-});
 
 // -- OBTENER UN DEUDOR POR RUT DEL CLIENTE -- //
 router.get('/:rut', async (req, res) => {
@@ -41,13 +46,13 @@ router.get('/:rut', async (req, res) => {
 });
 
 // -- ACTUALIZAR UN DEUDOR POR RUT DEL CLIENTE (PROTEGIDO) -- //
-router.put('/:rut', async (req, res) => {
+router.put('/:id', async (req, res) => {
     try {
         const [updated] = await db.Deudor.update(req.body, {
-            where: { cliente_rut: req.params.rut }
+            where: { id: req.params.id }
         });
         if (!updated) return res.status(404).json({ error: 'Deudor no encontrado' });
-        const updatedDeudor = await db.Deudor.findOne({ where: { cliente_rut: req.params.rut } });
+        const updatedDeudor = await db.Deudor.findOne({ where: { id: req.params.id } });
         res.status(200).json(updatedDeudor);
     } catch (error) {
         console.error('Error al actualizar deudor:', error);
@@ -56,10 +61,10 @@ router.put('/:rut', async (req, res) => {
 });
 
 // -- ELIMINAR UN DEUDOR POR RUT DEL CLIENTE (PROTEGIDO) -- //
-router.delete('/:rut', async (req, res) => {
+router.delete('/:id', async (req, res) => {
     try {
         const deleted = await db.Deudor.destroy({
-            where: { cliente_rut: req.params.rut }
+            where: { id: req.params.id }
         });
         if (!deleted) return res.status(404).json({ error: 'Deudor no encontrado' });
         res.status(204).end();
