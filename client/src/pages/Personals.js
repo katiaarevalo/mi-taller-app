@@ -175,7 +175,7 @@ const Personal = () => {
               <TableRow>
                 <TableCell style={{ width: '100px' }}>RUT</TableCell>
                 <TableCell style={{ width: '150px' }}>Nombre</TableCell>
-                <TableCell style={{ width: '100px' }}>Número</TableCell>
+                <TableCell style={{ width: '100px' }}>Teléfono</TableCell>
                 <TableCell style={{ width: '200px' }}>Correo</TableCell>
                 <TableCell style={{ width: '150px' }}>Cargo</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>

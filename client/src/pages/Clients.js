@@ -193,7 +193,7 @@ const Clients = () => {
               <TableRow>
                 <TableCell style={{ width: '100px' }}>RUT cliente</TableCell>
                 <TableCell style={{ width: '150px' }}>Nombre</TableCell>
-                <TableCell style={{ width: '100px' }}>Número</TableCell>
+                <TableCell style={{ width: '100px' }}>Teléfono</TableCell>
                 <TableCell style={{ width: '200px' }}>Correo</TableCell>
                 <TableCell style={{ width: '150px' }}>Dirección</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>
