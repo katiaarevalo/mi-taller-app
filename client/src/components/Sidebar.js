@@ -1,11 +1,12 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia } from '@mui/material';
-import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment, CalendarToday, LocalShipping } from '@mui/icons-material';
+import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment, CalendarToday, LocalShipping , PersonOff} from '@mui/icons-material';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { LibraryBooks } from '@mui/icons-material';
 
 // listItemStyles: Me da los estilos comunes para los botones. 
 const listItemStyles = {
@@ -118,7 +119,9 @@ const Sidebar = () => {
               { text: 'Reservas', icon: <Assignment />, path: '/reservations' },
               { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' },
               { text: 'Personal', icon: <Person />, path: '/personal'},
-              { text: 'Servicios', icon: <RequestQuoteIcon />, path: '/account-payable' }
+              { text: 'Servicios', icon: <RequestQuoteIcon />, path: '/account-payable' },
+              { text: 'Deudores', icon: <PersonOff />, path: '/debtors' },
+              { text: 'Inventario', icon: <LibraryBooks />, path: '/InventoryPage' }
             ].map((item, index) => ( 
               <ListItem 
                 button 
