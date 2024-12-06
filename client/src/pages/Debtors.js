@@ -152,7 +152,7 @@ const Debtors = () => {
   }
 
   return (
-      <Grid2 container spacing={3} style={{ marginLeft: '240px', padding: '0', height: '100%', display: 'flex', flexDirection: 'column'}}>
+      <Grid2 container spacing={3} style={{ marginLeft: '0px', padding: '0', height: '100%', display: 'flex', flexDirection: 'column'}}>
         <Grid2 item xs={10}>
           <Grid2 container alignItems="center" justifyContent="space-between">
             <Grid2 item>
