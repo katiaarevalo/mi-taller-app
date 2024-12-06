@@ -1,6 +1,7 @@
 // src/modals/EditInventoryModal.js
 import React, { useEffect, useState } from 'react';
 import { Modal, Box, Button, TextField, Typography } from '@mui/material';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -23,6 +24,7 @@ const EditInventoryModal = ({ open, onClose, item }) => {
         descripcion: '',
         categoria: '' // Agregar categoría en el estado
     });
+    const [categoria, setCategoria] = useState(''); 
 
     // Cargar los datos del artículo seleccionado en el formulario
     useEffect(() => {
@@ -99,20 +101,30 @@ const EditInventoryModal = ({ open, onClose, item }) => {
                         multiline
                         rows={4}
                     />
-                    <TextField 
-                        label="Categoría" 
-                        name="categoria" // Campo de categoría
-                        value={formData.categoria} // Llenar el campo con la categoría existente
-                        onChange={handleChange} 
-                        required 
-                        fullWidth 
-                        margin="normal"
-                    />
+                    <FormControl fullWidth margin="normal" variant="outlined">
+                            <InputLabel id="categoria-label">Categoría</InputLabel>
+                            <Select
+                                labelId="categoria-label"
+                                name="categoria"
+                                value={categoria} // Estado actual de la categoría
+                                onChange={(e) => setCategoria(e.target.value)} // Actualiza el estado de la categoría
+                                label="Categoría"
+                                required
+                            >
+                                <MenuItem value="Repuestos y piezas">Repuestos y piezas</MenuItem>
+                                <MenuItem value="Herramientas">Herramientas</MenuItem>
+                                <MenuItem value="Equipos de Seguridad y Protección">Equipos de Seguridad y Protección</MenuItem>
+                                <MenuItem value="Suministros de Mantenimiento">Suministros de Mantenimiento</MenuItem>
+                                <MenuItem value="Productos Químicos">Productos Químicos</MenuItem>
+                                <MenuItem value="Equipos Especializados">Equipos Especializados</MenuItem>
+                                <MenuItem value="Materiales de Oficina">Materiales de Oficina</MenuItem>
+                            </Select>
+                    </FormControl>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', marginTop: 2 }}>
-                        <Button type="submit" variant="contained" color="primary">
+                        <Button sx={{textTransform: 'none'}} type="submit" variant="contained" color="primary">
                             Actualizar
                         </Button>
-                        <Button type="button" variant="outlined" color="secondary" onClick={onClose}>
+                        <Button sx={{textTransform: 'none'}} type="button" variant="outlined" color="secondary" onClick={onClose}>
                             Cancelar
                         </Button>
                     </Box>

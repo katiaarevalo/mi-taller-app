@@ -1,6 +1,7 @@
     // src/modals/InventoryFormModal.js
     import React, { useState } from 'react';
     import { Modal, Box, Button, TextField, Typography } from '@mui/material';
+    import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
     import axios from 'axios';
     import Swal from 'sweetalert2';
 
@@ -91,15 +92,25 @@
                             value={descripcion}
                             onChange={(e) => setDescripcion(e.target.value)}
                         />
-                        <TextField
-                            label="Categoría" // Nuevo campo de categoría
-                            variant="outlined"
-                            margin="normal"
-                            fullWidth
-                            required
-                            value={categoria}
-                            onChange={(e) => setCategoria(e.target.value)} // Actualiza el estado de categoría
-                        />
+                        <FormControl fullWidth margin="normal" variant="outlined">
+                            <InputLabel id="categoria-label">Categoría</InputLabel>
+                            <Select
+                                labelId="categoria-label"
+                                name="categoria"
+                                value={categoria} // Estado actual de la categoría
+                                onChange={(e) => setCategoria(e.target.value)} // Actualiza el estado de la categoría
+                                label="Categoría"
+                                required
+                            >
+                                <MenuItem value="Repuestos y piezas">Repuestos y piezas</MenuItem>
+                                <MenuItem value="Herramientas">Herramientas</MenuItem>
+                                <MenuItem value="Equipos de Seguridad y Protección">Equipos de Seguridad y Protección</MenuItem>
+                                <MenuItem value="Suministros de Mantenimiento">Suministros de Mantenimiento</MenuItem>
+                                <MenuItem value="Productos Químicos">Productos Químicos</MenuItem>
+                                <MenuItem value="Equipos Especializados">Equipos Especializados</MenuItem>
+                                <MenuItem value="Materiales de Oficina">Materiales de Oficina</MenuItem>
+                            </Select>
+                        </FormControl>
                         <Box display="flex" justifyContent="space-between" marginTop="16px">
                             <Button 
                                 type="submit" 
