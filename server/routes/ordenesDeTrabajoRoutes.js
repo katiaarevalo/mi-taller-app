@@ -3,6 +3,7 @@ const router = express.Router();
 const { verifyToken } = require('../middleware/authMiddleware');
 const { OrdenDeTrabajo } = require('../models');  
 const db = require('../models');
+const { sequelize } = require('../models');
 
 // -- CREAR ORDEN DE TRABAJO -- //
 router.post('/', verifyToken, async (req, res) => {
@@ -113,26 +114,24 @@ router.get('/estadisticas/ordenes-por-mes', async (req, res) => {
   }
 });
 
+// -- OBTENER MONTO PROMEDIO POR ORDEN DE TRABAJO -- //
 // Ruta para obtener el monto promedio por orden de trabajo
-router.get('/monto-promedio-orden', async (req, res) => {
+router.get('/monto-promedio-orden', verifyToken, async (req, res) => {
   try {
-    // Consulta para calcular el promedio del monto_total
-    const montoPromedioOrden = await OrdenDeTrabajo.findOne({
-      attributes: [
-        [sequelize.fn('AVG', sequelize.col('monto_total')), 'promedio_monto'] // Calcula el promedio
-      ],
-      raw: true // Devuelve un objeto plano
-    });
+    const montoPromedioOrden = await db.sequelize.query(`
+      SELECT
+        AVG(monto_total) AS promedio_monto
+      FROM
+        OrdenDeTrabajo
+    `, { type: db.Sequelize.QueryTypes.SELECT });
 
-    // Verificar si hay datos y si el promedio es válido
-    if (!montoPromedioOrden || montoPromedioOrden.promedio_monto === null) {
+    if (!montoPromedioOrden || montoPromedioOrden[0].promedio_monto === null) {
       return res.status(404).json({ error: 'No hay órdenes de trabajo para calcular el promedio' });
     }
 
-    // Enviar el resultado
-    res.json({ promedio_monto: parseFloat(montoPromedioOrden.promedio_monto).toFixed(2) });
+    res.json({ promedio_monto: parseFloat(montoPromedioOrden[0].promedio_monto).toFixed(2) });
   } catch (error) {
-    console.error('Error al obtener el monto promedio por orden de trabajo:', error);
+    console.error('Error al obtener el monto promedio:', error);
     res.status(500).json({ error: 'Error interno del servidor' });
   }
 });

@@ -66,8 +66,8 @@ const OrdersChart = () => {
         x: {
           ticks: {
             // Ajustar el ángulo de los nombres de los meses
-            maxRotation: 45,  // Máximo ángulo de rotación
-            minRotation: 45,  // Mínimo ángulo de rotación
+            maxRotation: 45,  
+            minRotation: 45, 
           },
         },
       },
@@ -76,14 +76,14 @@ const OrdersChart = () => {
   return (
     <div
       style={{
-        width: '100%',
-        height: '100%',
-        padding: '10px', // Espaciado más generoso
-        boxSizing: 'border-box', // Asegúrate de que el padding no afecte el tamaño total
-        backgroundColor: '#fff', // Fondo blanco limpio
-        borderRadius: '12px', // Bordes más redondeados
-        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)', // Sombra suave
-        marginBottom: '20px', // Separación inferior
+        width: '700px',
+        height: '350px',
+        padding: '5px', 
+        boxSizing: 'border-box', 
+        backgroundColor: '#fff', 
+        borderRadius: '12px', 
+        boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
+        marginBottom: '20px', 
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

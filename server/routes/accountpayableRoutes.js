@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
       console.error('Error al obtener las cuentas:', error);
       res.status(500).json({ error: 'Error al obtener las cuentas' });
     }
-  });
+});
   
 
 

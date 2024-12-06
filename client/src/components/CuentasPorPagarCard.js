@@ -10,15 +10,36 @@ const CuentasPorPagarCard = () => {
   useEffect(() => {
     const fetchCuentas = async () => {
       try {
-        const response = await axios.get('http://localhost:3001/account-payable');
+        // Obtén el token desde el localStorage (o donde lo estés almacenando)
+        const token = localStorage.getItem('token');
+        
+
+        if (!token) {
+          console.error('No token found');
+          setLoading(false);
+          return;
+        }
+
+        // Configura el encabezado Authorization
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        // Realiza la solicitud con el encabezado de autenticación
+        const response = await axios.get('http://localhost:3001/account-payable', config);
         setCuentas(response.data);
-        setTotalPagar(response.data.reduce((acc, cuenta) => acc + cuenta.Amount, 0)); 
+
+        // Calcula el total pendiente
+        setTotalPagar(response.data.reduce((acc, cuenta) => acc + cuenta.Amount, 0));
         setLoading(false);
       } catch (error) {
         console.error('Error al obtener las cuentas:', error);
         setLoading(false);
       }
     };
+
     fetchCuentas();
   }, []);
 
@@ -29,14 +50,14 @@ const CuentasPorPagarCard = () => {
   return (
     <Card sx={{
       width: '300px',
-      height: '550px',
+      height: '585px',
       display: 'flex',
       marginLeft: '20px',
       marginTop: '-150px',
       flexDirection: 'column',
-      boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)', // Sombra similar a la del gráfico
-      borderRadius: '12px', // Bordes redondeados como el gráfico
-      overflow: 'hidden', // Para evitar que el contenido se desborde
+      boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)', 
+      borderRadius: '12px', 
+      overflow: 'hidden', 
     }}>
       <CardContent sx={{ flexGrow: 1 }}>
         <Typography variant="h5" component="div" gutterBottom>
