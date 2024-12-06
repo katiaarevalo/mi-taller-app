@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, TextField, Button, Typography } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography, Snackbar } from '@mui/material';
 import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import axios from 'axios';
 import Swal from 'sweetalert2';
@@ -16,10 +16,7 @@ const style = {
   p: 4,
 };
 
-const EditDebtorModal = ({ open, onClose, debtor}) => {
-
-
-
+const EditDebtorModal = ({ open, onClose, debtor }) => {
   const [formData, setFormData] = useState({
     id: '',
     cliente_rut: '',
@@ -28,25 +25,45 @@ const EditDebtorModal = ({ open, onClose, debtor}) => {
     estado: ''
   });
 
+  const [montoDeudaError, setMontoDeudaError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [alertOpen, setAlertOpen] = useState(false);
+
   useEffect(() => {
-
     if (debtor) {
-      setFormData(debtor); // Rellena el formulario con los datos del vehículo seleccionado
-      console.log(debtor.id);
-      
+      setFormData(debtor); // Rellena el formulario con los datos del deudor seleccionado
     }
-
   }, [debtor]);
 
   // -- MANEJAR CAMBIOS EN LOS INPUTS -- //
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Validación del monto de deuda
+    if (name === 'monto_deuda' && value < 0) {
+      setMontoDeudaError('El monto de deuda no puede ser negativo');
+    } else {
+      setMontoDeudaError('');
+    }
   };
 
-  // -- ACTUALIZAR VEHÍCULO -- //
+  // -- ACTUALIZAR DEUDOR -- //
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validación de campos vacíos y monto de deuda negativo
+    if (!formData.monto_deuda || !formData.fecha_vencimiento || !formData.estado) {
+      setErrorMessage('Todos los campos son obligatorios');
+      setAlertOpen(true);
+      return;
+    }
+
+    if (formData.monto_deuda < 0) {
+      setMontoDeudaError('El monto de deuda no puede ser negativo');
+      return;
+    }
+
     try {
       const token = localStorage.getItem('token');
       await axios.put(`http://localhost:3001/deudores/${formData.id}`, formData, {
@@ -71,6 +88,10 @@ const EditDebtorModal = ({ open, onClose, debtor}) => {
     }
   };
 
+  const handleAlertClose = () => {
+    setAlertOpen(false); // Cerrar alerta
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -93,7 +114,10 @@ const EditDebtorModal = ({ open, onClose, debtor}) => {
             value={formData.monto_deuda}
             onChange={handleChange}
             fullWidth
-            margin="normal" 
+            margin="normal"
+            required
+            error={!!montoDeudaError} // Muestra el error si existe
+            helperText={montoDeudaError || "Por favor ingrese un monto válido"}
           />
           <TextField
             name="fecha_vencimiento"
@@ -105,6 +129,7 @@ const EditDebtorModal = ({ open, onClose, debtor}) => {
             fullWidth
             InputLabelProps={{ shrink: true }}
             sx={{ marginBottom: '8px' }}
+            required
           />
           <FormControl fullWidth margin="normal" variant="outlined">
             <InputLabel id="estado-label">Estado</InputLabel>
@@ -121,6 +146,15 @@ const EditDebtorModal = ({ open, onClose, debtor}) => {
             </Select>
           </FormControl>
           
+          {errorMessage && (
+            <Snackbar
+              open={alertOpen}
+              autoHideDuration={3000}
+              onClose={handleAlertClose}
+              message={errorMessage}
+            />
+          )}
+
           <Box display="flex" justifyContent="space-between" marginTop="16px">
             <Button type="submit" variant="contained" color="primary" sx={{ textTransform: 'none' }}>
               Guardar

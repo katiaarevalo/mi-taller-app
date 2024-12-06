@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, TextField, Button, Typography, Autocomplete } from '@mui/material';
-import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography, Autocomplete, Snackbar, FormControl, InputLabel, Select, MenuItem } from '@mui/material';
 import axios from 'axios';
-//import {validarMatricula} from '../../helpers/validateMatricula'; 
 import Swal from 'sweetalert2';
 
 const style = {
@@ -25,34 +23,38 @@ const VehicleFormModal = ({ open, onClose }) => {
     estado: ''
   });
 
-  const [clientes, setClientes] = useState([]); 
-  const [inputValue, setInputValue] = useState(''); 
-  const [errorMatricula, setErrorMatricula] = useState(''); // Para manejar errores de matrícula
+  const [clientes, setClientes] = useState([]);
+  const [inputValue, setInputValue] = useState('');
+  const [errorMatricula, setErrorMatricula] = useState('');
+  const [montoDeudaError, setMontoDeudaError] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
+  const [alertOpen, setAlertOpen] = useState(false);
 
   useEffect(() => {
     // -- OBTENER CLIENTES -- //
     const fetchClientes = async () => {
       try {
-        const token = localStorage.getItem('token'); 
+        const token = localStorage.getItem('token');
         const response = await axios.get('http://localhost:3001/clientes', {
-          headers: { Authorization: `Bearer ${token}` } 
+          headers: { Authorization: `Bearer ${token}` }
         });
-        setClientes(response.data); 
+        setClientes(response.data);
       } catch (error) {
         console.error('Error al obtener clientes:', error);
       }
     };
 
     if (open) {
-      fetchClientes(); // Carga los clientes solo si el modal está abierto
-      //setFormData({ cliente_rut: '', monto_deuda: '', fecha_vencimiento: '', estado: '' }); // Resetea el formulario
+      fetchClientes();
       setFormData({
         cliente_rut: '',
         monto_deuda: '',
         fecha_vencimiento: '',
         estado: ''
       });
-      setErrorMatricula(''); // Resetea el error de matrícula
+      setErrorMatricula('');
+      setMontoDeudaError('');
+      setErrorMessage('');
     }
   }, [open]);
 
@@ -60,13 +62,30 @@ const VehicleFormModal = ({ open, onClose }) => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Validación para monto de deuda
+    if (name === 'monto_deuda' && value < 0) {
+      setMontoDeudaError('El monto de deuda no puede ser negativo');
+    } else {
+      setMontoDeudaError('');
+    }
   };
 
   // -- CREAR DEUDOR -- //
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
 
+    // Validación de campos vacíos y monto de deuda negativo
+    if (!formData.cliente_rut || !formData.monto_deuda || !formData.fecha_vencimiento || !formData.estado) {
+      setErrorMessage('Todos los campos son obligatorios');
+      setAlertOpen(true);
+      return;
+    }
+
+    if (formData.monto_deuda < 0) {
+      setMontoDeudaError('El monto de deuda no puede ser negativo');
+      return;
+    }
 
     try {
       const token = localStorage.getItem('token');
@@ -92,6 +111,10 @@ const VehicleFormModal = ({ open, onClose }) => {
     }
   };
 
+  const handleAlertClose = () => {
+    setAlertOpen(false); // Cerrar alerta
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -100,7 +123,7 @@ const VehicleFormModal = ({ open, onClose }) => {
           {/* -- AUTOCOMPLETE PARA SUGERENCIAS Y AUTOCOMPLETADO */}
           <Autocomplete
             options={clientes}
-            getOptionLabel={(option) => `${option.rut} - ${option.nombre}`} 
+            getOptionLabel={(option) => `${option.rut} - ${option.nombre}`}
             inputValue={inputValue}
             onInputChange={(event, newInputValue) => {
               setInputValue(newInputValue);
@@ -130,8 +153,8 @@ const VehicleFormModal = ({ open, onClose }) => {
             fullWidth
             margin="normal"
             required
-            error={!!errorMatricula} // Muestra el error si es verdadero
-            //{/*helperText={errorMatricula || "Formato antiguo: AA 1234. Formato moderno: BB.CC.12"}  // Mensaje de error*/}
+            error={!!montoDeudaError} // Muestra el error si es verdadero
+            helperText={montoDeudaError || "Sugerencia: Debe ingresar un monto válido"}
           />
           <TextField
             name="fecha_vencimiento"
@@ -159,16 +182,24 @@ const VehicleFormModal = ({ open, onClose }) => {
             </Select>
           </FormControl>
 
+          {errorMessage && (
+            <Snackbar
+              open={alertOpen}
+              autoHideDuration={3000}
+              onClose={handleAlertClose}
+              message={errorMessage}
+            />
+          )}
 
           <Box display="flex" justifyContent="space-between" marginTop="16px">
             <Button type="submit" variant="contained" color="primary" sx={{ textTransform: 'none' }}>
               Añadir
             </Button>
-            <Button 
-              variant="outlined" 
-              color="error" 
-              onClick={onClose} 
-              sx={{ textTransform: 'none' }} 
+            <Button
+              variant="outlined"
+              color="error"
+              onClick={onClose}
+              sx={{ textTransform: 'none' }}
             >
               Cerrar
             </Button>
