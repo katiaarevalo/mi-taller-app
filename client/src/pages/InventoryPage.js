@@ -113,7 +113,7 @@ const Inventory = () => {
   };
 
   return (
-    <Grid container spacing={3} style={{ paddingLeft: '240px', paddingTop: '16px' }}>
+    <Grid container spacing={3} style={{ paddingLeft: '0px', paddingTop: '16px' }}>
       <Grid item xs={12}>
         <Typography variant="h4">Inventario</Typography>
         <TextField
