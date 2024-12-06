@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, TextField, Button, Typography, Autocomplete } from '@mui/material';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import axios from 'axios';
-import {validarMatricula} from '../../helpers/validateMatricula'; 
+//import {validarMatricula} from '../../helpers/validateMatricula'; 
 import Swal from 'sweetalert2';
 
 const style = {
@@ -45,6 +46,12 @@ const VehicleFormModal = ({ open, onClose }) => {
     if (open) {
       fetchClientes(); // Carga los clientes solo si el modal está abierto
       //setFormData({ cliente_rut: '', monto_deuda: '', fecha_vencimiento: '', estado: '' }); // Resetea el formulario
+      setFormData({
+        cliente_rut: '',
+        monto_deuda: '',
+        fecha_vencimiento: '',
+        estado: ''
+      });
       setErrorMatricula(''); // Resetea el error de matrícula
     }
   }, [open]);
@@ -137,16 +144,21 @@ const VehicleFormModal = ({ open, onClose }) => {
             InputLabelProps={{ shrink: true }}
             sx={{ marginBottom: '8px' }}
           />
-          <TextField
-            name="estado"
-            label="Estado"
-            variant="outlined"
-            value={formData.estado}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-            required
-          />
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel id="estado-label">Estado</InputLabel>
+            <Select
+              labelId="estado-label"
+              name="estado"
+              value={formData.estado}
+              onChange={handleChange}
+              label="Estado"
+              required
+            >
+              <MenuItem value="Por Pagar">Por Pagar</MenuItem>
+              <MenuItem value="Pagado">Pagado</MenuItem>
+            </Select>
+          </FormControl>
+
 
           <Box display="flex" justifyContent="space-between" marginTop="16px">
             <Button type="submit" variant="contained" color="primary" sx={{ textTransform: 'none' }}>

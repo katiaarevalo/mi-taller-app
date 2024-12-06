@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, TextField, Button, Typography } from '@mui/material';
+import { Select, MenuItem, FormControl, InputLabel } from '@mui/material';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 
@@ -105,15 +106,21 @@ const EditDebtorModal = ({ open, onClose, debtor}) => {
             InputLabelProps={{ shrink: true }}
             sx={{ marginBottom: '8px' }}
           />
-          <TextField
-            name="Estado"
-            label="Estado"
-            variant="outlined"
-            value={formData.estado}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
+          <FormControl fullWidth margin="normal" variant="outlined">
+            <InputLabel id="estado-label">Estado</InputLabel>
+            <Select
+              labelId="estado-label"
+              name="estado"
+              value={formData.estado}
+              onChange={handleChange}
+              label="Estado"
+              required
+            >
+              <MenuItem value="Por Pagar">Por Pagar</MenuItem>
+              <MenuItem value="Pagado">Pagado</MenuItem>
+            </Select>
+          </FormControl>
+          
           <Box display="flex" justifyContent="space-between" marginTop="16px">
             <Button type="submit" variant="contained" color="primary" sx={{ textTransform: 'none' }}>
               Guardar
