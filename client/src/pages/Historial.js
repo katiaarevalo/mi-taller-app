@@ -113,12 +113,12 @@ const Historial = () => {
             <TableRow>
               <TableCell>ID</TableCell>
               <TableCell>Matrícula</TableCell>
-              <TableCell>RUT Cliente</TableCell>
-              <TableCell>Fecha de Inicio</TableCell>
-              <TableCell>Fecha de Término</TableCell>
-              <TableCell>Monto Total</TableCell>
-              <TableCell>Monto Pagado</TableCell>
-              <TableCell>Fecha de Eliminación</TableCell>
+              <TableCell>RUT cliente</TableCell>
+              <TableCell>Fecha de inicio</TableCell>
+              <TableCell>Fecha de término</TableCell>
+              <TableCell>Monto total</TableCell>
+              <TableCell>Monto pagado</TableCell>
+              <TableCell>Fecha de eliminación</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

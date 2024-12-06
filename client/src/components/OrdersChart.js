@@ -24,7 +24,21 @@ const OrdersChart = () => {
             Authorization: `Bearer ${localStorage.getItem('token')}`,
           },
         });
-        setOrdenesPorMes(response.data);
+
+        // Filtrar y procesar los datos para eliminar duplicados y validar meses
+        const datosProcesados = response.data
+          .filter(item => item.mes >= 1 && item.mes <= 12) // Validar meses
+          .reduce((acc, item) => {
+            const existing = acc.find(d => d.mes === item.mes);
+            if (existing) {
+              existing.cantidad += item.cantidad; // Sumar cantidades si el mes ya existe
+            } else {
+              acc.push(item); // Agregar nuevo mes
+            }
+            return acc;
+          }, []);
+
+        setOrdenesPorMes(datosProcesados);
         setLoading(false);
       } catch (error) {
         console.error('Error al obtener órdenes por mes:', error);
@@ -62,16 +76,15 @@ const OrdersChart = () => {
         },
       },
     },
-      scales: {
-        x: {
-          ticks: {
-            // Ajustar el ángulo de los nombres de los meses
-            maxRotation: 45,  
-            minRotation: 45, 
-          },
+    scales: {
+      x: {
+        ticks: {
+          maxRotation: 45,  
+          minRotation: 45, 
         },
       },
-    };
+    },
+  };
 
   return (
     <div

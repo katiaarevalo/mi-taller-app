@@ -156,13 +156,13 @@ const Inventory = () => {
                     <TableCell>{item.descripcion}</TableCell>
                     <TableCell>{item.categoria}</TableCell> {/* Mostrar categoría */}
                     <TableCell>
-                      <IconButton onClick={() => handleViewClick(item)} aria-label="Ver" color="primary">
+                      <IconButton onClick={() => handleViewClick(item)} aria-label="Ver" color="default">
                         <VisibilityIcon />
                       </IconButton>
                       <IconButton onClick={() => handleEditClick(item)} aria-label="Editar" color="primary">
                         <EditIcon />
                       </IconButton>
-                      <IconButton onClick={() => handleDeleteClick(item)} aria-label="Eliminar" color="error">
+                      <IconButton onClick={() => handleDeleteClick(item)} aria-label="Eliminar" color="secondary">
                         <DeleteIcon />
                       </IconButton>
                     </TableCell>

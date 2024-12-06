@@ -156,8 +156,8 @@ const Reservations = () => {
                     value={formData.descripcion}
                     onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}
                 />
-                <Button type="submit" variant="contained" color="primary">
-                    Agregar Reserva
+                <Button type="submit" variant="contained" color="primary" sx={{textTransform: 'none'}}>
+                    Agregar reserva
                 </Button>
             </Box>
 

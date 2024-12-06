@@ -18,7 +18,7 @@
 
     const InventoryFormModal = ({ open, onClose }) => {
         const [nombre, setNombre] = useState('');
-        const [cantidad, setCantidad] = useState(0);
+        const [cantidad, setCantidad] = useState('');
         const [descripcion, setDescripcion] = useState('');
         const [categoria, setCategoria] = useState(''); // Nuevo estado para categoría
 
@@ -80,7 +80,6 @@
                             margin="normal"
                             fullWidth
                             required
-                            type="number"
                             value={cantidad}
                             onChange={(e) => setCantidad(e.target.value)}
                         />
