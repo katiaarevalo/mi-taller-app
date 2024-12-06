@@ -1,4 +1,5 @@
 'use strict'
+const moment = require('moment');
 module.exports = (sequelize, DataTypes) => {
     const Deudor = sequelize.define('Deudor', {
         cliente_rut: {
@@ -15,7 +16,12 @@ module.exports = (sequelize, DataTypes) => {
         },
         fecha_vencimiento: {
             type: DataTypes.DATEONLY,
-            allowNull: false
+            allowNull: true,
+            get() {
+                const fechaVencimiento = this.getDataValue('fecha_vencimiento');
+                // Suma 1 día al mostrar la fecha
+                return fechaVencimiento ? moment(fechaVencimiento).format('YYYY-MM-DD') : null;
+            }
         },
         estado: {
             type: DataTypes.STRING,

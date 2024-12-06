@@ -129,12 +129,13 @@ const VehicleFormModal = ({ open, onClose }) => {
           <TextField
             name="fecha_vencimiento"
             label="Fecha de vencimiento"
-            variant="outlined"
+            type="date"
             value={formData.fecha_vencimiento}
             onChange={handleChange}
+            size="small"
             fullWidth
-            margin="normal"
-            required
+            InputLabelProps={{ shrink: true }}
+            sx={{ marginBottom: '8px' }}
           />
           <TextField
             name="estado"

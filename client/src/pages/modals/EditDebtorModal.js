@@ -97,11 +97,13 @@ const EditDebtorModal = ({ open, onClose, debtor}) => {
           <TextField
             name="fecha_vencimiento"
             label="Fecha de vencimiento"
-            variant="outlined"
+            type="date"
             value={formData.fecha_vencimiento}
             onChange={handleChange}
+            size="small"
             fullWidth
-            margin="normal"
+            InputLabelProps={{ shrink: true }}
+            sx={{ marginBottom: '8px' }}
           />
           <TextField
             name="Estado"
