@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Grid2 } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import EditAccountPayableModal from './modals/EditAccountPayableModal';
 import AccountPayableModal from "./modals/AccountPayableModal";
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
@@ -11,9 +11,9 @@ import Swal from 'sweetalert2';
 const Vehicles = () => {
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-  const [viewModalOpen, setViewModalOpen] = useState(false);
+  //const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false); 
-  const [historialData, setHistorialData] = useState([]);
+  //const [historialData, setHistorialData] = useState([]);
   const [Today, setToday]=useState('');
 
 
@@ -68,6 +68,8 @@ const Vehicles = () => {
     setModalOpen(false);
     fetchCuentas(); 
   };
+
+  
 
 
 
@@ -161,6 +163,10 @@ const Vehicles = () => {
     Cuentas.State.toLowerCase().includes(filtro.toLowerCase())
   );
 
+  const formatAmount = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
 
   // -- ESTADO DE FECHA -- //
   // Se revisa el estado del servicio,
@@ -217,8 +223,8 @@ const Vehicles = () => {
                 <TableRow key={Cuentas.id}>
                   <TableCell>{Cuentas.Services}</TableCell>
                   <TableCell>{Cuentas.Company}</TableCell>
-                  <TableCell>{Cuentas.Deadline}</TableCell>
-                  <TableCell>{Cuentas.Amount}</TableCell>
+                  <TableCell>{Cuentas.Deadline}</TableCell>                  
+                  <TableCell>${formatAmount(Cuentas.Amount)}</TableCell>
                   <TableCell>{Cuentas.State}</TableCell> {/*Implementar funcion que cambie el estado*/}
 
                   <TableCell>

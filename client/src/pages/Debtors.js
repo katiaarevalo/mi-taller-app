@@ -82,6 +82,23 @@ const Debtors = () => {
     fetchDebtors();
   };
 
+  const formatAmount = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+  const formatRUT = (rut) => {
+    // Eliminar puntos y guiones existentes
+    rut = rut.replace(/\./g, '').replace(/-/g, '');
+  
+    // Extraer el dígito verificador
+    const dv = rut.slice(-1);
+    const rutWithoutDV = rut.slice(0, -1);
+  
+    // Formatear el RUT con puntos y guión
+    const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+  
+    return formattedRUT;
+  };
+
   // -- ELIMINAR DEUDOR -- //
   // Función para eliminar un deudor.
   const handleDeleteDebtor = (debtor) => {
@@ -167,7 +184,7 @@ const Debtors = () => {
               <TableHead>
                 <TableRow>
                   <TableCell style={{ width: '100px' }}>RUT cliente</TableCell>
-                  <TableCell style={{ width: '150px' }}>Monto a deber</TableCell>
+                  <TableCell style={{ width: '150px' }}>Monto de la deuda</TableCell>
                   <TableCell style={{ width: '150px' }}>Fecha de vencimiento</TableCell>
                   <TableCell style={{ width: '100px' }}>Estado</TableCell>
                   <TableCell style={{ width: '150px' }}>Acciones</TableCell>
@@ -180,8 +197,9 @@ const Debtors = () => {
                   })
                   .map((debtor) => (
                     <TableRow key={debtor.cliente_rut}>
-                      <TableCell>{debtor.cliente_rut}</TableCell>
-                      <TableCell>{debtor.monto_deuda}</TableCell>
+                      
+                      <TableCell>{formatRUT(debtor.cliente_rut)}</TableCell>
+                      <TableCell>${formatAmount(debtor.monto_deuda)}</TableCell>                      
                       <TableCell>{debtor.fecha_vencimiento}</TableCell>
                       <TableCell>{debtor.estado}</TableCell>
                       <TableCell>
