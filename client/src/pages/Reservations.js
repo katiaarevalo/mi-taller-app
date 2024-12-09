@@ -147,11 +147,15 @@ const Reservations = () => {
                     minRows={4}
                     placeholder="Descripción"
                     style={{
-                        width: '100%',
+                        width: '90%',
                         padding: '12px',
                         fontSize: '16px',
                         borderColor: '#ccc',
-                        borderRadius: '4px',
+                        borderRadius: '5px',
+                        minHeight: '25px',
+                        maxHeight: '300px',
+                        minWidth: '80%',
+                        maxWidth: '100%',
                     }}
                     value={formData.descripcion}
                     onChange={(e) => setFormData({ ...formData, descripcion: e.target.value })}

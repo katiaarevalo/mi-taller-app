@@ -29,7 +29,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   // Ajuste dinámico del ancho del Sidebar dependiendo de la ruta
-  const currentDrawerWidth = location.pathname === '/work-orders-calendar' ? 260 : 240; // Ajuste específico para el calendario
+  const currentDrawerWidth =  240 ;
 
   // Función para manejar la navegación
   const handleNavigation = (path) => {
@@ -91,7 +91,7 @@ const Sidebar = () => {
                 alt="mitaller"
                 image={logo}
                 sx={{
-                  width: 50, 
+                  width: 55, 
                   height: 'auto',
                   mb: 2,
                   marginBottom: '4px'
@@ -111,18 +111,18 @@ const Sidebar = () => {
             {/* BOTONES CON EL MISMO ESTILO */}
             {[
               { text: 'Analítica', icon: <Dashboard />, path: '/analytics' },
-              { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
-              { text: 'Historial órdenes de trabajo', icon: < ManageHistoryIcon/>, path: '/historial-ordenes' },
-              { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
-              { text: 'Clientes', icon: <Person />, path: '/clients' },
-              { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' },
               { text: 'Calendario de órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' },
-              { text: 'Reservas', icon: <Assignment />, path: '/reservations' },
-              { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' },
-              { text: 'Personal', icon: <Person />, path: '/personal'},
-              { text: 'Servicios', icon: <RequestQuoteIcon />, path: '/account-payable' },
+              { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
+              { text: 'Historial de órdenes', icon: < ManageHistoryIcon/>, path: '/historial-ordenes' },
+              { text: 'Clientes', icon: <Person />, path: '/clients' },
+              { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
+              { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' },
               { text: 'Deudores', icon: <PersonOff />, path: '/debtors' },
-              { text: 'Inventario', icon: <LibraryBooks />, path: '/InventoryPage' }
+              { text: 'Servicios', icon: <RequestQuoteIcon />, path: '/account-payable' },
+              { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' },
+              { text: 'Inventario', icon: <LibraryBooks />, path: '/InventoryPage' },
+              { text: 'Personal', icon: <Person />, path: '/personal'},
+              { text: 'Reservas', icon: <Assignment />, path: '/reservations' }
             ].map((item, index) => ( 
               <ListItem 
                 button 
@@ -135,7 +135,7 @@ const Sidebar = () => {
               </ListItem>
             ))}
           </List>
-          <Divider />
+          <Divider sx={{ my: 0.5, borderColor: '#fff' }} />
           <List>
             <ListItem button sx={listItemStyles} onClick={handleLogoutClick}>
               <ListItemIcon sx={{ color: 'inherit' }}>

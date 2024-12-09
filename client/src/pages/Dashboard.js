@@ -14,7 +14,7 @@ const Dashboard = () => {
       sx={{
         height: '600px',
         width: '1090px',
-        marginLeft: '225px',
+        marginLeft: '240px',
         padding: 0, 
         margintop: '0px', 
         justifyContent: 'space-between',
@@ -23,14 +23,23 @@ const Dashboard = () => {
       }}
     >
       {/* Logo */}
-      <Box sx={{
-        position: 'absolute',  
-        marginLeft: '35px',
-        top: '0px',           
-        left: '0px',          
-
-      }}>
-        <img src={logo} alt="Logo" style={{ width: '150px', height: 'auto' }} />
+      <Box
+        sx={{
+          position: 'absolute',
+          marginLeft: '45px',
+          top: '0px',
+          left: '0px',
+        }}
+      >
+        <img
+          src={logo}
+          alt="Logo"
+          style={{
+            width: '140px',
+            height: 'auto',
+            filter: 'drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3))',
+          }}
+        />
       </Box>
 
       {/* Fila superior con las tarjetas */}

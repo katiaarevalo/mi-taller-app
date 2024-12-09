@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, TextField, Button, Typography, Autocomplete,FormControlLabel,Checkbox } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-import InputLabel from '@mui/material/InputLabel';
 
 
 const style = {
@@ -109,7 +106,7 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
           />
           <TextField
             name="Company"
-            label="Compañia"
+            label="Compañía"
             variant="outlined"
             value={Company}
             onChange={(e) => setEmpresa(e.target.value)}
@@ -118,7 +115,7 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
             required
           />
             <TextField
-              label="Fecha limite"
+              label="Fecha límite"
               name="fecha"
               type="date"
               value={Deadline}

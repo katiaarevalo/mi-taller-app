@@ -114,13 +114,14 @@ const Inventory = () => {
 
   return (
     <Grid container spacing={3} style={{ paddingLeft: '0px', paddingTop: '16px' }}>
-      <Grid item xs={12}>
-        <Typography variant="h4">Inventario</Typography>
+      <Grid item xs={10}>
+        <Typography variant="h4" style={{ marginBottom: '0px' }}>Inventario</Typography>
         <TextField
           label="Buscar por nombre o producto"
           variant="outlined"
-          style={{ width: '250px', marginLeft: '16px' }}
+          style={{ width: '250px' }}
           value={filter}
+          margin='dense'
           onChange={handleFilterChange}
           InputProps={{
             startAdornment: (
@@ -133,15 +134,15 @@ const Inventory = () => {
       </Grid>
 
       <Grid item xs={12}>
-        <TableContainer component={Paper} style={{ height: '500px' }}>
+        <TableContainer component={Paper} style={{ width: '100%', height: '500px' }}>
           <Table stickyHeader size='small'>
             <TableHead>
               <TableRow>
-                <TableCell>Nombre</TableCell>
-                <TableCell>Cantidad</TableCell>
-                <TableCell>Descripción</TableCell>
-                <TableCell>Categoría</TableCell> {/* Nueva columna para categoría */}
-                <TableCell>Acciones</TableCell>
+                <TableCell style={{ width: '150px' }}>Nombre</TableCell>
+                <TableCell style={{ width: '100px' }}>Cantidad</TableCell>
+                <TableCell style={{ width: '200px' }}>Descripción</TableCell>
+                <TableCell style={{ width: '150px' }}>Categoría</TableCell> {/* Nueva columna para categoría */}
+                <TableCell style={{ width: '150px' }}>Acciones</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>

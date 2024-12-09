@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Grid, TextField, Button, Typography, Paper, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
+import { Grid2, TextField, Button, Typography, Paper, MenuItem, Select, InputLabel, FormControl } from '@mui/material';
 import jsPDF from 'jspdf';
 import { logoBase64 } from './pdf/logo';
 
@@ -169,10 +169,10 @@ const CotizacionFormulario = () => {
   };
 
   return (
-    <Grid container justifyContent="center" spacing={2}>
-      <Grid item xs={12} sm={8} md={6}>
-        <Paper elevation={3} sx={{ padding: 3 }}>
-          <Typography variant="h6" gutterBottom>
+    <Grid2 container spacing={3} style={{ marginLeft: '400px', padding: '0', height: '100%', display: 'flex', flexDirection: 'column'}}>
+      <Grid2 item xs={10}>
+      <Paper sx={{ padding: 3, width: '50%' }} alignItems="center">
+          <Typography variant="h4" style={{ marginBottom: '0px'}}>
             Crear cotización
           </Typography>
           <form onSubmit={handleSubmit}>
@@ -257,8 +257,8 @@ const CotizacionFormulario = () => {
             </Button>
           </form>
         </Paper>
-      </Grid>
-    </Grid>
+      </Grid2>
+    </Grid2>
   );
 };
 

@@ -33,7 +33,6 @@ app.use('/personal', PersonalRoutes);
 app.use('/reservas', reservasRoutes);
 app.use('/historial-ordenes', HistorialOrdenes);
 app.use('/deudores', deudoresRoutes);
-//app.use('/proveedores', suppliersRoutes);
 app.use('/account-payable', accountpayables);
 app.use('/inventario', inventarioRoutes);
 

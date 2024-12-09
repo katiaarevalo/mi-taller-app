@@ -15,7 +15,6 @@ const Debtors = () => {
   const [openAddModal, setOpenAddModal] = useState(false);
   const [openEditModal, setOpenEditModal] = useState(false);
   const [selectedDebtor, setSelectedDebtor] = useState(null);
-  //const [openViewModal, setOpenViewModal] = useState(false);
   const [selectedViewDebtor, setSelectedViewDebtor] = useState(null);
     
   // -- OBTENER LISTA DE DEUDORES -- //
@@ -152,13 +151,13 @@ const Debtors = () => {
   }
 
   return (
-      <Grid2 container spacing={3} style={{ marginLeft: '0px', padding: '0', height: '100%', display: 'flex', flexDirection: 'column'}}>
+      <Grid2 container spacing={3} style={{ marginLeft: '240px', marginRight: '200px', padding: '0', height: '100%', display: 'flex', flexDirection: 'column'}}>
         <Grid2 item xs={10}>
           <Grid2 container alignItems="center" justifyContent="space-between">
             <Grid2 item>
               <Typography variant="h4" style={{ marginBottom: '0px' }}>Deudores morosos</Typography>
             </Grid2>
-            <Grid2 item xs={12}>
+            <Grid2 item>
               <TextField
                 label="Buscar por RUT"
                 variant="outlined"
@@ -226,12 +225,7 @@ const Debtors = () => {
           <ViewDebtorModal open={selectedViewDebtor} onClose={handleViewModalClose} debtor={selectedDebtor} />
           <DebtorFormModal open={openAddModal} onClose={handleAddModalClose} />
       </Grid2>
-      
   );
 };
-
-//
-//
-
 
 export default Debtors;

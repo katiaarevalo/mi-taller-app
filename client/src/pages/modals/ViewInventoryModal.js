@@ -24,7 +24,7 @@ const ViewInventoryModal = ({ open, onClose, item }) => {
             <DialogContent dividers>
                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                     <Typography variant="h6" sx={{ fontWeight: 'bold', color: 'black' }}>
-                        Información del Artículo
+                        Información del artículo
                     </Typography>
                     <Divider />
                     <Typography variant="body1" sx={{ color: 'black' }}>

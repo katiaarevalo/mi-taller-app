@@ -14,7 +14,7 @@ const Vehicles = () => {
   //const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false); 
   //const [historialData, setHistorialData] = useState([]);
-  const [Today, setToday]=useState('');
+  const [Today, setToday]=useState(''); // eslint-disable-line no-unused-vars
 
 
   // VARIABLES CUENTAS POR PAGAR //
@@ -211,8 +211,8 @@ const Vehicles = () => {
             <TableHead>
               <TableRow>
                 <TableCell style={{ width: '100px' }}>Servicio</TableCell>
-                <TableCell style={{ width: '100px' }}>Empresa</TableCell>
-                <TableCell style={{ width: '100px' }}>Fecha limite</TableCell>
+                <TableCell style={{ width: '100px' }}>Compañía</TableCell>
+                <TableCell style={{ width: '100px' }}>Fecha límite</TableCell>
                 <TableCell style={{ width: '150px' }}>Monto</TableCell>
                 <TableCell style={{ width: '150px' }}>Estado</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>

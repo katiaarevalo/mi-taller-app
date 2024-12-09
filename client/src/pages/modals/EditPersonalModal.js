@@ -88,15 +88,6 @@ const EditPersonalModal = ({ open, onClose, personal }) => {
             margin="normal"
           />
           <TextField
-            name="cargo"
-            label="Cargo"
-            variant="outlined"
-            value={formData.cargo}
-            onChange={handleChange}
-            fullWidth
-            margin="normal"
-          />
-          <TextField
             name="telefono"
             label="Teléfono"
             variant="outlined"
@@ -112,6 +103,15 @@ const EditPersonalModal = ({ open, onClose, personal }) => {
             label="Correo"
             variant="outlined"
             value={formData.correo}
+            onChange={handleChange}
+            fullWidth
+            margin="normal"
+          />
+          <TextField
+            name="cargo"
+            label="Cargo"
+            variant="outlined"
+            value={formData.cargo}
             onChange={handleChange}
             fullWidth
             margin="normal"

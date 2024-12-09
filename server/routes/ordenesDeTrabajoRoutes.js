@@ -3,7 +3,6 @@ const router = express.Router();
 const { verifyToken } = require('../middleware/authMiddleware');
 const { OrdenDeTrabajo } = require('../models');  
 const db = require('../models');
-const { sequelize } = require('../models');
 
 // -- CREAR ORDEN DE TRABAJO -- //
 router.post('/', verifyToken, async (req, res) => {

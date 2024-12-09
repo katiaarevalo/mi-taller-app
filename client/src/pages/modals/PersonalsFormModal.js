@@ -37,8 +37,8 @@ const PersonalFormModal = ({ open, onClose }) => {
     }
 
     // Formatear el RUT (asegurarse de que tenga el guion)
-    const formattedRut = rut.trim().replace(/[^0-9kK]/g, ''); // Quitar cualquier carácter no numérico
-    const rutWithDash = formattedRut.slice(0, -1) + '-' + formattedRut.slice(-1).toUpperCase(); // Añadir el guion antes del dígito verificador
+    //const formattedRut = rut.trim().replace(/[^0-9kK]/g, ''); // Quitar cualquier carácter no numérico
+    //const rutWithDash = formattedRut.slice(0, -1) + '-' + formattedRut.slice(-1).toUpperCase(); // Añadir el guion antes del dígito verificador
 
     try {
       const token = localStorage.getItem('token');
@@ -83,16 +83,7 @@ const PersonalFormModal = ({ open, onClose }) => {
       <Box sx={style}>
         <Typography variant="h6" component="h2">Registro de nuevo personal</Typography>
         <form onSubmit={handleSubmit}>
-          <TextField
-            fullWidth
-            label="Nombre"
-            variant="outlined"
-            margin="normal"
-            value={nombre}
-            onChange={(e) => setNombre(e.target.value)}
-            required
-          />
-          <TextField
+        <TextField
             fullWidth
             label="RUT"
             variant="outlined"
@@ -105,11 +96,11 @@ const PersonalFormModal = ({ open, onClose }) => {
           />
           <TextField
             fullWidth
-            label="Cargo"
+            label="Nombre"
             variant="outlined"
             margin="normal"
-            value={cargo}
-            onChange={(e) => setCargo(e.target.value)}
+            value={nombre}
+            onChange={(e) => setNombre(e.target.value)}
             required
           />
           <TextField
@@ -129,6 +120,15 @@ const PersonalFormModal = ({ open, onClose }) => {
             value={correo}
             onChange={(e) => setCorreo(e.target.value)}
             type="email"
+            required
+          />
+          <TextField
+            fullWidth
+            label="Cargo"
+            variant="outlined"
+            margin="normal"
+            value={cargo}
+            onChange={(e) => setCargo(e.target.value)}
             required
           />
           <Box display="flex" justifyContent="space-between" marginTop="16px">

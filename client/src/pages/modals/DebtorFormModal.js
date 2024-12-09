@@ -25,7 +25,7 @@ const VehicleFormModal = ({ open, onClose }) => {
 
   const [clientes, setClientes] = useState([]);
   const [inputValue, setInputValue] = useState('');
-  const [errorMatricula, setErrorMatricula] = useState('');
+  const [errorMatricula, setErrorMatricula] = useState(''); // eslint-disable-line no-unused-vars
   const [montoDeudaError, setMontoDeudaError] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const [alertOpen, setAlertOpen] = useState(false);

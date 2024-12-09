@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, TextField, Button, Typography, Autocomplete,FormControlLabel,Checkbox } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 import InputLabel from '@mui/material/InputLabel';
@@ -58,9 +57,13 @@ const AccountPayableModal = ({ open, onClose }) => {
       
       
       if (Amount<0){
-
-        throw "El monto no puede ser menor a 0";
-        
+        Swal.fire({
+          title: 'Error',
+          text: 'El monto debe ser mayor a 0.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
       }
 
 
@@ -116,7 +119,7 @@ const AccountPayableModal = ({ open, onClose }) => {
           />
           <TextField
             name="Company"
-            label="Compañia"
+            label="Compañía"
             variant="outlined"
             value={Company}
             onChange={(e) => setEmpresa(e.target.value)}
@@ -136,7 +139,7 @@ const AccountPayableModal = ({ open, onClose }) => {
             required
           />  
             <TextField
-              label="Fecha"
+              label="Fecha límite"
               name="fecha"
               type="date"
               value={Deadline}
