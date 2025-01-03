@@ -50,7 +50,7 @@ const CuentasPorPagarCard = () => {
   return (
     <Card sx={{
       width: '300px',
-      height: '585px',
+      height: '670px',
       display: 'flex',
       marginLeft: '20px',
       marginTop: '-150px',

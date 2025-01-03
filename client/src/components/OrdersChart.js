@@ -89,8 +89,8 @@ const OrdersChart = () => {
   return (
     <div
       style={{
-        width: '700px',
-        height: '350px',
+        width: '800px',
+        height: '410px',
         padding: '5px', 
         boxSizing: 'border-box', 
         backgroundColor: '#fff', 

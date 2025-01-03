@@ -28,8 +28,8 @@ const RecordatorioCard = () => {
 
   return (
     <Card sx={{
-      width: '470px',
-      height: '180px',  
+      width: '515px',
+      height: '218px',  
       boxShadow: '0 8px 16px rgba(0, 0, 0, 0.1)',
       borderRadius: '10px',
       display: 'flex',
@@ -66,7 +66,7 @@ const RecordatorioCard = () => {
             variant="outlined"
             fullWidth
             multiline
-            rows={4.5}
+            rows={6}
             value={recordatorio}
             onChange={handleRecordatorioChange} 
             sx={{ marginBottom: 1 }}

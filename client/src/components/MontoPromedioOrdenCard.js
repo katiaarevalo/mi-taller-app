@@ -50,7 +50,7 @@ const MontoPromedioOrdenCard = () => {
 
   return (
     <Card sx={{
-      width: '100%',
+      width: '250px',
       height: '100px',
       boxShadow: '0 8px 16px rgba(0, 0, 0, 0.2)',
       borderRadius: '10px',
@@ -60,15 +60,16 @@ const MontoPromedioOrdenCard = () => {
       padding: '0px',
     }}>
       <CardContent sx={{ padding: '16px' }}>
-        <Typography variant="h6" gutterBottom sx={{ fontSize: '1rem' }}>
-          Monto promedio por orden de trabajo
+        <Typography variant="h6" gutterBottom sx={{ fontSize: '1rem', textAlign: 'center' }}>
+          Monto promedio <br />
+          por orden de trabajo
         </Typography>
         {loading ? (
           <Box display="flex" justifyContent="center" alignItems="center" height="100px">
             <CircularProgress />
           </Box>
         ) : (
-          <Typography variant="h5" sx={{ fontSize: '1.2rem' }}>
+          <Typography variant="h5" sx={{ fontSize: '1.2rem', textAlign: 'center' }}>
             ${montoPromedio.toLocaleString('es-CL')}
           </Typography>
         )}
