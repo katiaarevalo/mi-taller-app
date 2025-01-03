@@ -99,7 +99,7 @@ const Historial = () => {
           style={{ marginLeft: '10px' }}
         />
         <TextField
-          label="Buscar por Patente"
+          label="Buscar por matrícula"
           variant="outlined"
           value={searchMatricula}
           onChange={handleMatriculaChange} // Usamos la función con validación para la matrícula
