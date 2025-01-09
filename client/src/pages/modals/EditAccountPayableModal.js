@@ -57,6 +57,8 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
 
     try {
       const token = localStorage.getItem('token');
+
+
       await axios.put(`http://localhost:3001/account-payable/${AccountData.id}`, {
         Services,
         Company,
@@ -84,10 +86,17 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
         confirmButtonText: 'Aceptar'
       });
     }
+    
   };
+
+
+
+
   const handleChange = (event) => {
     setEstado(event.target.value)
   };
+
+  const today = new Date().toISOString().split('T')[0];
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -114,18 +123,18 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
             margin="normal"
             required
           />
-            <TextField
-              label="Fecha límite"
-              name="fecha"
-              type="date"
-              value={Deadline}
-              onChange={(e) => setFechaLimite(e.target.value)}
-              fullWidth
-              required
-              margin="normal"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ min: Today }}
-            />
+          <TextField
+                      label="Fecha límite"
+                      name="fecha"
+                      type="date"
+                      value={Deadline}
+                      onChange={(e) => setFechaLimite(e.target.value)}
+                      fullWidth
+                      required
+                      margin="normal"
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ min: today }} // Establecer la fecha mínima como hoy
+                  />
 
           <TextField
             name="Amount"

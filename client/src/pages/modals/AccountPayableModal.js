@@ -27,15 +27,14 @@ const AccountPayableModal = ({ open, onClose }) => {
   const [Deadline, setFechaLimite] = useState(''); 
   const [Amount, setMonto] = useState(''); 
   const [State, setEstado] = useState('');  
-  const [Today, setToday]=useState('');
+
 
 
   useEffect(() => {
  
     setEstado("Por pagar");
     var f = new Date();
-    setToday(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
-
+    
   }, []);
 
 
@@ -101,6 +100,9 @@ const AccountPayableModal = ({ open, onClose }) => {
   const handleChange = (event) => {
     setEstado(event.target.value)
   };
+
+
+  const today = new Date().toISOString().split('T')[0];
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -138,18 +140,18 @@ const AccountPayableModal = ({ open, onClose }) => {
             margin="normal"
             required
           />  
-            <TextField
-              label="Fecha límite"
-              name="fecha"
-              type="date"
-              value={Deadline}
-              onChange={(e) => setFechaLimite(e.target.value)}
-              fullWidth
-              required
-              margin="normal"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ min: Today }}
-            />
+          <TextField
+                      label="Fecha límite"
+                      name="fecha"
+                      type="date"
+                      value={Deadline}
+                      onChange={(e) => setFechaLimite(e.target.value)}
+                      fullWidth
+                      required
+                      margin="normal"
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ min: today }} // Establecer la fecha mínima como hoy
+                  />
 
 
 

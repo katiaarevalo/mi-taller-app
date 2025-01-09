@@ -72,7 +72,14 @@ const Vehicles = () => {
   
 
 
-
+  function formatearFecha(fechaISO) {
+    const fecha = new Date(fechaISO);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexed
+    const anio = fecha.getFullYear();
+    
+    return `${dia}-${mes}-${anio}`;
+}
 
 
 
@@ -223,7 +230,7 @@ const Vehicles = () => {
                 <TableRow key={Cuentas.id}>
                   <TableCell>{Cuentas.Services}</TableCell>
                   <TableCell>{Cuentas.Company}</TableCell>
-                  <TableCell>{Cuentas.Deadline}</TableCell>                  
+                  <TableCell>{formatearFecha(Cuentas.Deadline)}</TableCell>                  
                   <TableCell>${formatAmount(Cuentas.Amount)}</TableCell>
                   <TableCell>{Cuentas.State}</TableCell> {/*Implementar funcion que cambie el estado*/}
 
@@ -254,7 +261,7 @@ const Vehicles = () => {
       </Fab>
 
       {/* -- ABRIR MODAL AGREGAR --*/}
-      <AccountPayableModal open={modalOpen} onClose={handleModalClose} />
+      <AccountPayableModal open={modalOpen} onClose={handleModalClose}  />
 
 
       {/* -- MODAL EDITAR DATOS -- */}
