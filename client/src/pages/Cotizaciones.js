@@ -212,7 +212,7 @@ const CotizacionFormulario = () => {
             />
 
             <TextField
-              label="Patente"
+              label="Matrícula"
               name="patente"
               value={cotizacion.patente}
               onChange={handleInputChange}

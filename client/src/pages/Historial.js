@@ -91,7 +91,7 @@ const Historial = () => {
       {/* Filtros */}
       <Grid2 item>
         <TextField
-          label="Buscar por rut"
+          label="Buscar por RUT"
           variant="outlined"
           value={searchRut}
           onChange={handleRutChange} // Usamos la función con validación para el RUT
@@ -107,10 +107,10 @@ const Historial = () => {
           style={{ marginLeft: '10px', marginRight: '10px' }}
         />
         </Grid2>
-        <Button variant="contained" color="primary" onClick={handleSearch} style={{ marginRight: '10px' }}>
+        <Button variant="contained" color="primary" onClick={handleSearch} style={{ marginRight: '10px' }} sx={{textTransform: 'none'}}>
           Buscar
         </Button>
-        <Button variant="outlined" onClick={handleClearFilters}>
+        <Button variant="outlined" onClick={handleClearFilters} sx={{textTransform: 'none'}}>
           Limpiar filtros
         </Button>
       </Grid2>
