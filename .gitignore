@@ -8,3 +8,5 @@ client/package.json
 server/config/config.json
 server/package-lock.json
 server/package.json
+
+.codegpt
