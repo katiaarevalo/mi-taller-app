@@ -106,10 +106,10 @@ const CotizacionFormulario = () => {
     const title = "Cotización de vehículo";
     const pageWidth = doc.internal.pageSize.getWidth();
     const titleWidth = doc.getTextWidth(title);
-    const xPositionTitle = (pageWidth - titleWidth) / 2;
+    const xPositionTitle = (pageWidth - titleWidth) / 2.5;
     doc.setFontSize(18);
     doc.text(title, xPositionTitle, verticalOffset);
-    verticalOffset += 20;
+    verticalOffset += 10;
 
     const validityMessage = `***Esta cotización es válida por 15 días a partir de la fecha de ingreso.***`;
     const validityMessageWidth = doc.getTextWidth(validityMessage);
@@ -134,11 +134,9 @@ const CotizacionFormulario = () => {
     doc.text(`Patente: ${cotizacion.patente}`, 20, verticalOffset);
     verticalOffset += 10;
 
-    const description = `Descripción: ${cotizacion.descripcion}`;
-    const descriptionWidth = doc.getTextWidth(description);
-    const xPositionDescription = (pageWidth - descriptionWidth) / 2;
-    doc.text(description, xPositionDescription, verticalOffset);
-    verticalOffset += 15;
+    // Imprime la descripción de forma similar a los otros campos
+    doc.text(`Descripción: ${cotizacion.descripcion}`, 20, verticalOffset);
+    verticalOffset += 15; // Aumenta el espacio vertical después de la descripción
 
     const pageHeight = doc.internal.pageSize.getHeight();
     if (verticalOffset > pageHeight - 30) {
@@ -146,16 +144,22 @@ const CotizacionFormulario = () => {
       verticalOffset = 20;
     }
 
-    doc.text(`Precio Bruto (Total): $${precioBruto.toLocaleString()}`, 20, verticalOffset);
-    verticalOffset += 10;
+    
+    // Muestra el precio bruto con formato de peso chileno
+  doc.text(`Precio Bruto (Total): $${precioBruto.toLocaleString('es-CL')}`, 20, verticalOffset);
+  verticalOffset += 10;
 
-    doc.text(`IVA (19%): $${iva.toFixed(2).toLocaleString()}`, 20, verticalOffset);
-    verticalOffset += 10;
+  // Muestra el IVA con formato de peso chileno
+  doc.text(`IVA (19%): $${iva.toLocaleString('es-CL')}`, 20, verticalOffset);
+  verticalOffset += 10;
 
-    doc.text(`Precio Neto: $${precioNeto.toFixed(2).toLocaleString()}`, 20, verticalOffset);
-    verticalOffset += 10;
+  // Muestra el precio neto con formato de peso chileno
+  doc.text(`Precio Neto: $${precioNeto.toLocaleString('es-CL')}`, 20, verticalOffset);
+  verticalOffset += 10;
 
-    doc.save(`${cotizacion.nombre}_cotizacion.pdf`);
+  // Guarda el documento en formato PDF
+  doc.save(`${cotizacion.nombre}_cotizacion.pdf`);
+
 
     setCotizacion({
       nombre: '',
