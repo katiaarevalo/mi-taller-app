@@ -98,6 +98,12 @@ const Debtors = () => {
     return formattedRUT;
   };
 
+  const formatDate = (dateString) => {
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return new Date(dateString).toLocaleDateString(undefined, options);
+  };
+  
+
   // -- ELIMINAR DEUDOR -- //
   // Función para eliminar un deudor.
   const handleDeleteDebtor = (debtor) => {
@@ -199,7 +205,7 @@ const Debtors = () => {
                       
                       <TableCell>{formatRUT(debtor.cliente_rut)}</TableCell>
                       <TableCell>${formatAmount(debtor.monto_deuda)}</TableCell>                      
-                      <TableCell>{debtor.fecha_vencimiento}</TableCell>
+                      <TableCell>{formatDate(debtor.fecha_vencimiento)}</TableCell>
                       <TableCell>{debtor.estado}</TableCell>
                       <TableCell>
                         <IconButton onClick={() => handleViewModalOpen(debtor)} aria-label='Ver' color='default'>

@@ -145,7 +145,6 @@ const EditOrderModal = ({ open, onClose, orden }) => {
             name="monto_total"
             label="Monto total"
             variant="outlined"
-            type="number"
             value={formData.monto_total}
             onChange={handleChange}
             fullWidth
@@ -156,7 +155,6 @@ const EditOrderModal = ({ open, onClose, orden }) => {
             name="monto_pagado"
             label="Monto pagado"
             variant="outlined"
-            type="number"
             value={formData.monto_pagado}
             onChange={handleChange}
             fullWidth

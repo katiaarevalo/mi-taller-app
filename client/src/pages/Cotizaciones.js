@@ -252,7 +252,6 @@ const CotizacionFormulario = () => {
               onChange={handleInputChange}
               fullWidth
               required
-              type="number"
               margin="normal"
               InputProps={{ inputProps: { min: 0 } }}
             />
