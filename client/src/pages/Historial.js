@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TextField, Box, Button } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography, TextField, Button } from '@mui/material';
+import { Grid2 } from '@mui/material';
 
 const Historial = () => {
-  const [today, setToday] = useState('');
+  const [today, setToday] = useState(''); // eslint-disable-line no-unused-vars
   const [historial, setHistorial] = useState([]);
   const [filteredHistorial, setFilteredHistorial] = useState([]);
   const [searchRut, setSearchRut] = useState('');
@@ -80,34 +81,42 @@ const Historial = () => {
   };
 
   return (
-    <div style={{ margin: '20px' }}>
-      <Typography variant="h4" style={{ marginBottom: '20px' }}>Historial de órdenes de trabajo</Typography>
+    <Grid2 container spacing={3} style={{ marginLeft: '240px', padding: '0', height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Grid2 item xs={10}>
+        <Grid2 container alignItems="center" justifyContent="space-between">
+          <Grid2 item>
+            <Typography variant="h4" style={{ marginBottom: '0px' }}>Historial de órdenes de trabajo</Typography>
+          </Grid2>
 
       {/* Filtros */}
-      <Box style={{ marginBottom: '20px' }}>
+      <Grid2 item>
         <TextField
           label="Buscar por rut"
           variant="outlined"
           value={searchRut}
           onChange={handleRutChange} // Usamos la función con validación para el RUT
-          style={{ marginRight: '10px' }}
+          margin='dense'
+          style={{ marginLeft: '10px' }}
         />
         <TextField
-          label="Buscar por patente"
+          label="Buscar por matrícula"
           variant="outlined"
           value={searchMatricula}
           onChange={handleMatriculaChange} // Usamos la función con validación para la matrícula
-          style={{ marginRight: '10px' }}
+          margin='dense'
+          style={{ marginLeft: '10px', marginRight: '10px' }}
         />
+        </Grid2>
         <Button variant="contained" color="primary" onClick={handleSearch} style={{ marginRight: '10px' }}>
           Buscar
         </Button>
         <Button variant="outlined" onClick={handleClearFilters}>
           Limpiar filtros
         </Button>
-      </Box>
+      </Grid2>
 
-      <TableContainer component={Paper}>
+      <Grid2 item xs={12}>
+      <TableContainer component={Paper} style={{ width: '100%', height: '500px'}}>
         <Table>
           <TableHead>
             <TableRow>
@@ -137,7 +146,9 @@ const Historial = () => {
           </TableBody>
         </Table>
       </TableContainer>
-    </div>
+    </Grid2>
+  </Grid2>
+  </Grid2>
   );
 };
 

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Grid2 } from '@mui/material';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, TextField, IconButton, Typography, InputAdornment, Fab } from '@mui/material';
-import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon, Visibility as VisibilityIcon } from '@mui/icons-material';
+import { Add as AddIcon, Edit as EditIcon, Delete as DeleteIcon } from '@mui/icons-material';
 import EditAccountPayableModal from './modals/EditAccountPayableModal';
 import AccountPayableModal from "./modals/AccountPayableModal";
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
@@ -11,10 +11,10 @@ import Swal from 'sweetalert2';
 const Vehicles = () => {
   const [filtro, setFiltro] = useState('');
   const [modalOpen, setModalOpen] = useState(false);
-  const [viewModalOpen, setViewModalOpen] = useState(false);
+  //const [viewModalOpen, setViewModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false); 
-  const [historialData, setHistorialData] = useState([]);
-  const [Today, setToday]=useState('');
+  //const [historialData, setHistorialData] = useState([]);
+  const [Today, setToday]=useState(''); // eslint-disable-line no-unused-vars
 
 
   // VARIABLES CUENTAS POR PAGAR //
@@ -69,8 +69,17 @@ const Vehicles = () => {
     fetchCuentas(); 
   };
 
+  
 
 
+  function formatearFecha(fechaISO) {
+    const fecha = new Date(fechaISO);
+    const dia = String(fecha.getDate()).padStart(2, '0');
+    const mes = String(fecha.getMonth() + 1).padStart(2, '0'); // Los meses son 0-indexed
+    const anio = fecha.getFullYear();
+    
+    return `${dia}-${mes}-${anio}`;
+}
 
 
 
@@ -161,6 +170,10 @@ const Vehicles = () => {
     Cuentas.State.toLowerCase().includes(filtro.toLowerCase())
   );
 
+  const formatAmount = (amount) => {
+    return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  };
+
 
   // -- ESTADO DE FECHA -- //
   // Se revisa el estado del servicio,
@@ -205,8 +218,8 @@ const Vehicles = () => {
             <TableHead>
               <TableRow>
                 <TableCell style={{ width: '100px' }}>Servicio</TableCell>
-                <TableCell style={{ width: '100px' }}>Empresa</TableCell>
-                <TableCell style={{ width: '100px' }}>Fecha limite</TableCell>
+                <TableCell style={{ width: '100px' }}>Compañía</TableCell>
+                <TableCell style={{ width: '100px' }}>Fecha límite</TableCell>
                 <TableCell style={{ width: '150px' }}>Monto</TableCell>
                 <TableCell style={{ width: '150px' }}>Estado</TableCell>
                 <TableCell style={{ width: '150px' }}>Acciones</TableCell>
@@ -217,8 +230,8 @@ const Vehicles = () => {
                 <TableRow key={Cuentas.id}>
                   <TableCell>{Cuentas.Services}</TableCell>
                   <TableCell>{Cuentas.Company}</TableCell>
-                  <TableCell>{Cuentas.Deadline}</TableCell>
-                  <TableCell>{Cuentas.Amount}</TableCell>
+                  <TableCell>{formatearFecha(Cuentas.Deadline)}</TableCell>                  
+                  <TableCell>${formatAmount(Cuentas.Amount)}</TableCell>
                   <TableCell>{Cuentas.State}</TableCell> {/*Implementar funcion que cambie el estado*/}
 
                   <TableCell>
@@ -248,7 +261,7 @@ const Vehicles = () => {
       </Fab>
 
       {/* -- ABRIR MODAL AGREGAR --*/}
-      <AccountPayableModal open={modalOpen} onClose={handleModalClose} />
+      <AccountPayableModal open={modalOpen} onClose={handleModalClose}  />
 
 
       {/* -- MODAL EDITAR DATOS -- */}

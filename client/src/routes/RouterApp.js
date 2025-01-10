@@ -12,7 +12,10 @@ import Historial from "../pages/Historial";
 import WorkOrdersCalendar from '../pages/WorkOrdersCalendar';
 import Reservations from '../pages/Reservations';
 import Suppliers from "../pages/Suppliers";
+import Debtors from "../pages/Debtors";
 import AccountPayable from "../pages/AccountPayable";
+import Personals from "../pages/Personals";
+import InventoryPage from "../pages/InventoryPage";
 
 const RouterApp = () => {
   return (
@@ -43,6 +46,9 @@ const RouterApp = () => {
                 <Route path="/historial-ordenes" element={<Historial />} />
                 <Route path="/cotizaciones" element={<Cotizaciones />} />
                 <Route path="/suppliers" element={<Suppliers />} />
+                <Route path="/personal" element={<Personals />} />
+                <Route path="/debtors" element={<Debtors />} />
+                <Route path="/InventoryPage*" element={<InventoryPage />} />
                 
                 <Route path="/account-payable" element={<AccountPayable />} /> 
 

@@ -66,6 +66,75 @@ router.delete('/:id', verifyToken, async (req, res) => {
   }
 });
 */
+// -- OBTENER CANTIDAD DE ÓRDENES DE TRABAJO POR MES -- //
+router.get('/estadisticas/ordenes-por-mes', async (req, res) => {
+  try {
+    // Consulta para obtener las órdenes de trabajo por mes
+    const ordenesPorMes = await db.sequelize.query(`
+      SELECT
+        MONTH(fecha_inicio) AS mes,
+        COUNT(*) AS cantidad
+      FROM
+        OrdenesDeTrabajo
+      GROUP BY
+        MONTH(fecha_inicio)
+      UNION
+      SELECT 1, 0
+      UNION
+      SELECT 2, 0
+      UNION
+      SELECT 3, 0
+      UNION
+      SELECT 4, 0
+      UNION
+      SELECT 5, 0
+      UNION
+      SELECT 6, 0
+      UNION
+      SELECT 7, 0
+      UNION
+      SELECT 8, 0
+      UNION
+      SELECT 9, 0
+      UNION
+      SELECT 10, 0
+      UNION
+      SELECT 11, 0
+      UNION
+      SELECT 12, 0
+      ORDER BY mes;
+    `, { type: db.Sequelize.QueryTypes.SELECT });
+
+    // Devolver los resultados
+    res.status(200).json(ordenesPorMes);
+  } catch (error) {
+    console.error('Error al obtener órdenes por mes:', error);
+    res.status(500).json({ error: 'Error al obtener las órdenes de trabajo por mes' });
+  }
+});
+
+// -- OBTENER MONTO PROMEDIO POR ORDEN DE TRABAJO -- //
+// Ruta para obtener el monto promedio por orden de trabajo
+router.get('/monto-promedio-orden', verifyToken, async (req, res) => {
+  try {
+    const montoPromedioOrden = await db.sequelize.query(`
+      SELECT
+        AVG(monto_total) AS promedio_monto
+      FROM
+        OrdenDeTrabajo
+    `, { type: db.Sequelize.QueryTypes.SELECT });
+
+    if (!montoPromedioOrden || montoPromedioOrden[0].promedio_monto === null) {
+      return res.status(404).json({ error: 'No hay órdenes de trabajo para calcular el promedio' });
+    }
+
+    res.json({ promedio_monto: parseFloat(montoPromedioOrden[0].promedio_monto).toFixed(2) });
+  } catch (error) {
+    console.error('Error al obtener el monto promedio:', error);
+    res.status(500).json({ error: 'Error interno del servidor' });
+  }
+});
+
 // -- ELIMINAR ORDEN DE TRABAJO Y MOVER A HISTORIAL -- //
 router.delete('/:id', verifyToken, async (req, res) => {
   try {

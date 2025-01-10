@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, TextField, Button, Typography, Autocomplete,FormControlLabel,Checkbox } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 
 import InputLabel from '@mui/material/InputLabel';
@@ -28,7 +27,6 @@ const AccountPayableModal = ({ open, onClose }) => {
   const [Deadline, setFechaLimite] = useState(''); 
   const [Amount, setMonto] = useState(''); 
   const [State, setEstado] = useState('');  
-  const [Today, setToday]=useState('');
 
 
 
@@ -36,9 +34,9 @@ const AccountPayableModal = ({ open, onClose }) => {
  
     setEstado("Por pagar");
     var f = new Date();
-    setToday(f.getDate() + "/" + (f.getMonth() +1) + "/" + f.getFullYear());
     
   }, []);
+
 
 
 
@@ -55,6 +53,19 @@ const AccountPayableModal = ({ open, onClose }) => {
 
     try {
       const token = localStorage.getItem('token');
+      
+      
+      if (Amount<0){
+        Swal.fire({
+          title: 'Error',
+          text: 'El monto debe ser mayor a 0.',
+          icon: 'error',
+          confirmButtonText: 'Aceptar'
+        });
+        return;
+      }
+
+
       await axios.post('http://localhost:3001/account-payable', {
         Services,
         Company,
@@ -73,11 +84,14 @@ const AccountPayableModal = ({ open, onClose }) => {
         confirmButtonText: 'Aceptar'
       });
     } catch (error) {
+    
       console.error('Error al añadir la cuenta:', error);
       onClose(); // Cierra el modal
+
+     
       Swal.fire({
         title: 'Error',
-        text: 'Hubo un problema al añadir la cuenta.',
+        html: `Hubo un problema al añadir la cuenta.<br/> ${error}`,
         icon: 'error',
         confirmButtonText: 'Aceptar'
       });
@@ -86,6 +100,9 @@ const AccountPayableModal = ({ open, onClose }) => {
   const handleChange = (event) => {
     setEstado(event.target.value)
   };
+
+
+  const today = new Date().toISOString().split('T')[0];
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -104,7 +121,7 @@ const AccountPayableModal = ({ open, onClose }) => {
           />
           <TextField
             name="Company"
-            label="Compañia"
+            label="Compañía"
             variant="outlined"
             value={Company}
             onChange={(e) => setEmpresa(e.target.value)}
@@ -123,18 +140,18 @@ const AccountPayableModal = ({ open, onClose }) => {
             margin="normal"
             required
           />  
-            <TextField
-              label="Fecha"
-              name="fecha"
-              type="date"
-              value={Deadline}
-              onChange={(e) => setFechaLimite(e.target.value)}
-              fullWidth
-              required
-              margin="normal"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ min: Today }}
-            />
+          <TextField
+                      label="Fecha límite"
+                      name="fecha"
+                      type="date"
+                      value={Deadline}
+                      onChange={(e) => setFechaLimite(e.target.value)}
+                      fullWidth
+                      required
+                      margin="normal"
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ min: today }} // Establecer la fecha mínima como hoy
+                  />
 
 
 

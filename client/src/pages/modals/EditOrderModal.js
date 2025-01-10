@@ -44,7 +44,15 @@ const EditOrderModal = ({ open, onClose, orden }) => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (name === 'monto_total' || name === 'monto_pagado') {
+      if (value < 0) {
+        return;
+      }
+    }
+    setFormData((prevFormData) => ({
+      ...prevFormData,
+      [name]: value,
+    }));
   };
 
   const handleMontoErrorClose = () => setMontoErrorOpen(false);
@@ -89,6 +97,14 @@ const EditOrderModal = ({ open, onClose, orden }) => {
     }
   };
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -112,6 +128,7 @@ const EditOrderModal = ({ open, onClose, orden }) => {
             onChange={handleChange}
             fullWidth
             margin="normal"
+            inputProps={{ min: getCurrentDate(), max: formData.fecha_termino }} // Establecer la fecha mínima y máxima
           />
           <TextField
             name="fecha_termino"
@@ -122,6 +139,7 @@ const EditOrderModal = ({ open, onClose, orden }) => {
             onChange={handleChange}
             fullWidth
             margin="normal"
+            inputProps={{ min: formData.fecha_inicio }} // Establecer la fecha mínima
           />
           <TextField
             name="monto_total"
@@ -132,6 +150,7 @@ const EditOrderModal = ({ open, onClose, orden }) => {
             onChange={handleChange}
             fullWidth
             margin="normal"
+            inputProps={{ min: 0 }} // Asegura que el valor mínimo sea 0
           />
           <TextField
             name="monto_pagado"
@@ -142,6 +161,7 @@ const EditOrderModal = ({ open, onClose, orden }) => {
             onChange={handleChange}
             fullWidth
             margin="normal"
+            inputProps={{ min: 0 }} // Asegura que el valor mínimo sea 0
           />
           <TextField
             name="descripcion"

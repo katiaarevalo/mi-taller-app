@@ -7,7 +7,7 @@ const { verifyToken } = require('../middleware/authMiddleware');
 //Habilitar para verificar el token
 
 // Aplico el middleware a todas las rutas. 
-//router.use(verifyToken);
+router.use(verifyToken);
 
 
 
@@ -20,7 +20,7 @@ router.get('/', async (req, res) => {
       console.error('Error al obtener las cuentas:', error);
       res.status(500).json({ error: 'Error al obtener las cuentas' });
     }
-  });
+});
   
 
 

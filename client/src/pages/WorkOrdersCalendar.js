@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { Grid2 } from '@mui/material';
 import { Calendar, momentLocalizer, Views } from 'react-big-calendar';
 import moment from 'moment';
 import 'moment/locale/es'; // Soporte de español para moment
@@ -29,11 +30,10 @@ const WorkOrdersCalendar = () => {
                     title: order.descripcion,
                     start: new Date(order.fecha_inicio),
                     end: new Date(order.fecha_termino),
-                    clienteRut: order.cliente_rut,
-                    clienteNombre: order.cliente_nombre,
+                    clienteRut: formatRUT(order.cliente_rut),
                     vehiculoMatricula: order.matricula_vehiculo,
-                    montoTotal: order.monto_total,
-                    montoPagado: order.monto_pagado,
+                    montoTotal: formatAmount(order.monto_total),
+                    montoPagado: formatAmount(order.monto_pagado),
                 }));
                 setEvents(formattedEvents);
             } catch (error) {
@@ -43,6 +43,24 @@ const WorkOrdersCalendar = () => {
 
         fetchWorkOrders();
     }, []);
+
+    const formatRUT = (rut) => {
+        // Eliminar puntos y guiones existentes
+        rut = rut.replace(/\./g, '').replace(/-/g, '');
+      
+        // Extraer el dígito verificador
+        const dv = rut.slice(-1);
+        const rutWithoutDV = rut.slice(0, -1);
+      
+        // Formatear el RUT con puntos y guión
+        const formattedRUT = rutWithoutDV.replace(/\B(?=(\d{3})+(?!\d))/g, '.') + '-' + dv;
+      
+        return formattedRUT;
+      };
+
+    const formatAmount = (amount) => {
+        return amount.toString().replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+    };
 
     // Manejador para seleccionar un evento
     const handleSelectEvent = (event) => {
@@ -59,94 +77,99 @@ const WorkOrdersCalendar = () => {
     }
 
     return (
-        <div style={{ height: '110vh', width: '400%' }}>
-            <h2 style={{ textAlign: 'center' }}>Calendario de órdenes de trabajo</h2>
-            <Calendar
-                localizer={localizer}
-                events={events}
-                startAccessor="start"
-                endAccessor="end"
-                style={{ height: '80%', margin: 'auto' }}
-                views={['month']}
-                defaultView={Views.MONTH}
-                onSelectEvent={handleSelectEvent} // Evento seleccionado
-                messages={{
-                    next: "Sig.",
-                    previous: "Ant.",
-                    today: "Hoy",
-                    month: "Mes",
-                    noEventsInRange: "No hay eventos en este rango de fechas.",
-                }}
-            />
+        <Grid2 container spacing={3} style={{ marginLeft: '240px', marginRight: '200px', padding: '0', height: '100%', display: 'flex' }}>
+            <Grid2 item xs={10}>
+                <Grid2 container alignItems="center" justifyContent="space-between">
+                    <Grid2 item>
+                        <Typography variant="h4" style={{ marginBottom: '0px' }}>Calendario de órdenes de trabajo</Typography>
+                    </Grid2>
+                </Grid2>
+            </Grid2>
+            <Grid2 style={{ height: '600px', width: '100%' }}>
+                <Calendar
+                    localizer={localizer}
+                    events={events}
+                    startAccessor="start"
+                    endAccessor="end"
+                    style={{ height: '100%', margin: 'auto' }}
+                    views={['month']}
+                    defaultView={Views.MONTH}
+                    onSelectEvent={handleSelectEvent} // Evento seleccionado
+                    messages={{
+                        next: "Sig.",
+                        previous: "Ant.",
+                        today: "Hoy",
+                        month: "Mes",
+                        noEventsInRange: "No hay eventos en este rango de fechas.",
+                    }}
+                />
 
-            {/* Modal para mostrar detalles */}
-            {selectedOrder && (
-                <Modal
-                    open={!!selectedOrder}
-                    onClose={handleCloseModal}
-                    aria-labelledby="modal-title"
-                    aria-describedby="modal-description"
-                >
-                    <Box
-                        sx={{
-                            position: 'absolute',
-                            top: '50%',
-                            left: '50%',
-                            transform: 'translate(-50%, -50%)',
-                            width: 400,
-                            bgcolor: 'background.paper',
-                            border: '2px solid #000',
-                            boxShadow: 24,
-                            p: 4,
-                            borderRadius: 2,
-                        }}
+                {/* Modal para mostrar detalles */}
+                {selectedOrder && (
+                    <Modal
+                        open={!!selectedOrder}
+                        onClose={handleCloseModal}
+                        aria-labelledby="modal-title"
+                        aria-describedby="modal-description"
                     >
-                        <Typography id="modal-title" variant="h6" component="h2" gutterBottom>
-                            Detalles de la orden de trabajo - N° {selectedOrder.id}
-                        </Typography>
-                        <Typography>
-                            <strong>RUT Cliente:</strong> {selectedOrder.clienteRut}
-                        </Typography>
-                        <Typography>
-                            <strong>Nombre Cliente:</strong> {selectedOrder.clienteNombre}
-                        </Typography>
-                        <Typography>
-                            <strong>Matrícula:</strong> {selectedOrder.vehiculoMatricula}
-                        </Typography>
-                        <Typography sx={{ mt: 2 }}>
-                            <strong>Fecha de Inicio:</strong> {new Date(selectedOrder.start).toLocaleDateString()}
-                        </Typography>
-                        <Typography>
-                            <strong>Fecha de Término:</strong> {new Date(selectedOrder.end).toLocaleDateString()}
-                        </Typography>
-                        <Typography>
-                            <strong>Descripción:</strong> {selectedOrder.title}
-                        </Typography>
-                        <Typography sx={{ mt: 2 }}>
-                            <strong>Monto Total:</strong> ${selectedOrder.montoTotal}
-                        </Typography>
-                        <Typography>
-                            <strong>Monto Pagado:</strong> ${selectedOrder.montoPagado}
-                        </Typography>
-                        <Box sx={{ mt: 3, textAlign: 'center' }}>
-                            <button
-                                style={{
-                                    backgroundColor: '#1976d2',
-                                    color: 'white',
-                                    border: 'none',
-                                    padding: '10px 20px',
-                                    borderRadius: '4px',
-                                    cursor: 'pointer',
-                                }}
-                                onClick={handleCloseModal}
-                            >
-                                Cerrar
-                            </button>
+                        <Box
+                            sx={{
+                                position: 'absolute',
+                                top: '50%',
+                                left: '50%',
+                                transform: 'translate(-50%, -50%)',
+                                width: 400,
+                                bgcolor: 'background.paper',
+                                border: '2px solid #000',
+                                boxShadow: 24,
+                                p: 4,
+                                borderRadius: 2,
+                            }}
+                        >
+                            <Typography id="modal-title" variant="h6" component="h2" gutterBottom>
+                                Detalles de la orden de trabajo - N° {selectedOrder.id}
+                            </Typography>
+                            <Typography>
+                                <strong>RUT cliente:</strong> {selectedOrder.clienteRut}
+                            </Typography>
+                            <Typography>
+                                <strong>Matrícula:</strong> {selectedOrder.vehiculoMatricula}
+                            </Typography>
+                            <Typography sx={{ mt: 2 }}>
+                                <strong>Fecha de inicio:</strong> {new Date(selectedOrder.start).toLocaleDateString()}
+                            </Typography>
+                            <Typography>
+                                <strong>Fecha de término:</strong> {new Date(selectedOrder.end).toLocaleDateString()}
+                            </Typography>
+                            <Typography>
+                                <strong>Descripción:</strong> {selectedOrder.title}
+                            </Typography>
+                            <Typography sx={{ mt: 2 }}>
+                                <strong>Monto total:</strong> ${selectedOrder.montoTotal}
+                            </Typography>
+                            <Typography>
+                                <strong>Monto pagado:</strong> ${selectedOrder.montoPagado}
+                            </Typography>
+                            <Box sx={{ mt: 3, textAlign: 'center' }}>
+                                <button
+                                    style={{
+                                        backgroundColor: '#1976d2',
+                                        color: 'white',
+                                        border: 'none',
+                                        padding: '10px 20px',
+                                        borderRadius: '4px',
+                                        cursor: 'pointer',
+                                    }}
+                                    onClick={handleCloseModal}
+                                >
+                                    Cerrar
+                                </button>
+                            </Box>
                         </Box>
-                    </Box>
-                </Modal>
-            )}
-        </div>
+                    </Modal>
+                )}
+            </Grid2>
+    </Grid2>
     );
 };
 

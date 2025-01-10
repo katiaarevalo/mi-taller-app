@@ -1,11 +1,12 @@
 import React from 'react';
 import { Drawer, List, ListItem, ListItemIcon, ListItemText, Box, Toolbar, Divider, Typography, CardMedia } from '@mui/material';
-import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment, CalendarToday, LocalShipping } from '@mui/icons-material';
+import { Dashboard, TimeToLeave, Person, ExitToApp, Construction, Assignment, CalendarToday, LocalShipping , PersonOff} from '@mui/icons-material';
 import RequestQuoteIcon from '@mui/icons-material/RequestQuote';
 import ManageHistoryIcon from '@mui/icons-material/ManageHistory';
 import logo from '../images/mitaller_logo.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Swal from 'sweetalert2';
+import { LibraryBooks } from '@mui/icons-material';
 
 // listItemStyles: Me da los estilos comunes para los botones. 
 const listItemStyles = {
@@ -28,7 +29,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   // Ajuste dinámico del ancho del Sidebar dependiendo de la ruta
-  const currentDrawerWidth = location.pathname === '/work-orders-calendar' ? 260 : 240; // Ajuste específico para el calendario
+  const currentDrawerWidth =  240 ;
 
   // Función para manejar la navegación
   const handleNavigation = (path) => {
@@ -78,9 +79,9 @@ const Sidebar = () => {
             <Box
               sx={{
                 display: 'flex',
-                flexDirection: 'column',
+                flexDirection: 'row',
                 alignItems: 'center',
-                mt: 3,
+                mt: 1,
                 minHeight: 0,
               }}
             >
@@ -90,13 +91,14 @@ const Sidebar = () => {
                 alt="mitaller"
                 image={logo}
                 sx={{
-                  width: 180, 
+                  width: 55, 
                   height: 'auto',
                   mb: 2,
+                  marginBottom: '4px'
                 }}
               />
               {/* BIENVENIDO, USUARIO */}
-              <Typography variant="h6" sx={{ textAlign: 'center' }}>
+              <Typography variant="h6" sx={{ textAlign: 'center', marginLeft:'10px' }}>
                 ¡Bienvenido!
               </Typography>
             </Box>
@@ -109,15 +111,18 @@ const Sidebar = () => {
             {/* BOTONES CON EL MISMO ESTILO */}
             {[
               { text: 'Analítica', icon: <Dashboard />, path: '/analytics' },
-              { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
-              { text: 'Historial órdenes de trabajo', icon: < ManageHistoryIcon/>, path: '/historial-ordenes' },
-              { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
-              { text: 'Clientes', icon: <Person />, path: '/clients' },
-              { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' },
               { text: 'Calendario de órdenes', icon: <CalendarToday />, path: '/work-orders-calendar' },
-              { text: 'Reservas', icon: <Assignment />, path: '/reservations' },
+              { text: 'Órdenes de trabajo', icon: <Construction />, path: '/work-orders' },
+              { text: 'Historial de órdenes', icon: < ManageHistoryIcon/>, path: '/historial-ordenes' },
+              { text: 'Clientes', icon: <Person />, path: '/clients' },
+              { text: 'Vehículos', icon: <TimeToLeave />, path: '/vehicles' },
+              { text: 'Cotizaciones', icon: <Assignment />, path: '/cotizaciones' },
+              { text: 'Deudores', icon: <PersonOff />, path: '/debtors' },
+              { text: 'Servicios', icon: <RequestQuoteIcon />, path: '/account-payable' },
               { text: 'Proveedores', icon: <LocalShipping />, path: '/suppliers' },
-              { text: 'Servicios', icon: <RequestQuoteIcon />, path: '/account-payable' }
+              { text: 'Inventario', icon: <LibraryBooks />, path: '/InventoryPage' },
+              { text: 'Personal', icon: <Person />, path: '/personal'},
+              { text: 'Reservas', icon: <Assignment />, path: '/reservations' }
             ].map((item, index) => ( 
               <ListItem 
                 button 
@@ -130,7 +135,7 @@ const Sidebar = () => {
               </ListItem>
             ))}
           </List>
-          <Divider />
+          <Divider sx={{ my: 0.5, borderColor: '#fff' }} />
           <List>
             <ListItem button sx={listItemStyles} onClick={handleLogoutClick}>
               <ListItemIcon sx={{ color: 'inherit' }}>

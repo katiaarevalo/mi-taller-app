@@ -1,12 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Modal, Box, TextField, Button, Typography, Autocomplete,FormControlLabel,Checkbox } from '@mui/material';
+import { Modal, Box, TextField, Button, Typography } from '@mui/material';
 import axios from 'axios';
 import Swal from 'sweetalert2';
 import MenuItem from '@mui/material/MenuItem';
-import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-
-import InputLabel from '@mui/material/InputLabel';
 
 
 const style = {
@@ -60,6 +57,8 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
 
     try {
       const token = localStorage.getItem('token');
+
+
       await axios.put(`http://localhost:3001/account-payable/${AccountData.id}`, {
         Services,
         Company,
@@ -87,10 +86,17 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
         confirmButtonText: 'Aceptar'
       });
     }
+    
   };
+
+
+
+
   const handleChange = (event) => {
     setEstado(event.target.value)
   };
+
+  const today = new Date().toISOString().split('T')[0];
   return (
     <Modal open={open} onClose={onClose}>
       <Box sx={style}>
@@ -109,7 +115,7 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
           />
           <TextField
             name="Company"
-            label="Compañia"
+            label="Compañía"
             variant="outlined"
             value={Company}
             onChange={(e) => setEmpresa(e.target.value)}
@@ -117,18 +123,18 @@ const EditAccountPayableModal = ({ open, onClose, AccountData}) => {
             margin="normal"
             required
           />
-            <TextField
-              label="Fecha limite"
-              name="fecha"
-              type="date"
-              value={Deadline}
-              onChange={(e) => setFechaLimite(e.target.value)}
-              fullWidth
-              required
-              margin="normal"
-              InputLabelProps={{ shrink: true }}
-              inputProps={{ min: Today }}
-            />
+          <TextField
+                      label="Fecha límite"
+                      name="fecha"
+                      type="date"
+                      value={Deadline}
+                      onChange={(e) => setFechaLimite(e.target.value)}
+                      fullWidth
+                      required
+                      margin="normal"
+                      InputLabelProps={{ shrink: true }}
+                      inputProps={{ min: today }} // Establecer la fecha mínima como hoy
+                  />
 
           <TextField
             name="Amount"

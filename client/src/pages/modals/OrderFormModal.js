@@ -205,6 +205,14 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
     setDateErrorOpen(false); // Cerrar alerta de fecha inválida
   };
 
+  const getCurrentDate = () => {
+    const today = new Date();
+    const yyyy = today.getFullYear();
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const dd = String(today.getDate()).padStart(2, '0');
+    return `${yyyy}-${mm}-${dd}`;
+  };
+
   return (
     <Modal open={open} onClose={() => { limpiarFormulario(); onClose(); }}>
       <Box sx={modalStyle}>
@@ -253,6 +261,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                     fullWidth
                     InputLabelProps={{ shrink: true }}
                     sx={{ marginBottom: '8px' }}
+                    inputProps={{ min: getCurrentDate(), max: orden.fecha_termino }} // Establecer la fecha mínima y máxima
                   />
                 </Grid>
 
@@ -282,6 +291,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                     fullWidth
                     InputLabelProps={{ shrink: true }}
                     sx={{ marginBottom: '8px' }}
+                    inputProps={{ min: orden.fecha_inicio }} // Establecer la fecha mínima
                   />
                 </Grid>
 
@@ -336,6 +346,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                       sx={{ marginBottom: '8px' }}
                       error={!!errorFormat}
                       helperText={errorFormat && (orden.monto_total < 0 ? errorFormat : '')}
+                      inputProps={{ min: 0 }} // Asegura que el valor mínimo sea 0
                     />
                   </Grid>
                 </Grid>
@@ -353,6 +364,7 @@ const OrderFormModal = ({ open, onClose, orderId }) => {
                       sx={{ marginBottom: '8px' }}
                       error={!!errorFormat}
                       helperText={errorFormat && (orden.monto_pagado < 0 ? errorFormat : '')}
+                      inputProps={{ min: 0 }} // Asegura que el valor mínimo sea 0
                     />
                   </Grid>
                 </Grid>
