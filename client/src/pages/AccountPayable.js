@@ -65,6 +65,7 @@ const Vehicles = () => {
   // Función para cerrar el modal de agregar auto.
   // Refresca la lista de autos.
   const handleModalClose = () => {
+    
     setModalOpen(false);
     fetchCuentas(); 
   };
